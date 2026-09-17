@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/events/review/review-event.schema.json",
+  "title": "ReviewEvent",
+  "allOf": [
+    { "$ref": "https://schemas.alos.dev/v1/events/event-envelope.schema.json" },
+    {
+      "properties": {
+        "event_type": { "enum": ["review.completed", "review.ready_for_it"] },
+        "payload": {
+          "type": "object",
+          "required": ["review_id", "status"],
+          "properties": {
+            "review_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/review_id" },
+            "status": { "type": "string", "enum": ["COMPLETED", "READY_FOR_IT"] }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/tool/tool-result.schema.json",
+  "title": "ToolResult",
+  "type": "object",
+  "required": ["tool_call_id", "run_id", "status", "completed_at"],
+  "properties": {
+    "tool_call_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tool_call_id" },
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "status": { "type": "string", "enum": ["COMPLETED", "FAILED", "DENIED"] },
+    "output": {},
+    "error": { "$ref": "https://schemas.alos.dev/v1/common/error.schema.json" },
+    "completed_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

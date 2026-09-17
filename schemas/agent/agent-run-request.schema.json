@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/agent/agent-run-request.schema.json",
+  "title": "AgentRunRequest",
+  "type": "object",
+  "required": ["run_id", "root_run_id", "agent_id", "agent_version", "capability_id", "execution_context", "input"],
+  "properties": {
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "root_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/root_run_id" },
+    "parent_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/parent_run_id" },
+    "agent_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_id" },
+    "agent_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_version" },
+    "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
+    "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" },
+    "input": { "type": "object" },
+    "context_bundle": { "$ref": "https://schemas.alos.dev/v1/context/context-bundle.schema.json" }
+  },
+  "additionalProperties": false
+}

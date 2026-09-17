@@ -1,0 +1,34 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/research/research-result.schema.json",
+  "research_id": "research_market_001",
+  "run_id": "run_research_001",
+  "output_state": "NEEDS_REVIEW",
+  "findings": [
+    {
+      "finding_id": "finding_market_001",
+      "statement": "The reviewed segment shows measurable demand growth.",
+      "confidence": 0.82,
+      "output_state": "AI_INFERRED",
+      "evidence_refs": [
+        {
+          "evidence_id": "evidence_market_001",
+          "source_id": "source_market_report_001",
+          "uri": "https://example.com/reports/market-001",
+          "captured_at": "2026-09-16T11:00:00Z",
+          "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        }
+      ],
+      "limitations": ["The source covers one reporting period."]
+    }
+  ],
+  "recommendations": [
+    {
+      "recommendation_id": "recommendation_market_001",
+      "summary": "Proceed to human validation.",
+      "recommended_action": "Ask the business owner to validate the demand assumption.",
+      "confidence": 0.75,
+      "author_type": "AI"
+    }
+  ],
+  "completed_at": "2026-09-16T12:10:00Z"
+}

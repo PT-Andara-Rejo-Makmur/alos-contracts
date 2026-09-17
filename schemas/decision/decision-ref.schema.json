@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/decision/decision-ref.schema.json",
+  "title": "DecisionRef",
+  "description": "Reference to an authoritative human or platform decision. AI actors cannot be the decision authority.",
+  "type": "object",
+  "required": ["decision_id", "decision_type", "outcome", "decided_by", "decided_at"],
+  "properties": {
+    "decision_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/decision_id" },
+    "decision_type": { "type": "string", "enum": ["IT", "DIRECTOR"] },
+    "outcome": { "type": "string", "enum": ["APPROVED", "REJECTED", "RETURNED", "HOLD"] },
+    "decided_by": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id" },
+    "decided_at": { "type": "string", "format": "date-time" },
+    "rationale": { "type": "string", "minLength": 1 }
+  },
+  "additionalProperties": false
+}

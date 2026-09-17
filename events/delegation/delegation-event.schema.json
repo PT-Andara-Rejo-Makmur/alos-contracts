@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/events/delegation/delegation-event.schema.json",
+  "title": "DelegationEvent",
+  "allOf": [
+    { "$ref": "https://schemas.alos.dev/v1/events/event-envelope.schema.json" },
+    {
+      "properties": {
+        "event_type": { "enum": ["delegation.created", "delegation.completed"] },
+        "payload": {
+          "type": "object",
+          "required": ["run_id", "root_run_id", "parent_run_id"],
+          "properties": {
+            "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+            "root_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/root_run_id" },
+            "parent_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/parent_run_id" },
+            "status": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/run_status" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

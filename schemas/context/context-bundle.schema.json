@@ -1,0 +1,25 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/context/context-bundle.schema.json",
+  "title": "ContextBundle",
+  "type": "object",
+  "required": ["context_id", "items"],
+  "properties": {
+    "context_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+    "items": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "required": ["key", "value", "data_classification"],
+        "properties": {
+          "key": { "type": "string", "minLength": 1 },
+          "value": {},
+          "source_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id" },
+          "data_classification": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"] }
+        },
+        "additionalProperties": false
+      }
+    }
+  },
+  "additionalProperties": false
+}

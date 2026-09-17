@@ -1,0 +1,24 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "alos-contracts"
+version = "1.0.0"
+description = "Canonical API, schema, event, and governance contracts for the ALOS ecosystem."
+requires-python = ">=3.12,<4"
+dependencies = [
+  "jsonschema[format]>=4.23,<5",
+  "openapi-spec-validator>=0.7.2,<0.8",
+  "PyYAML>=6.0.2,<7",
+]
+
+[project.optional-dependencies]
+dev = ["pytest>=8.3,<9"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests", "compatibility/tests"]
+addopts = "-ra"
+
+[tool.setuptools]
+packages = ["scripts"]

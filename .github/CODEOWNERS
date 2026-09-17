@@ -1,0 +1,15 @@
+# Replace these placeholders with real GitHub users or teams before enforcing CODEOWNERS.
+
+# Default contract ownership
+* @AI_OWNER @BE_OWNER
+
+# Internal contracts require AI and Backend review
+/openapi/internal/ @AI_OWNER @BE_OWNER
+/schemas/agent/ @AI_OWNER @BE_OWNER
+/schemas/skill/ @AI_OWNER @BE_OWNER
+/schemas/runtime/ @AI_OWNER @BE_OWNER
+/schemas/delegation/ @AI_OWNER @BE_OWNER
+/schemas/tool/ @AI_OWNER @BE_OWNER
+
+# Public API requires Backend and Frontend review
+/openapi/public/ @BE_OWNER @FE_OWNER

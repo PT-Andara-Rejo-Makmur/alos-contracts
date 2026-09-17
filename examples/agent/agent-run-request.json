@@ -1,0 +1,29 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/agent/agent-run-request.schema.json",
+  "run_id": "run_order_review_001",
+  "root_run_id": "run_order_review_001",
+  "agent_id": "agent_order_reviewer",
+  "agent_version": "1.0.0",
+  "capability_id": "cap_order_review",
+  "execution_context": {
+    "tenant_id": "tenant_andara_001",
+    "organization_id": "org_andara_001",
+    "workspace_id": "workspace_ops_001",
+    "actor_id": "actor_user_001",
+    "authority_context": { "role": "operations_analyst", "authority_level": "REQUESTER" },
+    "permission_refs": ["permission.orders.read"],
+    "scope_refs": ["scope.orders.region-west"],
+    "data_classification": "INTERNAL",
+    "correlation_id": "corr_order_review_001",
+    "execution_budget": {
+      "max_tokens": 8000,
+      "max_steps": 12,
+      "max_tool_calls": 4,
+      "max_children": 2,
+      "max_depth": 1,
+      "timeout_seconds": 120,
+      "concurrency_limit": 2
+    }
+  },
+  "input": { "order_id": "order_2026_001" }
+}

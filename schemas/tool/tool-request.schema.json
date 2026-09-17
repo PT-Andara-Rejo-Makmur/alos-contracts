@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/tool/tool-request.schema.json",
+  "title": "ToolRequest",
+  "description": "Request from GENESIS to the authoritative Backend ToolExecutor. Agents never execute business data access directly.",
+  "type": "object",
+  "required": ["tool_call_id", "run_id", "tool_id", "execution_context", "arguments"],
+  "properties": {
+    "tool_call_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tool_call_id" },
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "tool_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+    "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" },
+    "arguments": { "type": "object" },
+    "requested_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/research/research-finding.schema.json",
+  "title": "ResearchFinding",
+  "type": "object",
+  "required": ["finding_id", "statement", "confidence", "output_state", "evidence_refs"],
+  "properties": {
+    "finding_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+    "statement": { "type": "string", "minLength": 1 },
+    "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
+    "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
+    "evidence_refs": { "type": "array", "minItems": 1, "items": { "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json" } },
+    "limitations": { "type": "array", "items": { "type": "string", "minLength": 1 } }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,32 @@
+# Struktur Folder
+
+- `openapi/public/`: API yang diekspos ALOS Backend authoritative kepada frontend dan client produk.
+- `openapi/internal/`: antarmuka service antara ALOS Backend dan GENESIS.
+- `schemas/common/`: identifier kanonis, execution context, error, dan pagination.
+- `schemas/identity/`: boundary identity masa depan; saat ini hanya didokumentasikan dan bukan identity service.
+- `schemas/tenant/`: kontrak boundary tenant masa depan.
+- `schemas/capability/`: kontrak desain capability-first.
+- `schemas/agent/`: definisi agent dan payload transport run.
+- `schemas/skill/`: definisi skill reusable dan payload eksekusinya.
+- `schemas/runtime/`: budget, status runtime, dan output assurance state.
+- `schemas/context/`: context bundle yang dibatasi scope.
+- `schemas/memory/`: boundary referensi memory masa depan; tidak berisi runtime memory.
+- `schemas/delegation/`: kontrak lineage run parent/child.
+- `schemas/tool/`: request ke dan result dari Backend ToolExecutor.
+- `schemas/evidence/`: referensi dan bundle evidence yang immutable serta traceable.
+- `schemas/research/`: research request, finding, result, dan recommendation.
+- `schemas/review/`: hasil AI assurance dan aggregate ReviewPackage.
+- `schemas/decision/`: referensi keputusan manusia yang authoritative.
+- `schemas/governance/`: referensi kebijakan governance lintas domain masa depan.
+- `schemas/release/`: release lifecycle state yang terpisah dari output state.
+- `schemas/giivepro/`: ekstensi GIIVEPRO masa depan yang dibangun di atas kontrak ALOS.
+- `events/`: event envelope dan schema event per domain; tidak berisi implementasi broker.
+- `examples/`: contoh payload tervalidasi yang dikelompokkan berdasarkan domain.
+- `generated/`: petunjuk untuk client/model hasil generate; tidak ada placeholder hasil generate yang disimpan.
+- `compatibility/fixtures/`: schema terfokus untuk menguji aturan kompatibilitas.
+- `compatibility/tests/`: pengujian deteksi breaking change.
+- `scripts/`: perintah validasi schema, OpenAPI, contoh, dan kompatibilitas.
+- `tests/`: pengujian validasi kontrak end-to-end.
+- `docs/architecture/`: arsitektur yang dibekukan, topologi, otoritas, dan aturan dependency.
+- `docs/adr/`: architecture decision record yang immutable.
+- `.github/`: CI, template review, dan kebijakan ownership.

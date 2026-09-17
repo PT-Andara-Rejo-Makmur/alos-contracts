@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/agent/agent-run-result.schema.json",
+  "title": "AgentRunResult",
+  "type": "object",
+  "required": ["run_id", "root_run_id", "agent_id", "agent_version", "status", "output_state", "started_at", "completed_at"],
+  "properties": {
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "root_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/root_run_id" },
+    "parent_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/parent_run_id" },
+    "agent_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_id" },
+    "agent_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_version" },
+    "status": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/run_status" },
+    "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
+    "output": {},
+    "evidence_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json" } },
+    "error": { "$ref": "https://schemas.alos.dev/v1/common/error.schema.json" },
+    "started_at": { "type": "string", "format": "date-time" },
+    "completed_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

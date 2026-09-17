@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/events/release/release-event.schema.json",
+  "title": "ReleaseEvent",
+  "allOf": [
+    { "$ref": "https://schemas.alos.dev/v1/events/event-envelope.schema.json" },
+    {
+      "properties": {
+        "event_type": { "enum": ["release.activated", "release.rolled_back"] },
+        "payload": {
+          "type": "object",
+          "required": ["release_id", "release_state"],
+          "properties": {
+            "release_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/release_id" },
+            "release_state": { "$ref": "https://schemas.alos.dev/v1/release/release-state.schema.json" },
+            "previous_release_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/release_id" }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

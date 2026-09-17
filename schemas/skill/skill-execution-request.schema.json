@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/skill/skill-execution-request.schema.json",
+  "title": "SkillExecutionRequest",
+  "type": "object",
+  "required": ["skill_id", "skill_version", "run_id", "execution_context", "input"],
+  "properties": {
+    "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
+    "skill_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" },
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" },
+    "input": { "type": "object" }
+  },
+  "additionalProperties": false
+}

@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/runtime/run-status.schema.json",
+  "title": "Run and Output Statuses",
+  "$defs": {
+    "run_status": {
+      "type": "string",
+      "enum": ["QUEUED", "RUNNING", "COMPLETED", "FAILED", "CANCELLED", "TIMED_OUT"]
+    },
+    "output_state": {
+      "type": "string",
+      "description": "Assurance state of an output; it is not a release lifecycle state.",
+      "enum": ["DRAFT", "AI_INFERRED", "NEEDS_REVIEW", "VALIDATED", "VERIFIED", "APPROVED", "REJECTED", "BLOCKED", "STALE", "CONFLICTED"]
+    }
+  }
+}

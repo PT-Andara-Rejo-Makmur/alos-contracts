@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/common/pagination.schema.json",
+  "title": "Pagination",
+  "$defs": {
+    "request": {
+      "type": "object",
+      "properties": { "cursor": { "type": "string", "minLength": 1 }, "limit": { "type": "integer", "minimum": 1, "maximum": 200, "default": 50 } },
+      "additionalProperties": false
+    },
+    "response": {
+      "type": "object",
+      "required": ["has_more"],
+      "properties": { "next_cursor": { "type": ["string", "null"] }, "has_more": { "type": "boolean" } },
+      "additionalProperties": false
+    }
+  }
+}

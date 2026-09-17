@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/events/decision/decision-event.schema.json",
+  "title": "DecisionEvent",
+  "allOf": [
+    { "$ref": "https://schemas.alos.dev/v1/events/event-envelope.schema.json" },
+    {
+      "properties": {
+        "event_type": { "const": "decision.recorded" },
+        "payload": {
+          "type": "object",
+          "required": ["decision_id", "decision_type", "outcome"],
+          "properties": {
+            "decision_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/decision_id" },
+            "decision_type": { "type": "string", "enum": ["IT", "DIRECTOR"] },
+            "outcome": { "type": "string", "enum": ["APPROVED", "REJECTED", "RETURNED", "HOLD"] }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

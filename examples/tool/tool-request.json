@@ -1,0 +1,19 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/tool/tool-request.schema.json",
+  "tool_call_id": "toolcall_order_read_001",
+  "run_id": "run_order_review_001",
+  "tool_id": "tool_orders_read",
+  "execution_context": {
+    "tenant_id": "tenant_andara_001",
+    "organization_id": "org_andara_001",
+    "workspace_id": "workspace_ops_001",
+    "actor_id": "actor_user_001",
+    "authority_context": { "role": "operations_analyst", "authority_level": "REQUESTER" },
+    "permission_refs": ["permission.orders.read"],
+    "scope_refs": ["scope.orders.region-west"],
+    "data_classification": "INTERNAL",
+    "correlation_id": "corr_order_review_001"
+  },
+  "arguments": { "order_id": "order_2026_001" },
+  "requested_at": "2026-09-16T12:00:02Z"
+}

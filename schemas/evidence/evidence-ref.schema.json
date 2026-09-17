@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json",
+  "title": "EvidenceRef",
+  "type": "object",
+  "required": ["evidence_id", "source_id", "uri", "captured_at", "content_hash"],
+  "properties": {
+    "evidence_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id" },
+    "source_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id" },
+    "uri": { "type": "string", "format": "uri" },
+    "captured_at": { "type": "string", "format": "date-time" },
+    "content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+    "excerpt": { "type": "string" }
+  },
+  "additionalProperties": false
+}

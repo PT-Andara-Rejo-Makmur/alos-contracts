@@ -1,0 +1,92 @@
+openapi: 3.1.0
+info:
+  title: ALOS Public API
+  version: 1.0.0
+  description: >-
+    The public contract exposed by the authoritative ALOS Backend. ARA, GIIVEPRO,
+    and other frontend clients use this API and never call GENESIS directly.
+servers:
+  - url: https://api.example.com
+    description: Placeholder; consumers supply the environment URL.
+security:
+  - bearerAuth: []
+paths:
+  /v1/agent-runs:
+    post:
+      operationId: createAgentRun
+      summary: Request an agent run through ALOS Backend
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/agent/agent-run-request.schema.json
+      responses:
+        "202":
+          description: Run accepted
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [run_id, status]
+                properties:
+                  run_id:
+                    $ref: ../../schemas/common/identifiers.schema.json#/$defs/run_id
+                  status:
+                    const: QUEUED
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/agent-runs/{run_id}:
+    parameters:
+      - $ref: "#/components/parameters/RunId"
+    get:
+      operationId: getAgentRun
+      summary: Get an agent run result
+      responses:
+        "200":
+          description: Current or terminal run result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/agent/agent-run-result.schema.json
+        "404":
+          $ref: "#/components/responses/ErrorResponse"
+  /v1/review-packages/{review_id}:
+    parameters:
+      - name: review_id
+        in: path
+        required: true
+        schema:
+          $ref: ../../schemas/common/identifiers.schema.json#/$defs/review_id
+    get:
+      operationId: getReviewPackage
+      summary: Get an assurance package and any authoritative decisions
+      responses:
+        "200":
+          description: Review package
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/review/review-package.schema.json
+        "404":
+          $ref: "#/components/responses/ErrorResponse"
+components:
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT
+  parameters:
+    RunId:
+      name: run_id
+      in: path
+      required: true
+      schema:
+        $ref: ../../schemas/common/identifiers.schema.json#/$defs/run_id
+  responses:
+    ErrorResponse:
+      description: Contract error
+      content:
+        application/json:
+          schema:
+            $ref: ../../schemas/common/error.schema.json

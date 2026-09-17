@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json",
+  "title": "ExecutionBudget",
+  "type": "object",
+  "properties": {
+    "max_tokens": { "type": "integer", "minimum": 1 },
+    "max_cost": { "type": "number", "minimum": 0, "description": "Maximum cost in the currency declared by policy." },
+    "max_steps": { "type": "integer", "minimum": 1 },
+    "max_tool_calls": { "type": "integer", "minimum": 0 },
+    "max_children": { "type": "integer", "minimum": 0 },
+    "max_depth": { "type": "integer", "minimum": 0 },
+    "timeout_seconds": { "type": "integer", "minimum": 1 },
+    "concurrency_limit": { "type": "integer", "minimum": 1 }
+  },
+  "minProperties": 1,
+  "additionalProperties": false
+}

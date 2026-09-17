@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/capability/capability-draft.schema.json",
+  "title": "CapabilityDraft",
+  "type": "object",
+  "required": ["capability_id", "name", "purpose", "owner", "delivery_mode", "output_state"],
+  "properties": {
+    "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
+    "name": { "type": "string", "minLength": 1 },
+    "purpose": { "type": "string", "minLength": 1 },
+    "owner": { "type": "string", "minLength": 1 },
+    "delivery_mode": { "type": "string", "enum": ["WORKFLOW", "RULE", "TOOL", "SKILL", "AGENT", "HUMAN_PROCESS"] },
+    "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
+    "constraints": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  },
+  "additionalProperties": false
+}

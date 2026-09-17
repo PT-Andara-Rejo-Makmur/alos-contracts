@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/research/research-result.schema.json",
+  "title": "ResearchResult",
+  "type": "object",
+  "required": ["research_id", "run_id", "output_state", "findings", "recommendations", "completed_at"],
+  "properties": {
+    "research_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
+    "findings": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/research/research-finding.schema.json" } },
+    "recommendations": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/research/recommendation.schema.json" } },
+    "completed_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

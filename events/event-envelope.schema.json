@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/events/event-envelope.schema.json",
+  "title": "EventEnvelope",
+  "type": "object",
+  "required": ["event_id", "event_type", "occurred_at", "correlation_id", "tenant_id", "workspace_id", "entity", "payload_version", "payload"],
+  "properties": {
+    "event_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/event_id" },
+    "event_type": { "type": "string", "minLength": 1 },
+    "occurred_at": { "type": "string", "format": "date-time" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+    "entity": {
+      "type": "object",
+      "required": ["entity_type", "entity_id"],
+      "properties": {
+        "entity_type": { "type": "string", "minLength": 1 },
+        "entity_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }
+      },
+      "additionalProperties": false
+    },
+    "payload_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/semantic_version" },
+    "payload": { "type": "object" }
+  },
+  "additionalProperties": false
+}

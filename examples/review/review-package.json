@@ -1,0 +1,56 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/review/review-package.schema.json",
+  "identity": {
+    "review_id": "review_order_agent_001",
+    "tenant_id": "tenant_andara_001",
+    "workspace_id": "workspace_ops_001",
+    "correlation_id": "corr_order_agent_001",
+    "subject_id": "agent_order_reviewer",
+    "subject_version": "1.0.0"
+  },
+  "purpose": "Assess the proposed order review capability before IT approval.",
+  "business_context": { "process": "order_review", "business_owner": "operations" },
+  "capability": {
+    "capability_id": "cap_order_review",
+    "name": "Order Review",
+    "purpose": "Review order information and surface risks for a human operator.",
+    "owner": "operations",
+    "delivery_mode": "AGENT",
+    "output_state": "NEEDS_REVIEW",
+    "constraints": ["No direct database access"]
+  },
+  "scope": ["scope.orders.region-west"],
+  "permissions": ["permission.orders.read"],
+  "skills": [],
+  "tools": [
+    { "tool_id": "tool_orders_read", "purpose": "Read scoped order data through ALOS Backend.", "backend_executor": true }
+  ],
+  "model_policy": { "gateway_required": true, "policy_ref": "model-policy.standard-v1" },
+  "delegation_policy": { "enabled": false, "lineage_required": true, "max_depth": 0 },
+  "execution_budget": { "max_tokens": 8000, "max_cost": 1.5, "max_steps": 12, "max_tool_calls": 4, "max_children": 0, "max_depth": 0, "timeout_seconds": 120, "concurrency_limit": 1 },
+  "automated_qa": { "status": "PASS", "checks": ["schema_validation", "permission_scope_check"] },
+  "business_ai_review": { "review_type": "BUSINESS", "status": "PASS_WITH_FINDINGS", "summary": "Purpose aligns with the documented process.", "finding_ids": ["finding_owner_confirmation"], "completed_at": "2026-09-16T12:00:00Z" },
+  "technical_ai_review": { "review_type": "TECHNICAL", "status": "PASS", "summary": "ToolExecutor and ModelGateway boundaries are declared.", "finding_ids": [], "completed_at": "2026-09-16T12:01:00Z" },
+  "security_ai_review": { "review_type": "SECURITY", "status": "PASS", "summary": "Access is tenant- and scope-bound.", "finding_ids": [], "completed_at": "2026-09-16T12:02:00Z" },
+  "evidence_ai_review": { "review_type": "EVIDENCE", "status": "PASS", "summary": "Evidence reference is traceable.", "finding_ids": [], "completed_at": "2026-09-16T12:03:00Z" },
+  "cost_risk_ai_review": { "review_type": "COST_RISK", "status": "PASS_WITH_FINDINGS", "summary": "Budget is bounded; production usage needs monitoring.", "finding_ids": ["finding_cost_monitoring"], "completed_at": "2026-09-16T12:04:00Z" },
+  "findings": ["Business owner confirmation remains outstanding.", "Production cost monitoring is required."],
+  "risks": ["Model output may require operator correction."],
+  "limitations": ["AI review is advisory and is not approval."],
+  "ai_recommendation": {
+    "recommendation_id": "recommendation_review_001",
+    "summary": "Ready for IT review with documented findings.",
+    "recommended_action": "IT should verify the executor permission mapping.",
+    "confidence": 0.88,
+    "author_type": "AI"
+  },
+  "evidence_refs": [
+    {
+      "evidence_id": "evidence_design_001",
+      "source_id": "source_design_doc_001",
+      "uri": "https://example.com/design/order-review-v1",
+      "captured_at": "2026-09-16T10:00:00Z",
+      "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb"
+    }
+  ]
+}

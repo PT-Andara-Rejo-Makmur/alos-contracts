@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/common/identifiers.schema.json",
+  "title": "Canonical Identifiers",
+  "description": "Canonical identifiers shared by all ALOS ecosystem contracts. Aliases are not permitted.",
+  "$defs": {
+    "canonical_id": {
+      "type": "string",
+      "minLength": 3,
+      "maxLength": 128,
+      "pattern": "^[A-Za-z0-9][A-Za-z0-9._:-]{2,127}$"
+    },
+    "semantic_version": {
+      "type": "string",
+      "pattern": "^(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)\\.(0|[1-9][0-9]*)(?:-[0-9A-Za-z.-]+)?(?:\\+[0-9A-Za-z.-]+)?$"
+    },
+    "tenant_id": { "$ref": "#/$defs/canonical_id" },
+    "organization_id": { "$ref": "#/$defs/canonical_id" },
+    "workspace_id": { "$ref": "#/$defs/canonical_id" },
+    "actor_id": { "$ref": "#/$defs/canonical_id" },
+    "capability_id": { "$ref": "#/$defs/canonical_id" },
+    "agent_id": { "$ref": "#/$defs/canonical_id" },
+    "agent_version": { "$ref": "#/$defs/semantic_version" },
+    "skill_id": { "$ref": "#/$defs/canonical_id" },
+    "skill_version": { "$ref": "#/$defs/semantic_version" },
+    "run_id": { "$ref": "#/$defs/canonical_id" },
+    "root_run_id": { "$ref": "#/$defs/canonical_id" },
+    "parent_run_id": { "$ref": "#/$defs/canonical_id" },
+    "tool_call_id": { "$ref": "#/$defs/canonical_id" },
+    "source_id": { "$ref": "#/$defs/canonical_id" },
+    "evidence_id": { "$ref": "#/$defs/canonical_id" },
+    "review_id": { "$ref": "#/$defs/canonical_id" },
+    "decision_id": { "$ref": "#/$defs/canonical_id" },
+    "release_id": { "$ref": "#/$defs/canonical_id" },
+    "correlation_id": { "$ref": "#/$defs/canonical_id" },
+    "event_id": { "$ref": "#/$defs/canonical_id" }
+  }
+}

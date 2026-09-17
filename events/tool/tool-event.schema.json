@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/events/tool/tool-event.schema.json",
+  "title": "ToolEvent",
+  "allOf": [
+    { "$ref": "https://schemas.alos.dev/v1/events/event-envelope.schema.json" },
+    {
+      "properties": {
+        "event_type": { "enum": ["tool.requested", "tool.completed", "tool.denied"] },
+        "payload": {
+          "type": "object",
+          "required": ["tool_call_id", "run_id", "tool_id"],
+          "properties": {
+            "tool_call_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tool_call_id" },
+            "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+            "tool_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+            "status": { "type": "string", "enum": ["REQUESTED", "COMPLETED", "DENIED"] }
+          },
+          "additionalProperties": false
+        }
+      }
+    }
+  ]
+}

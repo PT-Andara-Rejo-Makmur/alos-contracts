@@ -1,0 +1,93 @@
+openapi: 3.1.0
+info:
+  title: ALOS–GENESIS Internal API
+  version: 1.0.0
+  description: >-
+    Internal service contract between authoritative ALOS Backend and the GENESIS
+    AI Control Plane. It does not grant GENESIS business authority or direct
+    database access. All model calls remain behind ModelGateway and all business
+    actions return through Backend ToolExecutor.
+servers:
+  - url: https://genesis.internal.example.com
+    description: Placeholder internal endpoint.
+security:
+  - serviceAuth: []
+paths:
+  /internal/v1/agent-runs:
+    post:
+      operationId: submitInternalAgentRun
+      summary: Submit a validated run from ALOS Backend to GENESIS
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/agent/agent-run-request.schema.json
+      responses:
+        "202":
+          description: Accepted by the control plane
+          content:
+            application/json:
+              schema:
+                type: object
+                required: [run_id, status]
+                properties:
+                  run_id:
+                    $ref: ../../schemas/common/identifiers.schema.json#/$defs/run_id
+                  status:
+                    const: QUEUED
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /internal/v1/agent-runs/{run_id}:
+    parameters:
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          $ref: ../../schemas/common/identifiers.schema.json#/$defs/run_id
+    get:
+      operationId: getInternalAgentRun
+      summary: Read control-plane run state from ALOS Backend
+      responses:
+        "200":
+          description: Run state
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/agent/agent-run-result.schema.json
+        "404":
+          $ref: "#/components/responses/ErrorResponse"
+  /internal/v1/tool-requests:
+    post:
+      operationId: requestBackendToolExecution
+      summary: Request a business action from the Backend ToolExecutor
+      description: This callback is implemented by ALOS Backend, not by an agent.
+      servers:
+        - url: https://alos-backend.internal.example.com
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/tool/tool-request.schema.json
+      responses:
+        "200":
+          description: Tool execution result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/tool/tool-result.schema.json
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+components:
+  securitySchemes:
+    serviceAuth:
+      type: http
+      scheme: bearer
+  responses:
+    ErrorResponse:
+      description: Contract error
+      content:
+        application/json:
+          schema:
+            $ref: ../../schemas/common/error.schema.json

@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/delegation/delegation-result.schema.json",
+  "title": "DelegationResult",
+  "type": "object",
+  "required": ["run_id", "root_run_id", "parent_run_id", "status", "output_state"],
+  "properties": {
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "root_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/root_run_id" },
+    "parent_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/parent_run_id" },
+    "status": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/run_status" },
+    "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
+    "output": {},
+    "error": { "$ref": "https://schemas.alos.dev/v1/common/error.schema.json" }
+  },
+  "additionalProperties": false
+}

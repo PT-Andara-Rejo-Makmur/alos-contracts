@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/review/ai-review-result.schema.json",
+  "title": "AIReviewResult",
+  "description": "Non-authoritative automated assurance result. This is not an approval decision.",
+  "type": "object",
+  "required": ["review_type", "status", "summary", "completed_at"],
+  "properties": {
+    "review_type": { "type": "string", "enum": ["BUSINESS", "TECHNICAL", "SECURITY", "EVIDENCE", "COST_RISK"] },
+    "status": { "type": "string", "enum": ["PASS", "PASS_WITH_FINDINGS", "FAIL", "NOT_RUN"] },
+    "summary": { "type": "string", "minLength": 1 },
+    "finding_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
+    "completed_at": { "type": "string", "format": "date-time" }
+  },
+  "additionalProperties": false
+}

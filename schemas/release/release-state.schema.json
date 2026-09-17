@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/release/release-state.schema.json",
+  "title": "ReleaseState",
+  "description": "Lifecycle state for releasing a governed artifact; distinct from output assurance state.",
+  "type": "string",
+  "enum": ["DRAFT", "IMPLEMENTED", "AUTOMATED_ASSURANCE", "AI_REVIEWED", "READY_FOR_IT", "IT_APPROVED", "READY_FOR_DIRECTOR", "DIRECTOR_APPROVED", "RELEASED", "ACTIVE", "REVISION_REQUIRED", "RETURNED", "REJECTED", "HOLD", "BLOCKED", "SUSPENDED", "ROLLED_BACK"]
+}
