@@ -34,6 +34,7 @@
     "output_schema": { "type": "object" },
     "tool_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
     "permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "scope_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "evidence_requirements": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "restrictions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "approval_required": { "type": "boolean" },
