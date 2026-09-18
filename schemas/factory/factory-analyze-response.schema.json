@@ -1,0 +1,79 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/factory/factory-analyze-response.schema.json",
+  "title": "FactoryAnalyzeResponse",
+  "description": "Authoritative Backend response to a public Factory analysis request.",
+  "type": "object",
+  "required": ["correlation_id", "decision", "reason", "existing_capability_refs", "capability_draft", "agent_draft", "registry_result"],
+  "properties": {
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "decision": { "type": "string", "enum": ["REUSE", "CREATE"] },
+    "reason": { "type": "string", "minLength": 1 },
+    "existing_capability_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/factory/capability-catalog-item.schema.json" }, "uniqueItems": true },
+    "capability_draft": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "allOf": [
+            { "$ref": "https://schemas.alos.dev/v1/capability/capability-draft.schema.json" },
+            {
+              "properties": { "output_state": { "const": "DRAFT" } },
+              "required": ["tenant_id", "organization_id", "workspace_id", "correlation_id", "version", "capability_type", "lifecycle_state", "scope_refs", "tool_ids", "permission_refs", "prohibited_actions", "risk_level", "evidence_requirements", "test_requirements"]
+            }
+          ]
+        }
+      ]
+    },
+    "agent_draft": { "oneOf": [{ "type": "null" }, { "$ref": "https://schemas.alos.dev/v1/agent/agent-draft.schema.json" }] },
+    "registry_result": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["state", "registered_refs"],
+          "properties": {
+            "state": { "const": "DRAFT" },
+            "registered_refs": {
+              "type": "array",
+              "minItems": 1,
+              "items": {
+                "type": "object",
+                "required": ["subject_type", "identifier", "version", "state"],
+                "properties": {
+                  "subject_type": { "type": "string", "enum": ["CAPABILITY", "AGENT"] },
+                  "identifier": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+                  "version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/semantic_version" },
+                  "state": { "const": "DRAFT" }
+                },
+                "additionalProperties": false
+              },
+              "uniqueItems": true
+            }
+          },
+          "additionalProperties": false
+        }
+      ]
+    }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "REUSE" } }, "required": ["decision"] },
+      "then": {
+        "properties": {
+          "existing_capability_refs": { "minItems": 1 },
+          "capability_draft": { "type": "null" },
+          "agent_draft": { "type": "null" },
+          "registry_result": { "type": "null" }
+        }
+      },
+      "else": {
+        "properties": {
+          "existing_capability_refs": { "maxItems": 0 },
+          "capability_draft": { "not": { "type": "null" } },
+          "registry_result": { "not": { "type": "null" } }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

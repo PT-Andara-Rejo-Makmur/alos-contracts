@@ -1,0 +1,5 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/factory/factory-analyze-request.schema.json",
+  "requirement": "Buat laporan ringkas status operasional untuk direview oleh manajemen",
+  "preferred_capability_type": "REPORT"
+}

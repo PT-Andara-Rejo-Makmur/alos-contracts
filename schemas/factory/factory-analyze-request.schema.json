@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/factory/factory-analyze-request.schema.json",
+  "title": "FactoryAnalyzeRequest",
+  "description": "Public business requirement submitted to authoritative ALOS Backend.",
+  "type": "object",
+  "required": ["requirement"],
+  "properties": {
+    "requirement": { "type": "string", "minLength": 20, "maxLength": 10000 },
+    "preferred_capability_type": { "type": "string", "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE"] }
+  },
+  "additionalProperties": false
+}

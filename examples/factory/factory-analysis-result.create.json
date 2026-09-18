@@ -1,0 +1,57 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/factory/factory-analysis-result.schema.json",
+  "correlation_id": "corr_factory_001",
+  "resolution": {
+    "understanding": {
+      "normalized_intent": "buat laporan ringkas status operasional untuk direview oleh manajemen",
+      "domains": ["general"],
+      "candidate_capability_ids": ["report.generate"],
+      "recommended_type": "REPORT",
+      "risk_level": "MEDIUM",
+      "requires_agent": false,
+      "rationale": ["Capability-first policy selects a REPORT without an Agent runtime."]
+    },
+    "decision": "CREATE",
+    "reason": "The authoritative catalog does not contain the required report capability.",
+    "purpose": "Buat laporan ringkas status operasional untuk direview oleh manajemen",
+    "scope_refs": ["scope.workspace.operations"],
+    "resolved": [],
+    "missing_capability_ids": ["report.generate"],
+    "required_tool_ids": [],
+    "required_permission_refs": [],
+    "evidence_requirements": ["Cite every material conclusion to immutable evidence."],
+    "test_requirements": ["Valid authorized input produces schema-valid output."],
+    "activation_readiness": "NEEDS_CONFIGURATION"
+  },
+  "existing_capability_refs": [],
+  "capability_draft": {
+    "tenant_id": "tenant_andara",
+    "organization_id": "organization_andara",
+    "workspace_id": "workspace_operations",
+    "correlation_id": "corr_factory_001",
+    "capability_id": "capability_operational_report",
+    "version": "0.1.0",
+    "name": "Operational Report",
+    "purpose": "Buat laporan ringkas status operasional untuk direview oleh manajemen",
+    "owner": "actor_manager",
+    "capability_type": "REPORT",
+    "output_state": "DRAFT",
+    "lifecycle_state": "DRAFT",
+    "scope_refs": ["scope.workspace.operations"],
+    "tool_ids": [],
+    "permission_refs": [],
+    "prohibited_actions": ["Approve or release its own proposal."],
+    "risk_level": "MEDIUM",
+    "evidence_requirements": ["Cite every material conclusion to immutable evidence."],
+    "test_requirements": ["Valid authorized input produces schema-valid output."],
+    "constraints": ["Backend governance approval is required before activation."]
+  },
+  "agent_draft": null,
+  "missing_dependencies": ["report.generate"],
+  "handoff": {
+    "target_service": "alos-backend",
+    "transport": "typed_internal_api",
+    "requested_operations": ["REGISTER_CAPABILITY_DRAFT"],
+    "authoritative_state_changed": false
+  }
+}

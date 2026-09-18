@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/factory/factory-analyze-response.schema.json",
+  "correlation_id": "corr_factory_001",
+  "decision": "CREATE",
+  "reason": "The authoritative catalog does not contain the required report capability.",
+  "existing_capability_refs": [],
+  "capability_draft": {
+    "tenant_id": "tenant_andara",
+    "organization_id": "organization_andara",
+    "workspace_id": "workspace_operations",
+    "correlation_id": "corr_factory_001",
+    "capability_id": "capability_operational_report",
+    "version": "0.1.0",
+    "name": "Operational Report",
+    "purpose": "Buat laporan ringkas status operasional untuk direview oleh manajemen",
+    "owner": "actor_manager",
+    "capability_type": "REPORT",
+    "output_state": "DRAFT",
+    "lifecycle_state": "DRAFT",
+    "scope_refs": ["scope.workspace.operations"],
+    "tool_ids": [],
+    "permission_refs": [],
+    "prohibited_actions": ["Approve or release its own proposal."],
+    "risk_level": "MEDIUM",
+    "evidence_requirements": ["Cite every material conclusion to immutable evidence."],
+    "test_requirements": ["Valid authorized input produces schema-valid output."],
+    "constraints": ["Backend governance approval is required before activation."]
+  },
+  "agent_draft": null,
+  "registry_result": {
+    "state": "DRAFT",
+    "registered_refs": [
+      {
+        "subject_type": "CAPABILITY",
+        "identifier": "capability_operational_report",
+        "version": "0.1.0",
+        "state": "DRAFT"
+      }
+    ]
+  }
+}

@@ -13,6 +13,7 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/context/context-bundle.schema.json",
     f"{SCHEMA_BASE}/capability/capability-draft.schema.json",
     f"{SCHEMA_BASE}/capability/capability-definition.schema.json",
+    f"{SCHEMA_BASE}/agent/agent-draft.schema.json",
     f"{SCHEMA_BASE}/agent/agent-definition.schema.json",
     f"{SCHEMA_BASE}/agent/agent-run-request.schema.json",
     f"{SCHEMA_BASE}/agent/agent-run-result.schema.json",
@@ -34,6 +35,13 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/decision/decision-ref.schema.json",
     f"{SCHEMA_BASE}/release/release-state.schema.json",
     f"{SCHEMA_BASE}/runtime/run-status.schema.json",
+    f"{SCHEMA_BASE}/factory/capability-catalog-item.schema.json",
+    f"{SCHEMA_BASE}/factory/factory-resolution.schema.json",
+    f"{SCHEMA_BASE}/factory/registry-handoff.schema.json",
+    f"{SCHEMA_BASE}/factory/factory-analyze-request.schema.json",
+    f"{SCHEMA_BASE}/factory/factory-analysis-request.schema.json",
+    f"{SCHEMA_BASE}/factory/factory-analysis-result.schema.json",
+    f"{SCHEMA_BASE}/factory/factory-analyze-response.schema.json",
     f"{SCHEMA_BASE}/events/run/run-event.schema.json",
 }
 

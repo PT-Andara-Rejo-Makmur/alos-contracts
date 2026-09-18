@@ -6,9 +6,11 @@
   "required": ["capability_id", "name", "purpose", "owner", "output_state"],
   "properties": {
     "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
     "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
     "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
     "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
+    "version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/semantic_version" },
     "name": { "type": "string", "minLength": 1 },
     "purpose": { "type": "string", "minLength": 1 },
     "owner": { "type": "string", "minLength": 1 },
@@ -23,6 +25,14 @@
       "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE"]
     },
     "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
+    "lifecycle_state": { "const": "DRAFT" },
+    "scope_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "tool_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
+    "permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "prohibited_actions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+    "evidence_requirements": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "test_requirements": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "constraints": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
   },
   "anyOf": [

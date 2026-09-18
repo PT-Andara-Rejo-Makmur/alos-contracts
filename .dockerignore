@@ -1,0 +1,9 @@
+*
+!schemas/
+!schemas/**
+!events/
+!events/**
+!generated/
+!generated/typescript/
+!generated/typescript/**
+!VERSION

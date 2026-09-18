@@ -1,0 +1,66 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/factory/factory-analysis-result.schema.json",
+  "correlation_id": "corr_factory_002",
+  "resolution": {
+    "understanding": {
+      "normalized_intent": "buat laporan ringkas status operasional untuk direview oleh manajemen",
+      "domains": ["general"],
+      "candidate_capability_ids": ["report.generate"],
+      "recommended_type": "REPORT",
+      "risk_level": "MEDIUM",
+      "requires_agent": false,
+      "rationale": ["Capability-first policy selects a REPORT without an Agent runtime."]
+    },
+    "decision": "REUSE",
+    "reason": "The authoritative catalog already provides the required report capability.",
+    "purpose": "Buat laporan ringkas status operasional untuk direview oleh manajemen",
+    "scope_refs": ["scope.workspace.operations"],
+    "resolved": [
+      {
+        "capability_id": "report.generate",
+        "version": "1.2.0",
+        "name": "Generate Report",
+        "purpose": "Produce an evidence-bound report draft.",
+        "capability_type": "REPORT",
+        "risk_level": "MEDIUM",
+        "availability": "AVAILABLE",
+        "configuration_status": "CONFIGURED",
+        "backing_tool_ids": ["report.generate"],
+        "permission_refs": ["report.read"],
+        "scope_refs": ["scope.workspace.operations"],
+        "keywords": ["report", "laporan"]
+      }
+    ],
+    "missing_capability_ids": [],
+    "required_tool_ids": ["report.generate"],
+    "required_permission_refs": ["report.read"],
+    "evidence_requirements": ["Cite every material conclusion to immutable evidence."],
+    "test_requirements": ["Valid authorized input produces schema-valid output."],
+    "activation_readiness": "READY_FOR_REUSE"
+  },
+  "existing_capability_refs": [
+    {
+      "capability_id": "report.generate",
+      "version": "1.2.0",
+      "name": "Generate Report",
+      "purpose": "Produce an evidence-bound report draft.",
+      "capability_type": "REPORT",
+      "risk_level": "MEDIUM",
+      "availability": "AVAILABLE",
+      "configuration_status": "CONFIGURED",
+      "backing_tool_ids": ["report.generate"],
+      "permission_refs": ["report.read"],
+      "scope_refs": ["scope.workspace.operations"],
+      "keywords": ["report", "laporan"]
+    }
+  ],
+  "capability_draft": null,
+  "agent_draft": null,
+  "missing_dependencies": [],
+  "handoff": {
+    "target_service": "alos-backend",
+    "transport": "typed_internal_api",
+    "requested_operations": [],
+    "authoritative_state_changed": false
+  }
+}

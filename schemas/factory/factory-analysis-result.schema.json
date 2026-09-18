@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/factory/factory-analysis-result.schema.json",
+  "title": "FactoryAnalysisResult",
+  "description": "Internal non-authoritative GENESIS proposal returned to ALOS Backend.",
+  "type": "object",
+  "required": ["correlation_id", "resolution", "existing_capability_refs", "capability_draft", "agent_draft", "missing_dependencies", "handoff"],
+  "properties": {
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "resolution": { "$ref": "https://schemas.alos.dev/v1/factory/factory-resolution.schema.json" },
+    "existing_capability_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/factory/capability-catalog-item.schema.json" }, "uniqueItems": true },
+    "capability_draft": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "allOf": [
+            { "$ref": "https://schemas.alos.dev/v1/capability/capability-draft.schema.json" },
+            {
+              "properties": { "output_state": { "const": "DRAFT" } },
+              "required": ["tenant_id", "organization_id", "workspace_id", "correlation_id", "version", "capability_type", "lifecycle_state", "scope_refs", "tool_ids", "permission_refs", "prohibited_actions", "risk_level", "evidence_requirements", "test_requirements"]
+            }
+          ]
+        }
+      ]
+    },
+    "agent_draft": { "oneOf": [{ "type": "null" }, { "$ref": "https://schemas.alos.dev/v1/agent/agent-draft.schema.json" }] },
+    "missing_dependencies": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "handoff": { "$ref": "https://schemas.alos.dev/v1/factory/registry-handoff.schema.json" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "resolution": { "properties": { "decision": { "const": "REUSE" } }, "required": ["decision"] } } },
+      "then": {
+        "properties": {
+          "existing_capability_refs": { "minItems": 1 },
+          "capability_draft": { "type": "null" },
+          "agent_draft": { "type": "null" },
+          "handoff": { "properties": { "requested_operations": { "maxItems": 0 } } }
+        }
+      },
+      "else": {
+        "properties": {
+          "existing_capability_refs": { "maxItems": 0 },
+          "capability_draft": { "not": { "type": "null" } },
+          "handoff": { "properties": { "requested_operations": { "minItems": 1, "contains": { "const": "REGISTER_CAPABILITY_DRAFT" } } } }
+        }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

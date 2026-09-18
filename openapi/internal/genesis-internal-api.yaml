@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ALOS–GENESIS Internal API
-  version: 1.0.0
+  version: 1.1.0
   description: >-
     Internal service contract between authoritative ALOS Backend and the GENESIS
     AI Control Plane. It does not grant GENESIS business authority or direct
@@ -13,6 +13,33 @@ servers:
 security:
   - serviceAuth: []
 paths:
+  /internal/v1/factory/analyze:
+    post:
+      operationId: analyzeInternalFactoryRequirement
+      summary: Produce a non-authoritative capability or agent proposal
+      description: >-
+        ALOS Backend supplies canonical ExecutionContext and an authoritative read-only
+        capability catalog. GENESIS returns REUSE references or CREATE drafts without
+        registering, approving, activating, or releasing them.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/factory/factory-analysis-request.schema.json
+      responses:
+        "200":
+          description: Non-authoritative Factory analysis result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/factory/factory-analysis-result.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/ErrorResponse"
+        "503":
+          $ref: "#/components/responses/ErrorResponse"
   /internal/v1/system/integration:
     get:
       operationId: getGenesisIntegrationDiagnostic

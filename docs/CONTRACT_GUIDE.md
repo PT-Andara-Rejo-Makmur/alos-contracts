@@ -27,6 +27,29 @@ GENESIS tidak menyimpan lifecycle authority atau menjalankan adapter business to
 
 `CapabilityDraft` adalah usulan yang belum aktif, sedangkan `CapabilityDefinition` adalah definisi berversi yang telah masuk registry dan lifecycle governance. Produsen baru wajib menggunakan `capability_type` sesuai taxonomy capability-first. Field `delivery_mode` tetap diterima pada lini v1 hanya untuk backward compatibility dan akan memerlukan perubahan mayor bila dihapus.
 
+### Factory MVP2 H1
+
+Factory memiliki dua boundary yang berbeda:
+
+1. Web mengirim `FactoryAnalyzeRequest` ke public ALOS Backend tanpa tenant, scope, permission,
+   catalog, atau authority buatan client.
+2. Backend membentuk canonical `ExecutionContext`, mengambil authoritative capability catalog,
+   lalu mengirim `FactoryAnalysisRequest` ke internal GENESIS.
+
+`FactoryAnalysisResult` dari GENESIS selalu non-authoritative. REUSE wajib membawa existing
+capability reference dan tidak boleh membawa draft atau registry-create handoff. CREATE wajib
+membawa canonical `CapabilityDraft`, optional `AgentDraft` bila capability-first memang
+memerlukan Agent, dan handoff yang menyatakan `authoritative_state_changed: false`.
+
+Backend memvalidasi proposal, lalu untuk CREATE mendaftarkan version ke authoritative Registry
+sebagai `DRAFT`. Hanya setelah itu Backend mengembalikan public `FactoryAnalyzeResponse` dengan
+`registry_result.state: DRAFT`. Contract ini tidak menyediakan operasi self-approve,
+self-activate, atau release.
+
+Permission actor pada `ExecutionContext.permission_refs` adalah konteks otorisasi, bukan
+permission yang otomatis dibutuhkan capability. `required_permission_refs` dan draft
+`permission_refs` hanya berisi least-privilege permission yang berasal dari capability/tool.
+
 Artifact baru sebaiknya selalu membawa field tenant/workspace dan correlation yang tersedia pada schema, walaupun beberapa field tambahan tetap optional pada lini v1 untuk menjaga backward compatibility. Backend tetap wajib menegakkan tenant, scope, permission, dan authority dari `ExecutionContext`.
 
 Field AI review merupakan rekomendasi dan sinyal assurance. Field tersebut tidak boleh mengisi atau menyamar sebagai `it_decision` maupun `director_decision`.

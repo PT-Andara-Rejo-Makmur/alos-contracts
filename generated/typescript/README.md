@@ -1,3 +1,19 @@
 # Artefak TypeScript hasil generate
 
-Model TypeScript hasil generate belum disimpan pada v1. Konsumen frontend harus memperoleh type dari kontrak OpenAPI publik; output yang disimpan pada masa depan harus reproducible dan tidak boleh menjadi source of truth.
+`factory.ts` adalah type dan client H1 untuk public Factory API. Source of truth tetap JSON Schema
+dan `openapi/public/alos-public-api.yaml`; file TypeScript tidak boleh diedit manual.
+
+Generate ulang:
+
+```bash
+python scripts/generate_typescript.py
+```
+
+Verifikasi tidak stale:
+
+```bash
+python scripts/generate_typescript.py --check
+```
+
+Frontend mengonsumsi hanya public client/type ini. Internal Factory request, authoritative
+ExecutionContext, catalog snapshot, dan Registry handoff tidak diekspos sebagai client Web.

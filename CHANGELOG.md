@@ -2,6 +2,16 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.1.0] - 2026-09-18
+
+### Ditambahkan
+
+- Contract Freeze MVP2 H1 untuk public Factory Analyze dan internal Backend–GENESIS Factory boundary.
+- Semantik canonical REUSE/CREATE, authoritative catalog reference, non-authoritative Registry handoff, dan Backend Registry result berstatus DRAFT.
+- `AgentDraft` serta metadata H1 additive pada `CapabilityDraft`: version, scope, tool, least-privilege permission, prohibited action, risk, evidence, dan test requirements.
+- Contoh CREATE/REUSE, negative contract tests, serta correlation dan authority regression tests.
+- Generated TypeScript Factory type/client yang reproducible dan diperiksa agar tidak stale.
+
 ## [1.0.0] - 2026-09-17
 
 ### Ditambahkan

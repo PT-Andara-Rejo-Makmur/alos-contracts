@@ -1,0 +1,23 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/factory/factory-analysis-request.schema.json",
+  "requirement": {
+    "execution_context": {
+      "tenant_id": "tenant_andara",
+      "organization_id": "organization_andara",
+      "workspace_id": "workspace_operations",
+      "actor_id": "actor_manager",
+      "authority_context": {
+        "role": "MANAGER",
+        "role_refs": ["role.manager"],
+        "authority_level": "REQUESTER"
+      },
+      "permission_refs": ["report.read", "admin.all"],
+      "scope_refs": ["scope.workspace.operations"],
+      "data_classification": "INTERNAL",
+      "correlation_id": "corr_factory_001"
+    },
+    "statement": "Buat laporan ringkas status operasional untuk direview oleh manajemen",
+    "preferred_capability_type": "REPORT"
+  },
+  "capability_catalog": []
+}

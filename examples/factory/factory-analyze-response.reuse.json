@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/factory/factory-analyze-response.schema.json",
+  "correlation_id": "corr_factory_002",
+  "decision": "REUSE",
+  "reason": "The authoritative catalog already provides the required report capability.",
+  "existing_capability_refs": [
+    {
+      "capability_id": "report.generate",
+      "version": "1.2.0",
+      "name": "Generate Report",
+      "purpose": "Produce an evidence-bound report draft.",
+      "capability_type": "REPORT",
+      "risk_level": "MEDIUM",
+      "availability": "AVAILABLE",
+      "configuration_status": "CONFIGURED",
+      "backing_tool_ids": ["report.generate"],
+      "permission_refs": ["report.read"],
+      "scope_refs": ["scope.workspace.operations"],
+      "keywords": ["report", "laporan"]
+    }
+  ],
+  "capability_draft": null,
+  "agent_draft": null,
+  "registry_result": null
+}

@@ -34,6 +34,16 @@ python -m pytest
 
 Pengujian mencakup validasi payload positif dan negatif, pemisahan otoritas ReviewPackage, validasi OpenAPI, validasi event, dan deteksi kompatibilitas.
 
+## Generated TypeScript
+
+```bash
+python scripts/generate_typescript.py --check
+```
+
+Pemeriksaan ini memastikan public Factory type/client sama persis dengan hasil generator.
+Jalankan `python scripts/generate_typescript.py` setelah contract Factory berubah. JSON Schema
+dan OpenAPI tetap menjadi source of truth.
+
 ## Kompatibilitas terhadap revisi Git
 
 ```bash

@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ALOS Public API
-  version: 1.0.0
+  version: 1.1.0
   description: >-
     The public contract exposed by the authoritative ALOS Backend. ARA, GIIVEPRO,
     and other frontend clients use this API and never call GENESIS directly.
@@ -11,6 +11,39 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/genesis/factory/analyze:
+    post:
+      operationId: analyzeFactoryRequirement
+      summary: Resolve a business requirement through Backend-governed GENESIS Factory
+      description: >-
+        ALOS Backend derives authoritative identity, scope, permission context, and the
+        capability catalog. The client cannot grant authority. CREATE results are returned
+        only after Backend records the proposal as DRAFT; REUSE never creates a draft.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/factory/factory-analyze-request.schema.json
+      responses:
+        "200":
+          description: Existing capability reference or Backend-registered DRAFT
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/factory/factory-analyze-response.schema.json
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/ErrorResponse"
+        "502":
+          $ref: "#/components/responses/ErrorResponse"
+        "503":
+          $ref: "#/components/responses/ErrorResponse"
   /api/v1/system/integration:
     get:
       operationId: getIntegrationDiagnostic

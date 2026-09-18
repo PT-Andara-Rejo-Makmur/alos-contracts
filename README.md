@@ -40,6 +40,7 @@ Lihat [Instalasi](docs/INSTALLATION.md) untuk langkah spesifik setiap platform.
 python scripts/validate_schemas.py
 python scripts/validate_openapi.py
 python scripts/check_examples.py
+python scripts/generate_typescript.py --check
 python -m pytest
 ```
 
@@ -54,6 +55,11 @@ Contoh payload mendeklarasikan kontraknya melalui `$schema`:
 ```
 
 Contoh lengkap yang valid tersedia di [`examples/agent/agent-run-request.json`](examples/agent/agent-run-request.json).
+
+Factory H1 memiliki dua boundary: public Web → Backend pada
+`/api/v1/genesis/factory/analyze`, dan internal Backend → GENESIS pada
+`/internal/v1/factory/analyze`. Type dan client public yang dihasilkan tersedia di
+[`generated/typescript/factory.ts`](generated/typescript/factory.ts).
 
 ## Alur perubahan
 

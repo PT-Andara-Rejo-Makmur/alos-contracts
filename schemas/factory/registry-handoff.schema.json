@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/factory/registry-handoff.schema.json",
+  "title": "RegistryDraftHandoff",
+  "description": "A request for Backend processing; it never represents a registry mutation by GENESIS.",
+  "type": "object",
+  "required": ["target_service", "transport", "requested_operations", "authoritative_state_changed"],
+  "properties": {
+    "target_service": { "const": "alos-backend" },
+    "transport": { "const": "typed_internal_api" },
+    "requested_operations": {
+      "type": "array",
+      "items": { "type": "string", "enum": ["REGISTER_CAPABILITY_DRAFT", "REGISTER_AGENT_DRAFT", "START_GOVERNANCE"] },
+      "uniqueItems": true
+    },
+    "authoritative_state_changed": { "const": false }
+  },
+  "additionalProperties": false
+}

@@ -17,6 +17,11 @@ Implementasi wajib mengikuti keputusan ini sampai digantikan melalui ADR yang di
 | `alos-web` | Human/product experience untuk Business, ARA, GENESIS, Director, dan GIIVEPRO; bukan authority. |
 | `alos-infra` | Deployment/runtime infrastructure, network, PostgreSQL/pgvector service, ingress, observability, backup, restore, dan runbook. |
 
+Factory H1 mengikuti alur tunggal `alos-web → alos-backend → genesis-ai → alos-backend
+Registry`. GENESIS hanya menghasilkan proposal. Backend membentuk authority context, memasok
+catalog, memvalidasi handoff, dan menjadi satu-satunya service yang dapat mencatat Registry
+state `DRAFT` atau menjalankan lifecycle governance berikutnya.
+
 ## Dependency dan communication direction
 
 1. Semua repository aplikasi mengonsumsi kontrak kanonis dari `alos-contracts`; kontrak lintas service tidak boleh diduplikasi.
