@@ -8,8 +8,11 @@
     "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
     "skill_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" },
     "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "root_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/root_run_id" },
+    "parent_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/parent_run_id" },
     "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" },
-    "input": { "type": "object" }
+    "input": { "type": "object" },
+    "context_bundle": { "$ref": "https://schemas.alos.dev/v1/context/context-bundle.schema.json" }
   },
   "additionalProperties": false
 }

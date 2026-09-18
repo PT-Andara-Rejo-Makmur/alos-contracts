@@ -3,20 +3,49 @@
   "$id": "https://schemas.alos.dev/v1/agent/agent-run-result.schema.json",
   "title": "AgentRunResult",
   "type": "object",
-  "required": ["run_id", "root_run_id", "agent_id", "agent_version", "status", "output_state", "started_at", "completed_at"],
+  "required": ["run_id", "root_run_id", "correlation_id", "agent_id", "agent_version", "status", "output_state", "started_at", "completed_at"],
   "properties": {
     "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
     "root_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/root_run_id" },
     "parent_run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/parent_run_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
     "agent_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_id" },
     "agent_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_version" },
+    "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
     "status": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/run_status" },
     "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
     "output": {},
+    "usage": {
+      "type": "object",
+      "properties": {
+        "provider": { "type": "string", "minLength": 1 },
+        "model": { "type": "string", "minLength": 1 },
+        "input_tokens": { "type": "integer", "minimum": 0 },
+        "output_tokens": { "type": "integer", "minimum": 0 },
+        "latency_milliseconds": { "type": "integer", "minimum": 0 },
+        "estimated_cost": { "type": "number", "minimum": 0 }
+      },
+      "additionalProperties": false
+    },
     "evidence_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json" } },
+    "tool_results": {
+      "description": "Canonical results returned by Backend ToolExecutor. GENESIS never executes business tool adapters locally.",
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/tool/tool-result.schema.json" }
+    },
     "error": { "$ref": "https://schemas.alos.dev/v1/common/error.schema.json" },
     "started_at": { "type": "string", "format": "date-time" },
     "completed_at": { "type": "string", "format": "date-time" }
   },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "const": "COMPLETED" } }, "required": ["status"] },
+      "then": { "required": ["output"] }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["FAILED", "CANCELLED", "TIMED_OUT"] } }, "required": ["status"] },
+      "then": { "required": ["error"] }
+    }
+  ],
   "additionalProperties": false
 }

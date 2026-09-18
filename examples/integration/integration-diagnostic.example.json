@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/common/integration-diagnostic.schema.json",
+  "correlation_id": "corr_integration_001",
+  "status": "connected",
+  "backend": {
+    "service": "alos-backend",
+    "status": "reachable",
+    "authority": "ALOS_BACKEND"
+  },
+  "genesis": {
+    "service": "genesis-ai",
+    "status": "reachable",
+    "role": "AI_CONTROL_PLANE",
+    "authoritative_business_state": false,
+    "provider_required": false,
+    "correlation_id": "corr_integration_001"
+  }
+}

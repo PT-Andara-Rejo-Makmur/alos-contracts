@@ -1,0 +1,36 @@
+{
+  "version": 1,
+  "purpose": "Reviewed bootstrap-v1 cutovers from the MVP-1 monolith. Every entry remains a breaking change and requires its documented adapter before a legacy producer can use the v1 schema.",
+  "approved_breaking_changes": [
+    {
+      "schema": "schemas/agent/agent-run-result.schema.json",
+      "violation": "$: required properties added: ['correlation_id']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Set the Backend-issued correlation_id on every adapted AgentRunResult."
+    },
+    {
+      "schema": "schemas/context/context-bundle.schema.json",
+      "violation": "$: required properties added: ['actor_id', 'correlation_id', 'created_at', 'organization_id', 'scope_refs', 'tenant_id', 'workspace_id']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Enrich legacy context with Backend-authorized tenant, organization, workspace, actor, scope, creation time, and correlation lineage."
+    },
+    {
+      "schema": "schemas/evidence/evidence-bundle.schema.json",
+      "violation": "$: required properties added: ['organization_id', 'tenant_id', 'workspace_id']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Resolve evidence ownership through the Backend source registry before emitting an EvidenceBundle."
+    },
+    {
+      "schema": "schemas/research/research-request.schema.json",
+      "violation": "$: required properties added: ['correlation_id']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Propagate the request correlation_id into every adapted ResearchRequest."
+    },
+    {
+      "schema": "schemas/research/research-result.schema.json",
+      "violation": "$: required properties added: ['correlation_id', 'organization_id', 'tenant_id', 'workspace_id']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Resolve research result authority and tenant/workspace lineage from the originating execution context."
+    }
+  ]
+}

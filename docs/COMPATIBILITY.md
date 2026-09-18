@@ -9,3 +9,5 @@ Perubahan yang umumnya kompatibel meliputi property opsional, schema independen 
 Konsumen hanya boleh mengabaikan property object opsional yang tidak dikenal jika schema mengizinkannya dan harus menangani evolusi enum sesuai strategi bahasa pemrogramannya. Sebagian besar kontrak kanonis menggunakan `additionalProperties: false`, sehingga penambahan memerlukan pembaruan kontrak minor dan koordinasi dengan konsumen.
 
 Perubahan breaking memerlukan versi mayor, dokumentasi migrasi, pembaruan konsumen yang terkoordinasi, dan rencana rollout eksplisit. Jangan melewati CI dengan menduplikasi atau memindahkan schema.
+
+Rekonsiliasi payload MVP-1 terhadap canonical v1, termasuk rename, deprecation, state mapping, dan enrichment yang diwajibkan, dijelaskan pada [MVP1_CONTRACT_MIGRATION.md](MVP1_CONTRACT_MIGRATION.md). Fixture hasil adaptasi berada di `compatibility/fixtures/mvp1/` dan divalidasi bersama contoh contract lain.

@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/common/integration-diagnostic.schema.json",
+  "title": "IntegrationDiagnostic",
+  "description": "Diagnostic response proving the governed Web to Backend to GENESIS communication path.",
+  "type": "object",
+  "required": ["correlation_id", "status", "backend", "genesis"],
+  "properties": {
+    "correlation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+    },
+    "status": { "const": "connected" },
+    "backend": { "$ref": "#/$defs/backend_response" },
+    "genesis": { "$ref": "#/$defs/genesis_response" }
+  },
+  "additionalProperties": false,
+  "$defs": {
+    "backend_response": {
+      "type": "object",
+      "required": ["service", "status", "authority"],
+      "properties": {
+        "service": { "const": "alos-backend" },
+        "status": { "const": "reachable" },
+        "authority": { "const": "ALOS_BACKEND" }
+      },
+      "additionalProperties": false
+    },
+    "genesis_response": {
+      "type": "object",
+      "required": [
+        "service",
+        "status",
+        "role",
+        "authoritative_business_state",
+        "provider_required",
+        "correlation_id"
+      ],
+      "properties": {
+        "service": { "const": "genesis-ai" },
+        "status": { "const": "reachable" },
+        "role": { "const": "AI_CONTROL_PLANE" },
+        "authoritative_business_state": { "const": false },
+        "provider_required": { "const": false },
+        "correlation_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+        }
+      },
+      "additionalProperties": false
+    }
+  }
+}

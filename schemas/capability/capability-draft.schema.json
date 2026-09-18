@@ -3,15 +3,31 @@
   "$id": "https://schemas.alos.dev/v1/capability/capability-draft.schema.json",
   "title": "CapabilityDraft",
   "type": "object",
-  "required": ["capability_id", "name", "purpose", "owner", "delivery_mode", "output_state"],
+  "required": ["capability_id", "name", "purpose", "owner", "output_state"],
   "properties": {
+    "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
     "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
     "name": { "type": "string", "minLength": 1 },
     "purpose": { "type": "string", "minLength": 1 },
     "owner": { "type": "string", "minLength": 1 },
-    "delivery_mode": { "type": "string", "enum": ["WORKFLOW", "RULE", "TOOL", "SKILL", "AGENT", "HUMAN_PROCESS"] },
+    "delivery_mode": {
+      "type": "string",
+      "description": "Deprecated compatibility field. New producers also send capability_type.",
+      "deprecated": true,
+      "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE", "TOOL", "HUMAN_PROCESS"]
+    },
+    "capability_type": {
+      "type": "string",
+      "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE"]
+    },
     "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
     "constraints": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
   },
+  "anyOf": [
+    { "required": ["capability_type"] },
+    { "required": ["delivery_mode"] }
+  ],
   "additionalProperties": false
 }

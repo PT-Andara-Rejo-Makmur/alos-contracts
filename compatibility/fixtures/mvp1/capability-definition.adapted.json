@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/capability/capability-definition.schema.json",
+  "tenant_id": "tenant_mvp1_andara",
+  "organization_id": "org_mvp1_andara",
+  "workspace_id": "workspace_mvp1_ops",
+  "correlation_id": "corr_mvp1_contract_001",
+  "capability_id": "capability_mvp1_document_review",
+  "version": "1.0.0",
+  "name": "Document Review",
+  "purpose": "Review an authorized document and produce evidence-bound findings.",
+  "owner": "operations",
+  "capability_type": "AGENT",
+  "lifecycle_state": "DEFINED",
+  "risk_level": "MEDIUM",
+  "access_mode": "READ",
+  "availability": "AVAILABLE",
+  "configuration_status": "CONFIGURED",
+  "scope_refs": ["scope.workspace.ops"],
+  "permission_refs": ["permission.document.read"],
+  "allowed_data_classifications": ["INTERNAL"],
+  "backing_tool_ids": ["document.read"],
+  "constraints": ["No direct database access", "Tool execution uses Backend ToolExecutor"],
+  "metadata": {
+    "legacy_capability_key": "DOCUMENT_REVIEW"
+  }
+}

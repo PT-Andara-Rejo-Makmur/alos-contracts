@@ -11,6 +11,7 @@
     "tool_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
     "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" },
     "arguments": { "type": "object" },
+    "idempotency_key": { "type": "string", "minLength": 8, "maxLength": 200 },
     "requested_at": { "type": "string", "format": "date-time" }
   },
   "additionalProperties": false

@@ -13,6 +13,19 @@ servers:
 security:
   - serviceAuth: []
 paths:
+  /internal/v1/system/integration:
+    get:
+      operationId: getGenesisIntegrationDiagnostic
+      summary: Verify the internal GENESIS control-plane boundary
+      responses:
+        "200":
+          description: GENESIS is reachable without a model provider or business database
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/common/integration-diagnostic.schema.json#/$defs/genesis_response
+        "500":
+          $ref: "#/components/responses/ErrorResponse"
   /internal/v1/agent-runs:
     post:
       operationId: submitInternalAgentRun
@@ -72,11 +85,15 @@ paths:
               $ref: ../../schemas/tool/tool-request.schema.json
       responses:
         "200":
-          description: Tool execution result
+          description: Structured ToolResult for success, denial, rejection, failure, or timeout
           content:
             application/json:
               schema:
                 $ref: ../../schemas/tool/tool-result.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/ErrorResponse"
         "403":
           $ref: "#/components/responses/ErrorResponse"
 components:

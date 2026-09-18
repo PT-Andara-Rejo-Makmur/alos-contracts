@@ -1,0 +1,39 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/agent/agent-run-result.schema.json",
+  "run_id": "run_runtime_split_001",
+  "root_run_id": "run_runtime_split_001",
+  "correlation_id": "corr_runtime_split_001",
+  "agent_id": "agent_runtime_diagnostic",
+  "agent_version": "1.0.0",
+  "capability_id": "capability_runtime_diagnostic",
+  "status": "COMPLETED",
+  "output_state": "AI_INFERRED",
+  "output": {
+    "summary": "Diagnostic runtime completed through governed boundaries."
+  },
+  "usage": {
+    "provider": "deterministic-test-route",
+    "model": "deterministic-test-route",
+    "input_tokens": 12,
+    "output_tokens": 8,
+    "latency_milliseconds": 1,
+    "estimated_cost": 0
+  },
+  "tool_results": [
+    {
+      "tool_call_id": "toolcall_runtime_split_001",
+      "run_id": "run_runtime_split_001",
+      "tool_id": "diagnostic.echo",
+      "correlation_id": "corr_runtime_split_001",
+      "status": "SUCCESS",
+      "output": {
+        "echo": { "message": "runtime boundary" },
+        "label": "NON-PRODUCTION TEST TOOL"
+      },
+      "completed_at": "2026-09-17T10:00:01Z"
+    }
+  ],
+  "evidence_refs": [],
+  "started_at": "2026-09-17T10:00:00Z",
+  "completed_at": "2026-09-17T10:00:02Z"
+}

@@ -15,6 +15,7 @@
       "required": ["role"],
       "properties": {
         "role": { "type": "string", "minLength": 1 },
+        "role_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
         "authority_level": { "type": "string", "enum": ["REQUESTER", "OPERATOR", "IT_APPROVER", "DIRECTOR_APPROVER", "SYSTEM"] }
       },
       "additionalProperties": false

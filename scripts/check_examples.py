@@ -8,7 +8,10 @@ from pathlib import Path
 from jsonschema import Draft202012Validator, FormatChecker
 from referencing import Registry, Resource
 
-from scripts.validate_schemas import ROOT, load_schemas
+if __package__:
+    from .validate_schemas import ROOT, load_schemas
+else:
+    from validate_schemas import ROOT, load_schemas
 
 
 def build_registry(schemas: dict[str, dict]) -> Registry:
@@ -18,7 +21,11 @@ def build_registry(schemas: dict[str, dict]) -> Registry:
 
 
 def example_paths() -> list[Path]:
-    return sorted([*ROOT.glob("examples/**/*.json"), *ROOT.glob("events/**/*.example.json")])
+    return sorted([
+        *ROOT.glob("examples/**/*.json"),
+        *ROOT.glob("events/**/*.example.json"),
+        *ROOT.glob("compatibility/fixtures/mvp1/**/*.json"),
+    ])
 
 
 def validate_example(path: Path, schemas: dict[str, dict], registry: Registry) -> None:

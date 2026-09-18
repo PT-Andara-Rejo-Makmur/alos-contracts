@@ -1,0 +1,32 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/agent/agent-run-request.schema.json",
+  "run_id": "run_mvp1_document_review_001",
+  "root_run_id": "run_mvp1_document_review_001",
+  "agent_id": "agent_mvp1_document_reviewer",
+  "agent_version": "1.0.0",
+  "capability_id": "capability_mvp1_document_review",
+  "execution_context": {
+    "tenant_id": "tenant_mvp1_andara",
+    "organization_id": "org_mvp1_andara",
+    "workspace_id": "workspace_mvp1_ops",
+    "actor_id": "actor_mvp1_it_lead",
+    "authority_context": {
+      "role": "IT_LEAD",
+      "authority_level": "IT_APPROVER"
+    },
+    "permission_refs": ["permission.document.read"],
+    "scope_refs": ["scope.workspace.ops"],
+    "data_classification": "INTERNAL",
+    "correlation_id": "corr_mvp1_contract_001",
+    "execution_budget": {
+      "max_tokens": 8000,
+      "max_tool_calls": 2,
+      "timeout_seconds": 120
+    }
+  },
+  "input": {
+    "document_id": "document_mvp1_001"
+  },
+  "requested_tool_ids": ["document.read"],
+  "execution_mode": "TEST"
+}

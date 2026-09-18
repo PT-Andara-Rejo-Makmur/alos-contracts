@@ -10,6 +10,7 @@
     "occurred_at": { "type": "string", "format": "date-time" },
     "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
     "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
     "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
     "entity": {
       "type": "object",

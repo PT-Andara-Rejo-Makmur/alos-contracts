@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/decision/decision-ref.schema.json",
+  "decision_id": "decision_mvp1_it_001",
+  "tenant_id": "tenant_mvp1_andara",
+  "workspace_id": "workspace_mvp1_ops",
+  "review_id": "review_mvp1_technical_001",
+  "release_id": "release_mvp1_agent_001",
+  "correlation_id": "corr_mvp1_contract_001",
+  "subject_id": "agent_mvp1_document_reviewer",
+  "decision_type": "IT",
+  "outcome": "APPROVED",
+  "decided_by": "actor_mvp1_it_lead",
+  "decided_at": "2026-09-16T02:05:00Z",
+  "rationale": "Required evidence and technical controls were independently reviewed."
+}

@@ -1,0 +1,26 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/common/execution-context.schema.json",
+  "tenant_id": "tenant_mvp1_andara",
+  "organization_id": "org_mvp1_andara",
+  "workspace_id": "workspace_mvp1_ops",
+  "actor_id": "actor_mvp1_it_lead",
+  "authority_context": {
+    "role": "IT_LEAD",
+    "role_refs": ["IT_LEAD", "PLATFORM_OPERATOR"],
+    "authority_level": "IT_APPROVER"
+  },
+  "permission_refs": ["permission.agent.run", "permission.tool.request"],
+  "scope_refs": ["scope.organization.andara", "scope.workspace.ops"],
+  "data_classification": "INTERNAL",
+  "correlation_id": "corr_mvp1_contract_001",
+  "execution_budget": {
+    "max_tokens": 8000,
+    "max_cost": 2.5,
+    "max_steps": 12,
+    "max_tool_calls": 4,
+    "max_children": 2,
+    "max_depth": 1,
+    "timeout_seconds": 120,
+    "concurrency_limit": 2
+  }
+}

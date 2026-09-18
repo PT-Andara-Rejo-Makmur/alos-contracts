@@ -10,7 +10,11 @@
     "summary": { "type": "string", "minLength": 1 },
     "recommended_action": { "type": "string", "minLength": 1 },
     "confidence": { "type": "number", "minimum": 0, "maximum": 1 },
-    "author_type": { "type": "string", "enum": ["AI", "HUMAN_ANALYST"] }
+    "author_type": { "type": "string", "enum": ["AI", "HUMAN_ANALYST"] },
+    "finding_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
+    "evidence_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json" } },
+    "limitations": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "backlog_candidate": { "type": "boolean", "description": "Marks a recommendation as a candidate only; it does not authorize execution." }
   },
   "additionalProperties": false
 }

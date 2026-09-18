@@ -5,12 +5,20 @@
   "type": "object",
   "required": ["evidence_id", "source_id", "uri", "captured_at", "content_hash"],
   "properties": {
+    "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
+    "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
     "evidence_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id" },
     "source_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id" },
     "uri": { "type": "string", "format": "uri" },
     "captured_at": { "type": "string", "format": "date-time" },
     "content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-    "excerpt": { "type": "string" }
+    "source_version": { "type": "string", "minLength": 1 },
+    "anchor": { "type": "string", "minLength": 1 },
+    "excerpt": { "type": "string" },
+    "data_classification": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"] },
+    "validation_status": { "type": "string", "enum": ["PENDING", "VALID", "INVALID", "WAIVED"] },
+    "metadata": { "type": "object" }
   },
   "additionalProperties": false
 }

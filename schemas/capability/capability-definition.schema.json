@@ -1,0 +1,38 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/capability/capability-definition.schema.json",
+  "title": "CapabilityDefinition",
+  "description": "Versioned, governed capability definition. A capability is not necessarily an agent.",
+  "type": "object",
+  "required": ["tenant_id", "workspace_id", "capability_id", "version", "name", "purpose", "owner", "capability_type", "lifecycle_state"],
+  "properties": {
+    "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
+    "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
+    "version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/semantic_version" },
+    "name": { "type": "string", "minLength": 1 },
+    "purpose": { "type": "string", "minLength": 1 },
+    "owner": { "type": "string", "minLength": 1 },
+    "capability_type": {
+      "type": "string",
+      "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE"]
+    },
+    "lifecycle_state": { "type": "string", "enum": ["DEFINED", "ACTIVE", "SUSPENDED", "RETIRED"] },
+    "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+    "access_mode": { "type": "string", "enum": ["READ", "CREATE_DRAFT", "UPDATE_SCOPED", "REQUEST_APPROVAL", "EXECUTE_APPROVED_ACTION"] },
+    "availability": { "type": "string", "enum": ["AVAILABLE", "UNAVAILABLE", "DEGRADED"] },
+    "configuration_status": { "type": "string", "enum": ["CONFIGURED", "NEEDS_CONFIGURATION", "NOT_APPLICABLE"] },
+    "input_schema_ref": { "type": "string", "format": "uri" },
+    "output_schema_ref": { "type": "string", "format": "uri" },
+    "scope_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "allowed_data_classifications": { "type": "array", "items": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"] }, "uniqueItems": true },
+    "backing_tool_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
+    "constraints": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "metadata": { "type": "object" },
+    "release_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/release_id" }
+  },
+  "additionalProperties": false
+}

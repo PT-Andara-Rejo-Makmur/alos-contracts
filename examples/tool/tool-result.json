@@ -1,0 +1,13 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/tool/tool-result.schema.json",
+  "tool_call_id": "toolcall_diagnostic_echo_001",
+  "run_id": "run_diagnostic_001",
+  "tool_id": "diagnostic.echo",
+  "correlation_id": "corr_diagnostic_001",
+  "status": "SUCCESS",
+  "output": {
+    "echo": { "message": "hello" },
+    "label": "NON-PRODUCTION TEST TOOL"
+  },
+  "completed_at": "2026-09-17T08:00:00Z"
+}

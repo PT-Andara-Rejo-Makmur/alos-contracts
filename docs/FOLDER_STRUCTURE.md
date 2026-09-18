@@ -23,7 +23,7 @@
 - `events/`: event envelope dan schema event per domain; tidak berisi implementasi broker.
 - `examples/`: contoh payload tervalidasi yang dikelompokkan berdasarkan domain.
 - `generated/`: petunjuk untuk client/model hasil generate; tidak ada placeholder hasil generate yang disimpan.
-- `compatibility/fixtures/`: schema terfokus untuk menguji aturan kompatibilitas.
+- `compatibility/fixtures/`: schema terfokus untuk menguji aturan kompatibilitas serta payload hasil adaptasi snapshot legacy yang masih didukung.
 - `compatibility/tests/`: pengujian deteksi breaking change.
 - `scripts/`: perintah validasi schema, OpenAPI, contoh, dan kompatibilitas.
 - `tests/`: pengujian validasi kontrak end-to-end.

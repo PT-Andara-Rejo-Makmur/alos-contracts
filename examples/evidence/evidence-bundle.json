@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/evidence/evidence-bundle.schema.json",
+  "bundle_id": "bundle_research_001",
+  "tenant_id": "tenant_demo_001",
+  "organization_id": "org_demo_001",
+  "workspace_id": "workspace_demo_001",
+  "run_id": "run_research_001",
+  "correlation_id": "corr_research_001",
+  "evidence_refs": [
+    {
+      "tenant_id": "tenant_demo_001",
+      "organization_id": "org_demo_001",
+      "workspace_id": "workspace_demo_001",
+      "evidence_id": "evidence_policy_001",
+      "source_id": "source_policy_001",
+      "uri": "urn:alos:source:policy:1",
+      "captured_at": "2026-09-18T00:00:00Z",
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "source_version": "1.0.0",
+      "anchor": "lines 1-1",
+      "data_classification": "INTERNAL",
+      "validation_status": "VALID"
+    }
+  ]
+}

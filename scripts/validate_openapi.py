@@ -10,7 +10,10 @@ from urllib.parse import urldefrag
 import yaml
 from openapi_spec_validator import validate
 
-from scripts.validate_schemas import ROOT, load_schemas
+if __package__:
+    from .validate_schemas import ROOT, load_schemas
+else:
+    from validate_schemas import ROOT, load_schemas
 
 
 def json_pointer(document: object, fragment: str) -> object:

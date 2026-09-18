@@ -13,6 +13,13 @@
     "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
     "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" },
     "input": { "type": "object" },
+    "requested_tool_ids": {
+      "description": "Requested tool intent only. Authorization and allowlisting remain authoritative in Backend ToolExecutor.",
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+      "uniqueItems": true
+    },
+    "execution_mode": { "type": "string", "enum": ["NORMAL", "TEST"] },
     "context_bundle": { "$ref": "https://schemas.alos.dev/v1/context/context-bundle.schema.json" }
   },
   "additionalProperties": false

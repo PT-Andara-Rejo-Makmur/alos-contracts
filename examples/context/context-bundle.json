@@ -1,0 +1,41 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/context/context-bundle.schema.json",
+  "context_id": "context_research_001",
+  "tenant_id": "tenant_demo_001",
+  "organization_id": "org_demo_001",
+  "workspace_id": "workspace_demo_001",
+  "actor_id": "actor_researcher_001",
+  "correlation_id": "corr_research_001",
+  "scope_refs": ["scope.sources.read"],
+  "created_at": "2026-09-18T00:00:00Z",
+  "expires_at": "2026-09-18T00:30:00Z",
+  "items": [
+    {
+      "key": "source_policy_001@1.0.0#L1-L1",
+      "value": "The retention period is seven years.",
+      "source_id": "source_policy_001",
+      "evidence_id": "evidence_policy_001",
+      "source_version": "1.0.0",
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "anchor": "lines 1-1",
+      "data_classification": "INTERNAL"
+    }
+  ],
+  "evidence_refs": [
+    {
+      "tenant_id": "tenant_demo_001",
+      "organization_id": "org_demo_001",
+      "workspace_id": "workspace_demo_001",
+      "evidence_id": "evidence_policy_001",
+      "source_id": "source_policy_001",
+      "uri": "urn:alos:source:policy:1",
+      "captured_at": "2026-09-18T00:00:00Z",
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "source_version": "1.0.0",
+      "anchor": "lines 1-1",
+      "excerpt": "The retention period is seven years.",
+      "data_classification": "INTERNAL",
+      "validation_status": "VALID"
+    }
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/capability/capability-definition.schema.json",
+  "tenant_id": "tenant_andara_001",
+  "workspace_id": "workspace_ops_001",
+  "capability_id": "cap_order_review",
+  "version": "1.0.0",
+  "name": "Order Review",
+  "purpose": "Review scoped order information and surface risks for a human operator.",
+  "owner": "operations",
+  "capability_type": "AGENT",
+  "lifecycle_state": "DEFINED",
+  "scope_refs": ["scope.orders.region-west"],
+  "permission_refs": ["permission.orders.read"],
+  "constraints": ["No direct database access", "Business actions require Backend ToolExecutor"]
+}

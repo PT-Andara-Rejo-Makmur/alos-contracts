@@ -1,0 +1,21 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/research/research-request.schema.json",
+  "research_id": "research_mvp1_management_001",
+  "run_id": "run_mvp1_research_001",
+  "correlation_id": "corr_mvp1_research_001",
+  "domain": "MANAGEMENT",
+  "question": "What policy evidence is available to the authorized workspace?",
+  "execution_context": {
+    "tenant_id": "tenant_mvp1_001",
+    "organization_id": "org_mvp1_001",
+    "workspace_id": "workspace_mvp1_001",
+    "actor_id": "actor_mvp1_researcher_001",
+    "authority_context": {"role": "RESEARCHER", "authority_level": "REQUESTER"},
+    "permission_refs": ["sources.read"],
+    "scope_refs": ["scope.sources.read"],
+    "data_classification": "INTERNAL",
+    "correlation_id": "corr_mvp1_research_001",
+    "execution_budget": {"max_steps": 3, "timeout_seconds": 60}
+  },
+  "scope": ["policy"]
+}

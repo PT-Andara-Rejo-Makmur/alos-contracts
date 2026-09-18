@@ -1,0 +1,30 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/research/research-request.schema.json",
+  "research_id": "research_retention_001",
+  "run_id": "run_research_001",
+  "correlation_id": "corr_research_001",
+  "domain": "MANAGEMENT",
+  "question": "What is the approved retention period?",
+  "execution_context": {
+    "tenant_id": "tenant_demo_001",
+    "organization_id": "org_demo_001",
+    "workspace_id": "workspace_demo_001",
+    "actor_id": "actor_researcher_001",
+    "authority_context": {
+      "role": "RESEARCHER",
+      "authority_level": "REQUESTER"
+    },
+    "permission_refs": ["sources.read"],
+    "scope_refs": ["scope.sources.read"],
+    "data_classification": "INTERNAL",
+    "correlation_id": "corr_research_001",
+    "execution_budget": {
+      "max_tokens": 2000,
+      "max_steps": 3,
+      "max_tool_calls": 1,
+      "timeout_seconds": 60
+    }
+  },
+  "scope": ["retention-policy"],
+  "constraints": ["Use only verified Backend evidence."]
+}

@@ -12,6 +12,7 @@
       "properties": {
         "review_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/review_id" },
         "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+        "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
         "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
         "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
         "subject_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
@@ -20,6 +21,8 @@
       "additionalProperties": false
     },
     "purpose": { "type": "string", "minLength": 1 },
+    "materiality": { "type": "string", "enum": ["NON_MATERIAL", "MATERIAL"] },
+    "release_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/release_id" },
     "business_context": { "type": "object", "minProperties": 1 },
     "capability": { "$ref": "https://schemas.alos.dev/v1/capability/capability-draft.schema.json" },
     "scope": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },

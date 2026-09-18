@@ -75,6 +75,7 @@ Rilis menggunakan Semantic Versioning. Menghapus field atau nilai enum, menambah
 - [Validasi](docs/VALIDATION.md)
 - [Versioning](docs/VERSIONING.md)
 - [Kompatibilitas](docs/COMPATIBILITY.md)
+- [Migrasi Knowledge dan Research MVP-1](docs/MVP1_KNOWLEDGE_RESEARCH_MIGRATION.md)
 - [Struktur folder](docs/FOLDER_STRUCTURE.md)
 - [Panduan kontribusi](CONTRIBUTING.md)
 

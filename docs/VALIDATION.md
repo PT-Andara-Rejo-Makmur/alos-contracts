@@ -24,7 +24,7 @@ Perintah ini memvalidasi dokumen OpenAPI 3.1 publik dan internal beserta referen
 python scripts/check_examples.py
 ```
 
-Setiap contoh JSON harus mendeklarasikan `$schema` kanonis yang dikenal dan valid dengan pemeriksaan format aktif.
+Setiap contoh JSON harus mendeklarasikan `$schema` kanonis yang dikenal dan valid dengan pemeriksaan format aktif. Pemeriksaan ini mencakup `examples/`, contoh event, dan payload hasil adaptasi MVP-1 di `compatibility/fixtures/mvp1/`.
 
 ## Pengujian
 

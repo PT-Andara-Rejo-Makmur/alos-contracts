@@ -7,6 +7,12 @@
   "required": ["decision_id", "decision_type", "outcome", "decided_by", "decided_at"],
   "properties": {
     "decision_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/decision_id" },
+    "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+    "review_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/review_id" },
+    "release_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/release_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "subject_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
     "decision_type": { "type": "string", "enum": ["IT", "DIRECTOR"] },
     "outcome": { "type": "string", "enum": ["APPROVED", "REJECTED", "RETURNED", "HOLD"] },
     "decided_by": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id" },

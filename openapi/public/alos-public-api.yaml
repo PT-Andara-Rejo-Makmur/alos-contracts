@@ -11,6 +11,22 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/system/integration:
+    get:
+      operationId: getIntegrationDiagnostic
+      summary: Verify the governed Backend to GENESIS integration path
+      security: []
+      responses:
+        "200":
+          description: Backend and GENESIS are reachable through the governed boundary
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/common/integration-diagnostic.schema.json
+        "502":
+          $ref: "#/components/responses/ErrorResponse"
+        "503":
+          $ref: "#/components/responses/ErrorResponse"
   /v1/agent-runs:
     post:
       operationId: createAgentRun

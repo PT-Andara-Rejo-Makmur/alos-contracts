@@ -5,10 +5,17 @@
   "type": "object",
   "required": ["agent_id", "agent_version", "name", "purpose", "capability_ids", "skill_refs", "model_policy_ref", "delegation_policy"],
   "properties": {
+    "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
+    "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
     "agent_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_id" },
     "agent_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_version" },
+    "parent_agent_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_id" },
+    "owner_actor_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id" },
     "name": { "type": "string", "minLength": 1 },
     "purpose": { "type": "string", "minLength": 1 },
+    "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
     "capability_ids": { "type": "array", "minItems": 1, "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" }, "uniqueItems": true },
     "skill_refs": {
       "type": "array",
@@ -23,10 +30,26 @@
       }
     },
     "model_policy_ref": { "type": "string", "minLength": 1 },
+    "input_schema": { "type": "object" },
+    "output_schema": { "type": "object" },
+    "tool_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
+    "permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "evidence_requirements": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "restrictions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "approval_required": { "type": "boolean" },
+    "execution_budget": { "$ref": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json" },
+    "prompt_template": { "type": "string", "minLength": 1, "maxLength": 20000 },
+    "output_state": { "$ref": "https://schemas.alos.dev/v1/runtime/run-status.schema.json#/$defs/output_state" },
     "delegation_policy": {
       "type": "object",
       "required": ["enabled", "max_depth"],
-      "properties": { "enabled": { "type": "boolean" }, "max_depth": { "type": "integer", "minimum": 0 } },
+      "properties": {
+        "enabled": { "type": "boolean" },
+        "max_depth": { "type": "integer", "minimum": 0 },
+        "max_children": { "type": "integer", "minimum": 0 },
+        "scope_inheritance_required": { "type": "boolean" },
+        "permission_inheritance_required": { "type": "boolean" }
+      },
       "additionalProperties": false
     }
   },

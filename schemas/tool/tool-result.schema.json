@@ -7,10 +7,22 @@
   "properties": {
     "tool_call_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tool_call_id" },
     "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
-    "status": { "type": "string", "enum": ["COMPLETED", "FAILED", "DENIED"] },
+    "tool_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "status": { "type": "string", "enum": ["SUCCESS", "COMPLETED", "FAILED", "TIMEOUT", "DENIED", "REJECTED"] },
     "output": {},
     "error": { "$ref": "https://schemas.alos.dev/v1/common/error.schema.json" },
     "completed_at": { "type": "string", "format": "date-time" }
   },
+  "allOf": [
+    {
+      "if": { "properties": { "status": { "enum": ["SUCCESS", "COMPLETED"] } }, "required": ["status"] },
+      "then": { "required": ["tool_id", "correlation_id", "output"] }
+    },
+    {
+      "if": { "properties": { "status": { "enum": ["FAILED", "TIMEOUT", "DENIED", "REJECTED"] } }, "required": ["status"] },
+      "then": { "required": ["tool_id", "correlation_id", "error"] }
+    }
+  ],
   "additionalProperties": false
 }

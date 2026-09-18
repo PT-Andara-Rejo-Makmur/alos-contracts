@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/agent/agent-definition.schema.json",
+  "tenant_id": "tenant_mvp1_andara",
+  "organization_id": "org_mvp1_andara",
+  "workspace_id": "workspace_mvp1_ops",
+  "correlation_id": "corr_mvp1_contract_001",
+  "agent_id": "agent_mvp1_document_reviewer",
+  "agent_version": "1.0.0",
+  "owner_actor_id": "actor_mvp1_it_lead",
+  "name": "Document Reviewer",
+  "purpose": "Review an authorized document and return evidence-bound findings for human review.",
+  "risk_level": "MEDIUM",
+  "capability_ids": ["capability_mvp1_document_review"],
+  "skill_refs": [],
+  "model_policy_ref": "model-policy.standard-reviewed",
+  "input_schema": {
+    "type": "object",
+    "required": ["document_id"],
+    "properties": {
+      "document_id": {"type": "string"}
+    }
+  },
+  "output_schema": {
+    "type": "object",
+    "required": ["summary"],
+    "properties": {
+      "summary": {"type": "string"}
+    }
+  },
+  "tool_ids": ["document.read"],
+  "permission_refs": ["permission.document.read"],
+  "evidence_requirements": ["Every material finding references an approved source version"],
+  "restrictions": ["No direct database access", "No self-approval"],
+  "approval_required": true,
+  "execution_budget": {
+    "max_tokens": 8000,
+    "max_tool_calls": 2,
+    "timeout_seconds": 120
+  },
+  "prompt_template": "Review only the authorized context and return evidence-bound findings.",
+  "output_state": "DRAFT",
+  "delegation_policy": {
+    "enabled": false,
+    "max_depth": 0,
+    "max_children": 0,
+    "scope_inheritance_required": true,
+    "permission_inheritance_required": true
+  }
+}

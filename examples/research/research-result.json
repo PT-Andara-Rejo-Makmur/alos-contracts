@@ -2,10 +2,16 @@
   "$schema": "https://schemas.alos.dev/v1/research/research-result.schema.json",
   "research_id": "research_market_001",
   "run_id": "run_research_001",
+  "tenant_id": "tenant_andara_001",
+  "organization_id": "org_andara_001",
+  "workspace_id": "workspace_research_001",
+  "correlation_id": "corr_research_market_001",
   "output_state": "NEEDS_REVIEW",
   "findings": [
     {
       "finding_id": "finding_market_001",
+      "finding_type": "RESEARCH",
+      "domain": "PROPERTY_MARKET",
       "statement": "The reviewed segment shows measurable demand growth.",
       "confidence": 0.82,
       "output_state": "AI_INFERRED",
@@ -27,7 +33,8 @@
       "summary": "Proceed to human validation.",
       "recommended_action": "Ask the business owner to validate the demand assumption.",
       "confidence": 0.75,
-      "author_type": "AI"
+      "author_type": "AI",
+      "finding_ids": ["finding_market_001"]
     }
   ],
   "completed_at": "2026-09-16T12:10:00Z"

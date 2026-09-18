@@ -6,10 +6,15 @@
   "type": "object",
   "required": ["review_type", "status", "summary", "completed_at"],
   "properties": {
+    "review_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/review_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
     "review_type": { "type": "string", "enum": ["BUSINESS", "TECHNICAL", "SECURITY", "EVIDENCE", "COST_RISK"] },
-    "status": { "type": "string", "enum": ["PASS", "PASS_WITH_FINDINGS", "FAIL", "NOT_RUN"] },
+    "status": { "type": "string", "enum": ["READY", "REVISION_RECOMMENDED", "BLOCKED_BY_EVIDENCE", "RISK_FOUND", "PASS", "PASS_WITH_FINDINGS", "FAIL", "NOT_RUN"] },
     "summary": { "type": "string", "minLength": 1 },
     "finding_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
+    "recommendations": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "evidence_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json" } },
+    "limitations": { "type": "array", "items": { "type": "string", "minLength": 1 } },
     "completed_at": { "type": "string", "format": "date-time" }
   },
   "additionalProperties": false

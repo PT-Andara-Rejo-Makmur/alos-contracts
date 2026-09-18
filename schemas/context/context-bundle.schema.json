@@ -3,23 +3,37 @@
   "$id": "https://schemas.alos.dev/v1/context/context-bundle.schema.json",
   "title": "ContextBundle",
   "type": "object",
-  "required": ["context_id", "items"],
+  "description": "Tenant-bound context supplied to governed execution. Credentials and secrets are forbidden.",
+  "required": ["context_id", "tenant_id", "organization_id", "workspace_id", "actor_id", "correlation_id", "scope_refs", "created_at", "items"],
   "properties": {
     "context_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+    "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+    "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
+    "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+    "actor_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "created_at": { "type": "string", "format": "date-time" },
+    "expires_at": { "type": "string", "format": "date-time" },
+    "scope_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "items": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["key", "value", "data_classification"],
+        "required": ["key", "value", "source_id", "evidence_id", "source_version", "content_hash", "anchor", "data_classification"],
         "properties": {
           "key": { "type": "string", "minLength": 1 },
           "value": {},
           "source_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id" },
+          "evidence_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id" },
+          "source_version": { "type": "string", "minLength": 1 },
+          "content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
+          "anchor": { "type": "string", "minLength": 1 },
           "data_classification": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"] }
         },
         "additionalProperties": false
       }
-    }
+    },
+    "evidence_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json" } }
   },
   "additionalProperties": false
 }

@@ -7,7 +7,18 @@ import json
 import subprocess
 from pathlib import Path
 
-from scripts.validate_schemas import ROOT
+if __package__:
+    from .validate_schemas import ROOT
+else:
+    from validate_schemas import ROOT
+
+
+APPROVED_BREAKING_CHANGES_PATH = ROOT / "compatibility" / "approved-breaking-changes.json"
+
+
+def git_command(*args: str) -> list[str]:
+    """Build a git command that also works in sandboxed Windows audit users."""
+    return ["git", "-c", f"safe.directory={ROOT.as_posix()}", *args]
 
 
 def breaking_changes(old: dict, new: dict, location: str = "$") -> list[str]:
@@ -46,14 +57,18 @@ def breaking_changes(old: dict, new: dict, location: str = "$") -> list[str]:
 
 def git_text(ref: str, path: str) -> str:
     result = subprocess.run(
-        ["git", "show", f"{ref}:{path}"], cwd=ROOT, check=True, capture_output=True, text=True
+        git_command("show", f"{ref}:{path}"),
+        cwd=ROOT,
+        check=True,
+        capture_output=True,
+        text=True,
     )
     return result.stdout
 
 
 def baseline_paths(ref: str) -> set[str]:
     result = subprocess.run(
-        ["git", "ls-tree", "-r", "--name-only", ref],
+        git_command("ls-tree", "-r", "--name-only", ref),
         cwd=ROOT,
         check=True,
         capture_output=True,
@@ -82,17 +97,43 @@ def compare_ref(ref: str) -> list[str]:
     return violations
 
 
+def approved_breaking_changes() -> set[str]:
+    """Load exact, documented bootstrap cutover exceptions.
+
+    This does not weaken detection. An exception only applies when the complete
+    schema path and complete detected violation still match the reviewed record.
+    """
+    document = json.loads(APPROVED_BREAKING_CHANGES_PATH.read_text(encoding="utf-8"))
+    return {
+        f"{entry['schema']}: {entry['violation']}"
+        for entry in document["approved_breaking_changes"]
+    }
+
+
+def split_approved(violations: list[str]) -> tuple[list[str], list[str]]:
+    """Return reviewed cutover changes and any unreviewed compatibility violations."""
+    approved = approved_breaking_changes()
+    return (
+        [violation for violation in violations if violation in approved],
+        [violation for violation in violations if violation not in approved],
+    )
+
+
 def main() -> int:
     parser = argparse.ArgumentParser()
     parser.add_argument("--baseline-ref", required=True, help="Git commit or ref to compare against")
     args = parser.parse_args()
-    violations = compare_ref(args.baseline_ref)
+    approved, violations = split_approved(compare_ref(args.baseline_ref))
+    if approved:
+        print("Approved bootstrap breaking changes (strict schemas retained):")
+        for violation in approved:
+            print(f"- {violation}")
     if violations:
         print("Backward-incompatible contract changes detected:")
         for violation in violations:
             print(f"- {violation}")
         return 1
-    print(f"No detected breaking schema changes against {args.baseline_ref}.")
+    print(f"No unapproved breaking schema changes against {args.baseline_ref}.")
     return 0
 
 
