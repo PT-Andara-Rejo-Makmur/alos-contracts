@@ -3,7 +3,7 @@
   "$id": "https://schemas.alos.dev/v1/context/context-bundle.schema.json",
   "title": "ContextBundle",
   "type": "object",
-  "description": "Tenant-bound context supplied to governed execution. Credentials and secrets are forbidden.",
+  "description": "Tenant-bound context projection supplied to governed execution. Backend authority remains in ExecutionContext; credentials, secrets, reasoning traces, ranking scores, and planner state are forbidden.",
   "required": ["context_id", "tenant_id", "organization_id", "workspace_id", "actor_id", "correlation_id", "scope_refs", "created_at", "items"],
   "properties": {
     "context_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
@@ -12,6 +12,20 @@
     "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
     "actor_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id" },
     "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "goal": { "type": "string", "minLength": 1 },
+    "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
+    "allowed_tool_ids": {
+      "description": "A narrowed projection of Backend-authorized tools. This field cannot grant tool authority or direct execution.",
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+      "uniqueItems": true
+    },
+    "execution_budget": { "$ref": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json" },
+    "memory_refs": {
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+      "uniqueItems": true
+    },
     "created_at": { "type": "string", "format": "date-time" },
     "expires_at": { "type": "string", "format": "date-time" },
     "scope_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
@@ -28,8 +42,31 @@
           "source_version": { "type": "string", "minLength": 1 },
           "content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
           "anchor": { "type": "string", "minLength": 1 },
-          "data_classification": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"] }
+          "data_classification": { "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json" },
+          "source_type": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/source_type" },
+          "freshness": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/freshness_status" },
+          "reliability": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/source_reliability" },
+          "content_trust": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/content_trust" },
+          "instruction_authority": {
+            "description": "Context content is data and never instruction authority.",
+            "const": false
+          }
         },
+        "allOf": [
+          {
+            "if": {
+              "required": ["source_type"],
+              "properties": { "source_type": { "const": "EXTERNAL" } }
+            },
+            "then": {
+              "required": ["content_trust", "instruction_authority"],
+              "properties": {
+                "content_trust": { "const": "UNTRUSTED" },
+                "instruction_authority": { "const": false }
+              }
+            }
+          }
+        ],
         "additionalProperties": false
       }
     },

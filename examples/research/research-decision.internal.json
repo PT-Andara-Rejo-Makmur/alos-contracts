@@ -1,0 +1,12 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/research/research-decision.schema.json",
+  "research_id": "research_internal_001",
+  "run_id": "run_internal_research_001",
+  "correlation_id": "corr_internal_research_001",
+  "decision": "USE_INTERNAL_SOURCE",
+  "domain": "MANAGEMENT",
+  "selected_evidence_ids": ["evidence_policy_001"],
+  "reasons": ["Current authorized internal evidence satisfies the evidence need."],
+  "retrieval": null,
+  "external_content_trust": "UNTRUSTED"
+}

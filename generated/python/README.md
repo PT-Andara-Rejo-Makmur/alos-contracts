@@ -1,3 +1,8 @@
 # Artefak Python hasil generate
 
-Model Python hasil generate belum disimpan pada v1. Ketika proses generate diperkenalkan, output harus reproducible dari schema kanonis, mengikuti versi rilis kontrak, dan ditandai dengan jelas sebagai hasil generate.
+`context_research_contracts.py` berisi `TypedDict` dan `Literal` dependency-free yang
+dihasilkan dari schema canonical. File tersebut tidak boleh diedit manual. Regenerate dengan:
+
+```bash
+python scripts/generate_python.py
+```

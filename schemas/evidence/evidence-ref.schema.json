@@ -8,17 +8,44 @@
     "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
     "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
     "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "scope_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "evidence_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id" },
     "source_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id" },
     "uri": { "type": "string", "format": "uri" },
     "captured_at": { "type": "string", "format": "date-time" },
+    "retrieved_at": { "type": "string", "format": "date-time" },
     "content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
     "source_version": { "type": "string", "minLength": 1 },
     "anchor": { "type": "string", "minLength": 1 },
     "excerpt": { "type": "string" },
-    "data_classification": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"] },
+    "data_classification": { "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json" },
+    "source_type": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/source_type" },
+    "freshness": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/freshness_status" },
+    "reliability": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/source_reliability" },
+    "content_trust": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/content_trust" },
+    "instruction_authority": {
+      "description": "Evidence content is data and never instruction authority.",
+      "const": false
+    },
     "validation_status": { "type": "string", "enum": ["PENDING", "VALID", "INVALID", "WAIVED"] },
     "metadata": { "type": "object" }
   },
+  "allOf": [
+    {
+      "if": {
+        "required": ["source_type"],
+        "properties": { "source_type": { "const": "EXTERNAL" } }
+      },
+      "then": {
+        "required": ["content_trust", "instruction_authority"],
+        "properties": {
+          "content_trust": { "const": "UNTRUSTED" },
+          "instruction_authority": { "const": false }
+        }
+      }
+    }
+  ],
   "additionalProperties": false
 }

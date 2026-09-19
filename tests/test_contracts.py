@@ -9,6 +9,8 @@ SCHEMA_BASE = "https://schemas.alos.dev/v1"
 
 REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/common/execution-context.schema.json",
+    f"{SCHEMA_BASE}/common/data-classification.schema.json",
+    f"{SCHEMA_BASE}/common/source-semantics.schema.json",
     f"{SCHEMA_BASE}/runtime/execution-budget.schema.json",
     f"{SCHEMA_BASE}/context/context-bundle.schema.json",
     f"{SCHEMA_BASE}/capability/capability-draft.schema.json",
@@ -28,6 +30,7 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/evidence/evidence-bundle.schema.json",
     f"{SCHEMA_BASE}/research/research-request.schema.json",
     f"{SCHEMA_BASE}/research/research-result.schema.json",
+    f"{SCHEMA_BASE}/research/research-decision.schema.json",
     f"{SCHEMA_BASE}/research/research-finding.schema.json",
     f"{SCHEMA_BASE}/research/recommendation.schema.json",
     f"{SCHEMA_BASE}/review/ai-review-result.schema.json",

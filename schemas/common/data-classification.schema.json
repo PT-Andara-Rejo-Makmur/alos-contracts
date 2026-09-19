@@ -1,0 +1,8 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/common/data-classification.schema.json",
+  "title": "DataClassification",
+  "description": "Backend-assigned classification carried across governed service boundaries.",
+  "type": "string",
+  "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"]
+}

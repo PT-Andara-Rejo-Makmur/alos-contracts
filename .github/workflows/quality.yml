@@ -38,6 +38,9 @@ jobs:
       - name: Verify generated TypeScript
         run: python scripts/generate_typescript.py --check
 
+      - name: Verify generated Python
+        run: python scripts/generate_python.py --check
+
       - name: Detect breaking changes against pull request base
         if: github.event_name == 'pull_request'
         run: python scripts/check_compatibility.py --baseline-ref "${{ github.event.pull_request.base.sha }}"

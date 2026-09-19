@@ -1,0 +1,62 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/context/context-bundle.schema.json",
+  "context_id": "context_market_001",
+  "tenant_id": "tenant_andara_001",
+  "organization_id": "org_andara_001",
+  "workspace_id": "workspace_research_001",
+  "actor_id": "actor_researcher_001",
+  "correlation_id": "corr_market_001",
+  "goal": "Evaluate the current authorized property-market evidence.",
+  "capability_id": "capability_property_research",
+  "allowed_tool_ids": ["research.external.retrieve"],
+  "execution_budget": {
+    "max_tokens": 4000,
+    "max_tool_calls": 1,
+    "timeout_seconds": 120
+  },
+  "memory_refs": ["memory_market_assumptions_001"],
+  "scope_refs": ["scope.project.market-study"],
+  "created_at": "2026-09-19T08:00:00Z",
+  "items": [
+    {
+      "key": "current-market-evidence",
+      "value": "Evidence data supplied through the governed source boundary.",
+      "source_id": "source_market_report_001",
+      "evidence_id": "evidence_market_001",
+      "source_version": "2026-09",
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "anchor": "section:summary",
+      "data_classification": "INTERNAL",
+      "source_type": "INTERNAL",
+      "freshness": "CURRENT",
+      "reliability": "HIGH",
+      "content_trust": "GOVERNED",
+      "instruction_authority": false
+    }
+  ],
+  "evidence_refs": [
+    {
+      "tenant_id": "tenant_andara_001",
+      "organization_id": "org_andara_001",
+      "workspace_id": "workspace_research_001",
+      "run_id": "run_market_001",
+      "correlation_id": "corr_market_001",
+      "scope_refs": ["scope.project.market-study"],
+      "evidence_id": "evidence_market_001",
+      "source_id": "source_market_report_001",
+      "uri": "alos-evidence://market/report-001",
+      "captured_at": "2026-09-19T07:30:00Z",
+      "retrieved_at": "2026-09-19T07:45:00Z",
+      "content_hash": "sha256:aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+      "source_version": "2026-09",
+      "anchor": "section:summary",
+      "data_classification": "INTERNAL",
+      "validation_status": "VALID",
+      "source_type": "INTERNAL",
+      "freshness": "CURRENT",
+      "reliability": "HIGH",
+      "content_trust": "GOVERNED",
+      "instruction_authority": false
+    }
+  ]
+}

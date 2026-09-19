@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/research/research-decision.schema.json",
+  "title": "ResearchDecision",
+  "description": "Traceable, non-authoritative GENESIS research-source decision. Any external retrieval remains a Backend ToolExecutor operation.",
+  "type": "object",
+  "required": ["correlation_id", "decision", "domain", "selected_evidence_ids", "reasons", "external_content_trust"],
+  "properties": {
+    "research_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "decision": {
+      "type": "string",
+      "enum": ["USE_INTERNAL_SOURCE", "USE_MEMORY", "REQUEST_EXTERNAL_RESEARCH", "INSUFFICIENT_EVIDENCE", "NEEDS_INFORMATION"]
+    },
+    "domain": {
+      "type": "string",
+      "enum": ["TECHNOLOGY", "PROPERTY_BUSINESS", "MANAGEMENT", "PROPERTY_MARKET"]
+    },
+    "selected_evidence_ids": {
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id" },
+      "uniqueItems": true
+    },
+    "reasons": {
+      "description": "Audit-safe decision factors; hidden reasoning and chain-of-thought are forbidden.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 }
+    },
+    "retrieval": {
+      "oneOf": [
+        { "type": "null" },
+        {
+          "type": "object",
+          "required": ["boundary", "tool_id", "instruction_authority", "permission_expansion", "scope_expansion"],
+          "properties": {
+            "boundary": { "const": "BACKEND_TOOL_EXECUTOR" },
+            "tool_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+            "instruction_authority": { "const": false },
+            "permission_expansion": { "const": false },
+            "scope_expansion": { "const": false }
+          },
+          "additionalProperties": false
+        }
+      ]
+    },
+    "external_content_trust": { "const": "UNTRUSTED" }
+  },
+  "allOf": [
+    {
+      "if": { "properties": { "decision": { "const": "REQUEST_EXTERNAL_RESEARCH" } }, "required": ["decision"] },
+      "then": {
+        "required": ["retrieval"],
+        "properties": { "retrieval": { "type": "object" } }
+      },
+      "else": {
+        "properties": { "retrieval": { "type": "null" } }
+      }
+    }
+  ],
+  "additionalProperties": false
+}

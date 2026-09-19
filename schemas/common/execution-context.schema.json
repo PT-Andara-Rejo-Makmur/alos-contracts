@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.alos.dev/v1/common/execution-context.schema.json",
   "title": "ExecutionContext",
-  "description": "Tenant- and scope-aware execution metadata. Secrets and credentials are forbidden.",
+  "description": "Backend-issued tenant-, authority-, and scope-aware execution snapshot. Possession of this payload does not grant authority. Secrets and credentials are forbidden.",
   "type": "object",
   "required": ["tenant_id", "organization_id", "workspace_id", "actor_id", "authority_context", "scope_refs", "data_classification", "correlation_id"],
   "properties": {
@@ -21,8 +21,15 @@
       "additionalProperties": false
     },
     "permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true, "default": [] },
+    "allowed_tool_ids": {
+      "description": "Backend-authorized tool allowlist for this execution. GENESIS may only narrow this list; the field does not authorize direct tool execution.",
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+      "uniqueItems": true,
+      "default": []
+    },
     "scope_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-    "data_classification": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"] },
+    "data_classification": { "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json" },
     "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
     "execution_budget": { "$ref": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json" }
   },

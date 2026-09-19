@@ -1,0 +1,24 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/common/source-semantics.schema.json",
+  "title": "Canonical Source Semantics",
+  "description": "Shared source, freshness, reliability, and trust vocabulary. Source content is evidence data and never authority or an executable instruction.",
+  "$defs": {
+    "source_type": {
+      "type": "string",
+      "enum": ["INTERNAL", "EXTERNAL"]
+    },
+    "source_reliability": {
+      "type": "string",
+      "enum": ["UNVERIFIED", "LOW", "MEDIUM", "HIGH"]
+    },
+    "freshness_status": {
+      "type": "string",
+      "enum": ["CURRENT", "STALE", "UNKNOWN"]
+    },
+    "content_trust": {
+      "type": "string",
+      "enum": ["GOVERNED", "UNTRUSTED"]
+    }
+  }
+}

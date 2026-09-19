@@ -2,6 +2,24 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.3.0] - 2026-09-19
+
+### Ditambahkan
+
+- Contract alignment untuk `ExecutionContext`, `ContextBundle`, evidence lineage/source semantics, dan keputusan external research yang non-authoritative.
+- Vocabulary kanonis additive untuk data classification, `INTERNAL`/`EXTERNAL`, freshness, reliability, serta governed/untrusted content trust.
+- `ResearchDecision` dengan state `USE_INTERNAL_SOURCE`, `USE_MEMORY`, `REQUEST_EXTERNAL_RESEARCH`, `INSUFFICIENT_EVIDENCE`, dan `NEEDS_INFORMATION`.
+- Proposal external retrieval yang hanya menunjuk `BACKEND_TOOL_EXECUTOR` dan secara schema melarang instruction authority, permission expansion, dan scope expansion.
+- Contoh canonical dan regression test untuk correlation lineage, old-payload compatibility, enum rejection, external-content safety, authority boundary, serta public API exposure.
+- Generated TypeScript dan Python contract types yang reproducible dan diperiksa freshness-nya oleh CI.
+
+### Diubah
+
+- `ExecutionContext` menerima `allowed_tool_ids` opsional sebagai snapshot allowlist dari Backend; GENESIS hanya boleh mempersempitnya dan tetap tidak mengeksekusi tool secara langsung.
+- `ContextBundle` menerima field opsional untuk goal, capability, allowed tools, execution budget, memory references, dan source semantics tanpa mengekspos ranking, trimming, planner state, atau reasoning trace internal GENESIS.
+- `EvidenceRef` menerima lineage, scope, retrieval timestamp, source semantics, serta invariant bahwa evidence EXTERNAL selalu `UNTRUSTED` dan tidak mempunyai instruction authority.
+- `EvidenceBundle` menerima `scope_refs` opsional. Semua perubahan schema bersifat additive agar payload valid versi 1.2 tetap valid.
+
 ## [1.2.0] - 2026-09-19
 
 ### Ditambahkan

@@ -41,6 +41,7 @@ python scripts/validate_schemas.py
 python scripts/validate_openapi.py
 python scripts/check_examples.py
 python scripts/generate_typescript.py --check
+python scripts/generate_python.py --check
 python -m pytest
 ```
 
@@ -82,6 +83,7 @@ Rilis menggunakan Semantic Versioning. Menghapus field atau nilai enum, menambah
 - [Versioning](docs/VERSIONING.md)
 - [Kompatibilitas](docs/COMPATIBILITY.md)
 - [Migrasi Knowledge dan Research MVP-1](docs/MVP1_KNOWLEDGE_RESEARCH_MIGRATION.md)
+- [Context, Evidence, and Research Contracts](docs/CONTEXT_EVIDENCE_RESEARCH_CONTRACTS.md)
 - [Struktur folder](docs/FOLDER_STRUCTURE.md)
 - [Panduan kontribusi](CONTRIBUTING.md)
 

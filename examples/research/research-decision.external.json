@@ -1,0 +1,18 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/research/research-decision.schema.json",
+  "research_id": "research_external_001",
+  "run_id": "run_external_research_001",
+  "correlation_id": "corr_external_research_001",
+  "decision": "REQUEST_EXTERNAL_RESEARCH",
+  "domain": "PROPERTY_MARKET",
+  "selected_evidence_ids": [],
+  "reasons": ["External evidence retrieval is required and authorized via Backend."],
+  "retrieval": {
+    "boundary": "BACKEND_TOOL_EXECUTOR",
+    "tool_id": "research.external.retrieve",
+    "instruction_authority": false,
+    "permission_expansion": false,
+    "scope_expansion": false
+  },
+  "external_content_trust": "UNTRUSTED"
+}

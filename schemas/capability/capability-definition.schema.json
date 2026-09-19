@@ -28,7 +28,7 @@
     "output_schema_ref": { "type": "string", "format": "uri" },
     "scope_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-    "allowed_data_classifications": { "type": "array", "items": { "type": "string", "enum": ["PUBLIC", "INTERNAL", "CONFIDENTIAL", "RESTRICTED"] }, "uniqueItems": true },
+    "allowed_data_classifications": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json" }, "uniqueItems": true },
     "backing_tool_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
     "constraints": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "metadata": { "type": "object" },
