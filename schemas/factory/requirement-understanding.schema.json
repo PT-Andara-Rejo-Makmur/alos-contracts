@@ -1,0 +1,32 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/factory/requirement-understanding.schema.json",
+  "title": "RequirementUnderstanding",
+  "description": "Canonical RequirementUnderstanding stage produced by GENESIS. Every field is a non-authoritative semantic proposal; the ALOS Backend stays the source of truth for identity, scope, permission, lifecycle, approval, and release. MVP2 additive fields (objective, trigger, capability_need, data_need, source_semantics, ambiguity) are optional on the v1 line so MVP1 payloads stay valid.",
+  "type": "object",
+  "required": ["normalized_intent", "domains", "candidate_capability_ids", "recommended_type", "risk_level", "requires_agent", "rationale"],
+  "properties": {
+    "requirement_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/requirement_id",
+      "description": "Echo of the Backend-owned requirement_id. GENESIS must never invent or alter it."
+    },
+    "objective": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "trigger": { "type": "string", "minLength": 1, "maxLength": 2000 },
+    "capability_need": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "data_need": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "source_semantics": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "ambiguity": {
+      "type": "string",
+      "enum": ["NONE", "NEEDS_CLARIFICATION"],
+      "description": "AI-proposed ambiguity signal. NEEDS_CLARIFICATION must make the Backend fail closed with REQUIREMENT_AMBIGUOUS; it never grants or removes authority."
+    },
+    "normalized_intent": { "type": "string", "minLength": 1 },
+    "domains": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "candidate_capability_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" }, "uniqueItems": true },
+    "recommended_type": { "type": "string", "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE"] },
+    "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+    "requires_agent": { "type": "boolean" },
+    "rationale": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+  },
+  "additionalProperties": false
+}

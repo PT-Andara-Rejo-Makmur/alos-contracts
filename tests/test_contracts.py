@@ -36,6 +36,10 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/release/release-state.schema.json",
     f"{SCHEMA_BASE}/runtime/run-status.schema.json",
     f"{SCHEMA_BASE}/factory/capability-catalog-item.schema.json",
+    f"{SCHEMA_BASE}/factory/requirement.schema.json",
+    f"{SCHEMA_BASE}/factory/requirement-understanding.schema.json",
+    f"{SCHEMA_BASE}/factory/capability-decision.schema.json",
+    f"{SCHEMA_BASE}/capability/capability-detail.schema.json",
     f"{SCHEMA_BASE}/factory/factory-resolution.schema.json",
     f"{SCHEMA_BASE}/factory/registry-handoff.schema.json",
     f"{SCHEMA_BASE}/factory/factory-analyze-request.schema.json",
@@ -65,6 +69,7 @@ CANONICAL_IDENTIFIERS = {
     "decision_id",
     "release_id",
     "correlation_id",
+    "requirement_id",
 }
 
 MVP1_COMPATIBILITY_FIXTURES = [

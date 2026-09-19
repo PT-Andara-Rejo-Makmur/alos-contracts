@@ -2,6 +2,23 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.2.0] - 2026-09-19
+
+### Ditambahkan
+
+- Contract Freeze MVP2 untuk alur Requirement → RequirementUnderstanding → CapabilityDecision → CapabilityDraft → CapabilityDetail.
+- Schema stage canonical baru (additive, non-breaking): `factory/requirement.schema.json`, `factory/requirement-understanding.schema.json`, `factory/capability-decision.schema.json`, `capability/capability-detail.schema.json`.
+- Identifier kanonis `requirement_id` dan tautan Backend→GENESIS→Backend yang diverifikasi Backend.
+- Field MVP2 opsional pada `RequirementUnderstanding`: `objective`, `trigger`, `capability_need`, `data_need`, `source_semantics`, `ambiguity` (`NONE` | `NEEDS_CLARIFICATION`).
+- Field MVP2 opsional pada `CapabilityDecision` dan `CapabilityDraft`: `human_gate_required` (proposal AI; Backend governance tetap wajib human gate), `dependency_refs` pada draft.
+- Public endpoint `GET /api/v1/capabilities/{capability_id}` dengan proyeksi `CapabilityDetail` yang ter-autorisasi: DRAFT hanya untuk creator, konsumen lain hanya ACTIVE yang diotorisasi, state lain fail-closed 404.
+- Error contract terfrozen: `REQUIREMENT_AMBIGUOUS` (422), `CAPABILITY_NOT_FOUND` (404), `CAPABILITY_NOT_AUTHORIZED` (403), `GENESIS_HUMAN_GATE_REQUIRED` (502), dan `INTERNAL_PROCESSING_FAILURE` (500, tanpa stack trace/SQL/schema).
+
+### Diubah
+
+- `factory-analysis-request.schema.json` kini `$ref` ke `requirement.schema.json` (format payload identik dengan 1.1.0).
+- `factory-resolution.schema.json` kini `$ref` ke `capability-decision.schema.json` (format payload identik dengan 1.1.0).
+
 ## [1.1.0] - 2026-09-18
 
 ### Ditambahkan

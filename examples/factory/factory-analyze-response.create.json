@@ -24,7 +24,8 @@
     "risk_level": "MEDIUM",
     "evidence_requirements": ["Cite every material conclusion to immutable evidence."],
     "test_requirements": ["Valid authorized input produces schema-valid output."],
-    "constraints": ["Backend governance approval is required before activation."]
+    "constraints": ["Backend governance approval is required before activation."],
+    "human_gate_required": true
   },
   "agent_draft": null,
   "registry_result": {

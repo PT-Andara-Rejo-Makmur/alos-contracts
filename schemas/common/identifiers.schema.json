@@ -33,6 +33,7 @@
     "decision_id": { "$ref": "#/$defs/canonical_id" },
     "release_id": { "$ref": "#/$defs/canonical_id" },
     "correlation_id": { "$ref": "#/$defs/canonical_id" },
+    "requirement_id": { "$ref": "#/$defs/canonical_id" },
     "event_id": { "$ref": "#/$defs/canonical_id" }
   }
 }

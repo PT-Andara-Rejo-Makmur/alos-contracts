@@ -159,3 +159,136 @@ def test_factory_openapi_boundaries_are_frozen():
 
 def test_generated_typescript_is_current():
     assert TYPESCRIPT_OUTPUT.read_text(encoding="utf-8") == render_typescript()
+
+
+# ---------------------------------------------------------------------------
+# MVP2 stage contract freeze (M2-H01-BE-02):
+# Requirement -> RequirementUnderstanding -> CapabilityDecision ->
+# CapabilityDraft -> CapabilityDetail
+# ---------------------------------------------------------------------------
+
+
+STAGE_BASE = f"{SCHEMA_BASE}/factory"
+CAPABILITY_BASE = f"{SCHEMA_BASE}/capability"
+
+_UNDERSTANDING_MVP2_FIELDS = {
+    "requirement_id",
+    "objective",
+    "trigger",
+    "capability_need",
+    "data_need",
+    "source_semantics",
+    "ambiguity",
+}
+
+
+def test_requirement_stage_is_typed_and_backend_owned(load_json, schemas, registry):
+    request = without_schema(load_json("examples/factory/factory-analysis-request.json"))
+    validate(f"{STAGE_BASE}/requirement.schema.json", request["requirement"], schemas, registry)
+
+    assert request["requirement"]["requirement_id"] == "req_corr_factory_001"
+
+    injected = copy.deepcopy(request["requirement"])
+    injected["scope_refs"] = ["scope.workspace.other"]
+    with pytest.raises(ValidationError):
+        validate(f"{STAGE_BASE}/requirement.schema.json", injected, schemas, registry)
+
+
+def test_requirement_understanding_stage_is_typed(load_json, schemas, registry):
+    result = without_schema(load_json("examples/factory/factory-analysis-result.create.json"))
+    understanding = result["resolution"]["understanding"]
+    validate(f"{STAGE_BASE}/requirement-understanding.schema.json", understanding, schemas, registry)
+
+    assert understanding["requirement_id"] == "req_corr_factory_001"
+    assert understanding["ambiguity"] == "NONE"
+
+    legacy = {
+        key: value
+        for key, value in understanding.items()
+        if key not in _UNDERSTANDING_MVP2_FIELDS
+    }
+    validate(f"{STAGE_BASE}/requirement-understanding.schema.json", legacy, schemas, registry)
+
+    forged = copy.deepcopy(understanding)
+    forged["authority_level"] = "DIRECTOR_APPROVER"
+    with pytest.raises(ValidationError):
+        validate(f"{STAGE_BASE}/requirement-understanding.schema.json", forged, schemas, registry)
+
+
+def test_capability_decision_stage_is_typed(load_json, schemas, registry):
+    result = without_schema(load_json("examples/factory/factory-analysis-result.create.json"))
+    resolution = result["resolution"]
+    validate(f"{STAGE_BASE}/capability-decision.schema.json", resolution, schemas, registry)
+    validate(f"{STAGE_BASE}/factory-resolution.schema.json", resolution, schemas, registry)
+
+    ambiguous = copy.deepcopy(resolution)
+    ambiguous["understanding"]["ambiguity"] = "NEEDS_CLARIFICATION"
+    validate(f"{STAGE_BASE}/capability-decision.schema.json", ambiguous, schemas, registry)
+
+    invalid = copy.deepcopy(resolution)
+    invalid["decision"] = "ACTIVATE"
+    with pytest.raises(ValidationError):
+        validate(f"{STAGE_BASE}/capability-decision.schema.json", invalid, schemas, registry)
+
+    legacy = {key: value for key, value in resolution.items() if key != "human_gate_required"}
+    legacy["understanding"] = {
+        key: value
+        for key, value in legacy["understanding"].items()
+        if key not in _UNDERSTANDING_MVP2_FIELDS
+    }
+    validate(f"{STAGE_BASE}/capability-decision.schema.json", legacy, schemas, registry)
+
+
+def test_capability_draft_stage_keeps_human_gate_and_dependency_fields(
+    load_json, schemas, registry
+):
+    result = without_schema(load_json("examples/factory/factory-analysis-result.create.json"))
+    draft = result["capability_draft"]
+    validate(f"{CAPABILITY_BASE}/capability-draft.schema.json", draft, schemas, registry)
+    assert draft["human_gate_required"] is True
+
+    with_dependencies = copy.deepcopy(draft)
+    with_dependencies["dependency_refs"] = ["capability_existing_report"]
+    validate(f"{CAPABILITY_BASE}/capability-draft.schema.json", with_dependencies, schemas, registry)
+
+    legacy = {key: value for key, value in draft.items() if key != "human_gate_required"}
+    validate(f"{CAPABILITY_BASE}/capability-draft.schema.json", legacy, schemas, registry)
+
+
+def test_capability_detail_schema_is_typed_and_closed(schemas, registry):
+    detail = {
+        "capability_id": "capability_operational_report",
+        "version": "0.1.0",
+        "name": "Operational Report",
+        "purpose": "Buat laporan ringkas status operasional.",
+        "owner": "actor_manager",
+        "capability_type": "REPORT",
+        "lifecycle_state": "DRAFT",
+        "risk_level": "MEDIUM",
+        "availability": "UNAVAILABLE",
+        "configuration_status": "NEEDS_CONFIGURATION",
+        "scope_refs": ["scope.workspace.operations"],
+        "permission_refs": ["report.read"],
+        "backing_tool_ids": [],
+        "prohibited_actions": ["Approve or release its own proposal."],
+        "evidence_requirements": ["Cite every material conclusion to immutable evidence."],
+        "test_requirements": ["Valid authorized input produces schema-valid output."],
+        "human_gate_required": True,
+        "created_by": "actor_manager",
+        "correlation_id": "corr_factory_001",
+        "created_at": "2026-09-19T08:00:00+00:00",
+        "dependency_refs": ["capability_existing_report"],
+        "decision_id": "decision_it_001",
+        "release_id": "release_001",
+    }
+    validate(f"{CAPABILITY_BASE}/capability-detail.schema.json", detail, schemas, registry)
+
+    leaked = copy.deepcopy(detail)
+    leaked["sql_query"] = "SELECT * FROM capabilities"
+    with pytest.raises(ValidationError):
+        validate(f"{CAPABILITY_BASE}/capability-detail.schema.json", leaked, schemas, registry)
+
+    active = copy.deepcopy(detail)
+    active["lifecycle_state"] = "PAUSED"
+    with pytest.raises(ValidationError):
+        validate(f"{CAPABILITY_BASE}/capability-detail.schema.json", active, schemas, registry)

@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/factory/requirement.schema.json",
+  "title": "Requirement",
+  "description": "Canonical Requirement stage. The ALOS Backend owns identity, scope, permission, and correlation context; the submitting client and GENESIS can never supply authority. objective, trigger, capability need, and ambiguity semantics are produced downstream by RequirementUnderstanding, not by this stage.",
+  "type": "object",
+  "required": ["execution_context", "statement"],
+  "properties": {
+    "requirement_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/requirement_id",
+      "description": "Backend-derived stable identifier for this requirement. GENESIS must echo it unchanged in RequirementUnderstanding."
+    },
+    "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" },
+    "statement": { "type": "string", "minLength": 20, "maxLength": 10000 },
+    "preferred_capability_type": { "type": "string", "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE"] }
+  },
+  "additionalProperties": false
+}

@@ -6,16 +6,7 @@
   "type": "object",
   "required": ["requirement", "capability_catalog"],
   "properties": {
-    "requirement": {
-      "type": "object",
-      "required": ["execution_context", "statement"],
-      "properties": {
-        "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" },
-        "statement": { "type": "string", "minLength": 20, "maxLength": 10000 },
-        "preferred_capability_type": { "type": "string", "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE"] }
-      },
-      "additionalProperties": false
-    },
+    "requirement": { "$ref": "https://schemas.alos.dev/v1/factory/requirement.schema.json" },
     "capability_catalog": {
       "type": "array",
       "items": { "$ref": "https://schemas.alos.dev/v1/factory/capability-catalog-item.schema.json" }

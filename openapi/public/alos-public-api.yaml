@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ALOS Public API
-  version: 1.1.0
+  version: 1.2.0
   description: >-
     The public contract exposed by the authoritative ALOS Backend. ARA, GIIVEPRO,
     and other frontend clients use this API and never call GENESIS directly.
@@ -59,6 +59,33 @@ paths:
         "502":
           $ref: "#/components/responses/ErrorResponse"
         "503":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/v1/capabilities/{capability_id}:
+    parameters:
+      - $ref: "#/components/parameters/CapabilityId"
+    get:
+      operationId: getCapabilityDetail
+      summary: Get the authoritative detail of a registered capability version
+      description: >-
+        Returns the Backend-owned CapabilityDetail projection: governance lifecycle,
+        scope, permission, tool, risk, and approval lineage. No database or registry
+        storage detail is exposed. A DRAFT is visible only to its creator; other
+        consumers only see authorized ACTIVE versions. All other lifecycle states
+        fail closed as not found.
+      responses:
+        "200":
+          description: Authorized capability detail projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/capability/capability-detail.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+        "404":
+          $ref: "#/components/responses/ErrorResponse"
+        "500":
           $ref: "#/components/responses/ErrorResponse"
   /v1/agent-runs:
     post:
@@ -132,6 +159,12 @@ components:
       required: true
       schema:
         $ref: ../../schemas/common/identifiers.schema.json#/$defs/run_id
+    CapabilityId:
+      name: capability_id
+      in: path
+      required: true
+      schema:
+        $ref: ../../schemas/common/identifiers.schema.json#/$defs/capability_id
   responses:
     ErrorResponse:
       description: Contract error

@@ -2,6 +2,7 @@
 // Source of truth: alos-contracts JSON Schemas and public OpenAPI.
 
 export const FACTORY_ANALYZE_PATH = "/api/v1/genesis/factory/analyze" as const;
+export const CAPABILITY_DETAIL_PATH = "/api/v1/capabilities" as const;
 
 export type CapabilityType = "AGENT" | "SKILL" | "WORKFLOW" | "RULE" | "VALIDATOR" | "REPORT" | "HUMAN_TASK" | "SCHEDULE" | "EVENT_HANDLER" | "CONNECTOR_REQUIREMENT" | "TOOL_REQUIREMENT" | "COMPOSITE";
 export type FactoryDecision = "REUSE" | "CREATE";
@@ -51,6 +52,37 @@ export interface CapabilityDraft {
   readonly evidence_requirements: readonly string[];
   readonly test_requirements: readonly string[];
   readonly constraints?: readonly string[];
+  readonly human_gate_required?: boolean;
+  readonly dependency_refs?: readonly string[];
+}
+
+export type CapabilityLifecycleState = "DRAFT" | "APPROVED" | "ACTIVE" | "SUSPENDED" | "RETIRED";
+
+export interface CapabilityDetail {
+  readonly capability_id: string;
+  readonly version: string;
+  readonly name: string;
+  readonly purpose: string;
+  readonly owner: string;
+  readonly capability_type: CapabilityType;
+  readonly lifecycle_state: CapabilityLifecycleState;
+  readonly risk_level: RiskLevel;
+  readonly availability: CapabilityAvailability;
+  readonly configuration_status: CapabilityConfigurationStatus;
+  readonly scope_refs: readonly string[];
+  readonly permission_refs: readonly string[];
+  readonly backing_tool_ids: readonly string[];
+  readonly prohibited_actions: readonly string[];
+  readonly evidence_requirements: readonly string[];
+  readonly test_requirements: readonly string[];
+  readonly constraints?: readonly string[];
+  readonly dependency_refs?: readonly string[];
+  readonly human_gate_required: boolean;
+  readonly decision_id?: string;
+  readonly release_id?: string;
+  readonly created_by: string;
+  readonly correlation_id: string;
+  readonly created_at: string;
 }
 
 export interface AgentDraft {
@@ -133,4 +165,26 @@ export async function analyzeFactory(
   const payload: unknown = await response.json();
   if (!response.ok) throw new AlosContractError(payload as ContractError);
   return payload as FactoryAnalyzeResponse;
+}
+
+export async function getCapabilityDetail(
+  baseUrl: string,
+  capabilityId: string,
+  init: Omit<RequestInit, "body" | "method"> = {},
+  fetcher: typeof fetch = fetch,
+): Promise<CapabilityDetail> {
+  const response = await fetcher(
+    `${baseUrl.replace(/\\/$/, "")}${CAPABILITY_DETAIL_PATH}/${encodeURIComponent(capabilityId)}`,
+    {
+      ...init,
+      method: "GET",
+      headers: {
+        Accept: "application/json",
+        ...init.headers,
+      },
+    },
+  );
+  const payload: unknown = await response.json();
+  if (!response.ok) throw new AlosContractError(payload as ContractError);
+  return payload as CapabilityDetail;
 }

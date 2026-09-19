@@ -3,6 +3,13 @@
   "correlation_id": "corr_factory_001",
   "resolution": {
     "understanding": {
+      "requirement_id": "req_corr_factory_001",
+      "objective": "Menyediakan laporan ringkas status operasional untuk review manajemen.",
+      "trigger": "Permintaan manajemen atas ringkasan status operasional berkala.",
+      "capability_need": ["Menghasilkan laporan ringkas dari data operasional terotorisasi."],
+      "data_need": ["Catatan operasional ruang lingkup workspace."],
+      "source_semantics": ["Interpretasi semantic atas requirement Backend; tanpa akses data aktual."],
+      "ambiguity": "NONE",
       "normalized_intent": "buat laporan ringkas status operasional untuk direview oleh manajemen",
       "domains": ["general"],
       "candidate_capability_ids": ["report.generate"],
@@ -21,7 +28,8 @@
     "required_permission_refs": [],
     "evidence_requirements": ["Cite every material conclusion to immutable evidence."],
     "test_requirements": ["Valid authorized input produces schema-valid output."],
-    "activation_readiness": "NEEDS_CONFIGURATION"
+    "activation_readiness": "NEEDS_CONFIGURATION",
+    "human_gate_required": true
   },
   "existing_capability_refs": [],
   "capability_draft": {
@@ -44,7 +52,8 @@
     "risk_level": "MEDIUM",
     "evidence_requirements": ["Cite every material conclusion to immutable evidence."],
     "test_requirements": ["Valid authorized input produces schema-valid output."],
-    "constraints": ["Backend governance approval is required before activation."]
+    "constraints": ["Backend governance approval is required before activation."],
+    "human_gate_required": true
   },
   "agent_draft": null,
   "missing_dependencies": ["report.generate"],

@@ -1,6 +1,7 @@
 {
   "$schema": "https://schemas.alos.dev/v1/factory/factory-analysis-request.schema.json",
   "requirement": {
+    "requirement_id": "req_corr_factory_001",
     "execution_context": {
       "tenant_id": "tenant_andara",
       "organization_id": "organization_andara",

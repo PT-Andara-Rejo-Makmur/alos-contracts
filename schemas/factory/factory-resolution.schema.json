@@ -2,34 +2,6 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.alos.dev/v1/factory/factory-resolution.schema.json",
   "title": "FactoryResolution",
-  "type": "object",
-  "required": ["understanding", "decision", "reason", "purpose", "scope_refs", "resolved", "missing_capability_ids", "required_tool_ids", "required_permission_refs", "evidence_requirements", "test_requirements", "activation_readiness"],
-  "properties": {
-    "understanding": {
-      "type": "object",
-      "required": ["normalized_intent", "domains", "candidate_capability_ids", "recommended_type", "risk_level", "requires_agent", "rationale"],
-      "properties": {
-        "normalized_intent": { "type": "string", "minLength": 1 },
-        "domains": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-        "candidate_capability_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" }, "uniqueItems": true },
-        "recommended_type": { "type": "string", "enum": ["AGENT", "SKILL", "WORKFLOW", "RULE", "VALIDATOR", "REPORT", "HUMAN_TASK", "SCHEDULE", "EVENT_HANDLER", "CONNECTOR_REQUIREMENT", "TOOL_REQUIREMENT", "COMPOSITE"] },
-        "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
-        "requires_agent": { "type": "boolean" },
-        "rationale": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
-      },
-      "additionalProperties": false
-    },
-    "decision": { "type": "string", "enum": ["REUSE", "CREATE"] },
-    "reason": { "type": "string", "minLength": 1 },
-    "purpose": { "type": "string", "minLength": 1 },
-    "scope_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-    "resolved": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/factory/capability-catalog-item.schema.json" }, "uniqueItems": true },
-    "missing_capability_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" }, "uniqueItems": true },
-    "required_tool_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
-    "required_permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-    "evidence_requirements": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-    "test_requirements": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-    "activation_readiness": { "type": "string", "enum": ["READY_FOR_REUSE", "READY_FOR_DRAFT", "NEEDS_CONFIGURATION"] }
-  },
-  "additionalProperties": false
+  "description": "Canonical GENESIS resolution. The stage contract is frozen as CapabilityDecision; this document is the v1 alias retained for existing $ref consumers.",
+  "$ref": "https://schemas.alos.dev/v1/factory/capability-decision.schema.json"
 }

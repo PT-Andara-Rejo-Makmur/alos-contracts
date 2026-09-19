@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/factory/capability-decision.schema.json",
+  "title": "CapabilityDecision",
+  "description": "Canonical CapabilityDecision/Proposal stage produced by GENESIS and enforced by the ALOS Backend. implementation_type is carried by understanding.recommended_type, rationale by reason, risk by understanding.risk_level, tool_requirements by required_tool_ids, permission_requirements by required_permission_refs, and proposal status by activation_readiness. human_gate_required is a proposal only: the Backend governance layer always decides the human gate.",
+  "type": "object",
+  "required": ["understanding", "decision", "reason", "purpose", "scope_refs", "resolved", "missing_capability_ids", "required_tool_ids", "required_permission_refs", "evidence_requirements", "test_requirements", "activation_readiness"],
+  "properties": {
+    "understanding": { "$ref": "https://schemas.alos.dev/v1/factory/requirement-understanding.schema.json" },
+    "decision": { "type": "string", "enum": ["REUSE", "CREATE"] },
+    "reason": { "type": "string", "minLength": 1 },
+    "purpose": { "type": "string", "minLength": 1 },
+    "scope_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "resolved": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/factory/capability-catalog-item.schema.json" }, "uniqueItems": true },
+    "missing_capability_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" }, "uniqueItems": true },
+    "required_tool_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
+    "required_permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "evidence_requirements": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "test_requirements": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "activation_readiness": { "type": "string", "enum": ["READY_FOR_REUSE", "READY_FOR_DRAFT", "NEEDS_CONFIGURATION"] },
+    "human_gate_required": {
+      "type": "boolean",
+      "description": "AI proposal for a human gate. The Backend governance layer mandates a human gate for activation regardless of this value; a proposal of false is rejected fail-closed."
+    }
+  },
+  "additionalProperties": false
+}

@@ -33,7 +33,17 @@
     "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
     "evidence_requirements": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
     "test_requirements": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
-    "constraints": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true }
+    "constraints": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "human_gate_required": {
+      "type": "boolean",
+      "description": "AI proposal for a human approval gate. Backend governance mandates the gate regardless; a proposal of false is rejected fail-closed."
+    },
+    "dependency_refs": {
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
+      "uniqueItems": true,
+      "description": "Capability versions this draft composes. Proposal-only; Backend verifies every reference against the authoritative catalog."
+    }
   },
   "anyOf": [
     { "required": ["capability_type"] },
