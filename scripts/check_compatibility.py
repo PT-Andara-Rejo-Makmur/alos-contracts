@@ -3,9 +3,10 @@
 from __future__ import annotations
 
 import argparse
+import copy
 import json
 import subprocess
-from pathlib import Path
+from typing import Any
 
 if __package__:
     from .validate_schemas import ROOT
@@ -19,6 +20,37 @@ APPROVED_BREAKING_CHANGES_PATH = ROOT / "compatibility" / "approved-breaking-cha
 def git_command(*args: str) -> list[str]:
     """Build a git command that also works in sandboxed Windows audit users."""
     return ["git", "-c", f"safe.directory={ROOT.as_posix()}", *args]
+
+
+def resolve_refs(document: dict[str, Any], schemas: dict[str, dict[str, Any]]) -> dict[str, Any]:
+    """Materialize local canonical $refs before comparing schema constraints.
+
+    A schema may evolve from an inline object to a reusable canonical schema without
+    changing its consumer-facing contract. Compatibility checks must compare the
+    effective schemas, not their storage form.
+    """
+
+    def resolve(value: Any, resolving: tuple[str, ...] = ()) -> Any:
+        if isinstance(value, list):
+            return [resolve(item, resolving) for item in value]
+        if not isinstance(value, dict):
+            return value
+        reference = value.get("$ref")
+        if isinstance(reference, str) and reference in schemas and reference not in resolving:
+            target = resolve(schemas[reference], (*resolving, reference))
+            siblings = {
+                key: resolve(item, resolving)
+                for key, item in value.items()
+                if key != "$ref"
+            }
+            if isinstance(target, dict):
+                merged = copy.deepcopy(target)
+                merged.update(siblings)
+                return merged
+            return target
+        return {key: resolve(item, resolving) for key, item in value.items() if key != "$id"}
+
+    return resolve(document)
 
 
 def breaking_changes(old: dict, new: dict, location: str = "$") -> list[str]:
@@ -66,6 +98,24 @@ def git_text(ref: str, path: str) -> str:
     return result.stdout
 
 
+def schema_documents(ref: str | None = None) -> dict[str, dict[str, Any]]:
+    paths = (
+        baseline_paths(ref) if ref is not None else {
+            path.relative_to(ROOT).as_posix()
+            for pattern in ("schemas/**/*.schema.json", "events/**/*.schema.json")
+            for path in ROOT.glob(pattern)
+        }
+    )
+    documents: dict[str, dict[str, Any]] = {}
+    for path in paths:
+        raw = git_text(ref, path) if ref is not None else (ROOT / path).read_text(encoding="utf-8")
+        document = json.loads(raw)
+        schema_id = document.get("$id")
+        if isinstance(schema_id, str):
+            documents[schema_id] = document
+    return documents
+
+
 def baseline_paths(ref: str) -> set[str]:
     result = subprocess.run(
         git_command("ls-tree", "-r", "--name-only", ref),
@@ -76,7 +126,7 @@ def baseline_paths(ref: str) -> set[str]:
     )
     return {
         line for line in result.stdout.splitlines()
-        if line.endswith(".schema.json") and (line.startswith("schemas/") or line.startswith("events/"))
+        if line.endswith(".schema.json") and line.startswith(("schemas/", "events/"))
     }
 
 
@@ -88,11 +138,15 @@ def compare_ref(ref: str) -> list[str]:
         for path in ROOT.glob(pattern)
     }
     previous = baseline_paths(ref)
+    old_documents = schema_documents(ref)
+    new_documents = schema_documents()
     for removed in sorted(previous - set(current)):
         violations.append(f"{removed}: schema removed")
     for relative_path in sorted(previous & set(current)):
-        old = json.loads(git_text(ref, relative_path))
-        new = json.loads(current[relative_path].read_text(encoding="utf-8"))
+        old = resolve_refs(json.loads(git_text(ref, relative_path)), old_documents)
+        new = resolve_refs(
+            json.loads(current[relative_path].read_text(encoding="utf-8")), new_documents
+        )
         violations.extend(f"{relative_path}: {item}" for item in breaking_changes(old, new))
     return violations
 
