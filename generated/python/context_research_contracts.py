@@ -12,6 +12,10 @@ ContentTrust = Literal['GOVERNED', 'UNTRUSTED']
 EvidenceValidationStatus = Literal['PENDING', 'VALID', 'INVALID', 'WAIVED']
 ResearchDecisionKind = Literal['USE_INTERNAL_SOURCE', 'USE_MEMORY', 'REQUEST_EXTERNAL_RESEARCH', 'INSUFFICIENT_EVIDENCE', 'NEEDS_INFORMATION']
 ResearchDomain = Literal['TECHNOLOGY', 'PROPERTY_BUSINESS', 'MANAGEMENT', 'PROPERTY_MARKET']
+ContextLifecycleState = Literal['ACTIVE', 'DENIED', 'NEEDS_INFORMATION', 'UNAVAILABLE']
+ResearchDomainAccessStatus = Literal['AUTHORIZED', 'DENIED', 'UNAVAILABLE']
+ResearchSourceMode = Literal['INTERNAL', 'EXTERNAL']
+ResearchRequestState = Literal['RECEIVED', 'NEEDS_REVIEW']
 
 
 class ExecutionBudget(TypedDict, total=False):
@@ -117,6 +121,24 @@ class ContextBundle(TypedDict, total=False):
     evidence_refs: list[EvidenceRef]
 
 
+class ContextProjection(TypedDict, total=False):
+    status: Required[ContextLifecycleState]
+    context_id: str
+    tenant_id: str
+    organization_id: str
+    workspace_id: str
+    actor_id: str
+    goal: str
+    capability_id: str
+    data_classification: DataClassification
+    scope_refs: list[str]
+    evidence_refs: list[EvidenceRef]
+    items: list[ContextItem]
+    needs_info_reason: str
+    denial_reason: str
+    correlation_id: Required[str]
+
+
 class BackendRetrievalProposal(TypedDict):
     boundary: Literal['BACKEND_TOOL_EXECUTOR']
     tool_id: str
@@ -135,3 +157,29 @@ class ResearchDecision(TypedDict, total=False):
     reasons: Required[list[str]]
     retrieval: BackendRetrievalProposal | None
     external_content_trust: Required[Literal['UNTRUSTED']]
+
+
+class ResearchDomainAccessRecord(TypedDict, total=False):
+    domain: Required[ResearchDomain]
+    status: Required[ResearchDomainAccessStatus]
+    is_allowed: Required[bool]
+    reason: Required[str]
+    required_scope: str
+
+
+class ResearchDomainAccessResponse(TypedDict):
+    domains: list[ResearchDomainAccessRecord]
+    correlation_id: str
+
+
+class ResearchRequest(TypedDict):
+    question: str
+    source_mode: ResearchSourceMode
+    domain: ResearchDomain
+
+
+class ResearchRequestReceipt(TypedDict):
+    request_id: str
+    state: ResearchRequestState
+    correlation_id: str
+    decision: ResearchDecisionKind

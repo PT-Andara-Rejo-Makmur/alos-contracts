@@ -11,6 +11,64 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/genesis/context-options:
+    get:
+      operationId: getActiveContextProjection
+      summary: Get the Backend-authoritative active-context projection
+      description: >-
+        Returns only context state safe for frontend projection. Missing scope fails
+        closed and raw permission or tool authorization snapshots are never exposed.
+      responses:
+        "200":
+          description: Current context lifecycle projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/context/context-projection.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/v1/research/domain-access:
+    get:
+      operationId: getResearchDomainAccess
+      summary: Get Backend-calculated access for all canonical research domains
+      responses:
+        "200":
+          description: Domain access projection; the client must not recalculate authority
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/research/domain-access-response.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/v1/research/requests:
+    post:
+      operationId: requestResearchDecision
+      summary: Request a Backend-governed GENESIS research-source decision
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/research/public-research-request.schema.json
+      responses:
+        "200":
+          description: Safe receipt containing the traceable research decision
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/research/research-request-receipt.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/ErrorResponse"
+        "502":
+          $ref: "#/components/responses/ErrorResponse"
+        "503":
+          $ref: "#/components/responses/ErrorResponse"
   /api/v1/genesis/factory/analyze:
     post:
       operationId: analyzeFactoryRequirement

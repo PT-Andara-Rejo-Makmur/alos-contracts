@@ -174,7 +174,7 @@ export async function getCapabilityDetail(
   fetcher: typeof fetch = fetch,
 ): Promise<CapabilityDetail> {
   const response = await fetcher(
-    `${baseUrl.replace(/\\/$/, "")}${CAPABILITY_DETAIL_PATH}/${encodeURIComponent(capabilityId)}`,
+    `${baseUrl.replace(/\/$/, "")}${CAPABILITY_DETAIL_PATH}/${encodeURIComponent(capabilityId)}`,
     {
       ...init,
       method: "GET",

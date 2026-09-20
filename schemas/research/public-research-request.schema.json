@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/research/public-research-request.schema.json",
+  "title": "PublicResearchRequest",
+  "description": "Public research request. Backend derives all identity, authority, scope, tool, and execution context.",
+  "type": "object",
+  "required": ["question", "source_mode", "domain"],
+  "properties": {
+    "question": { "type": "string", "minLength": 10, "maxLength": 10000 },
+    "source_mode": { "type": "string", "enum": ["INTERNAL", "EXTERNAL"] },
+    "domain": { "type": "string", "enum": ["TECHNOLOGY", "PROPERTY_BUSINESS", "MANAGEMENT", "PROPERTY_MARKET"] }
+  },
+  "additionalProperties": false
+}

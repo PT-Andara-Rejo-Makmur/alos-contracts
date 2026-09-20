@@ -1,0 +1,7 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/research/research-request-receipt.schema.json",
+  "request_id": "research_public_001",
+  "state": "NEEDS_REVIEW",
+  "correlation_id": "corr_research_public_001",
+  "decision": "REQUEST_EXTERNAL_RESEARCH"
+}

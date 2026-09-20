@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/research/research-analysis-request.schema.json",
+  "title": "ResearchAnalysisRequest",
+  "description": "Backend-issued internal request for a non-authoritative GENESIS research-source decision.",
+  "type": "object",
+  "required": ["question", "source_mode", "domain", "execution_context"],
+  "properties": {
+    "question": { "type": "string", "minLength": 10, "maxLength": 10000 },
+    "source_mode": { "type": "string", "enum": ["INTERNAL", "EXTERNAL"] },
+    "domain": { "type": "string", "enum": ["TECHNOLOGY", "PROPERTY_BUSINESS", "MANAGEMENT", "PROPERTY_MARKET"] },
+    "execution_context": { "$ref": "https://schemas.alos.dev/v1/common/execution-context.schema.json" }
+  },
+  "additionalProperties": false
+}

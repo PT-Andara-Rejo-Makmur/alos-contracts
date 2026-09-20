@@ -13,6 +13,33 @@ servers:
 security:
   - serviceAuth: []
 paths:
+  /internal/v1/research:
+    post:
+      operationId: decideResearchSource
+      summary: Produce a non-authoritative, traceable research-source decision
+      description: >-
+        Backend supplies the authoritative ExecutionContext. GENESIS may request
+        Backend-governed external retrieval but cannot execute HTTP, add tools, or
+        expand scope and permission.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/research/research-analysis-request.schema.json
+      responses:
+        "200":
+          description: Canonical research decision
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/research/research-decision.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/ErrorResponse"
+        "503":
+          $ref: "#/components/responses/ErrorResponse"
   /internal/v1/factory/analyze:
     post:
       operationId: analyzeInternalFactoryRequirement

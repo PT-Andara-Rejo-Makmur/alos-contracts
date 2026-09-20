@@ -2,6 +2,32 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.4.0] - 2026-09-20
+
+### Ditambahkan
+
+- Contract publik additive untuk projection context aktif, akses empat domain riset,
+  permintaan riset, dan receipt yang aman untuk frontend.
+- Contract internal untuk keputusan sumber riset Backend ke GENESIS tanpa memindahkan
+  authority, egress, permission, scope, atau eksekusi tool.
+- Endpoint tersebut pada public dan internal OpenAPI, generated Python/TypeScript,
+  canonical examples, serta regression test authority dan correlation.
+
+### Dipertahankan
+
+- Schema `ResearchRequest` yang telah ada tetap kompatibel. Request publik memakai
+  schema terpisah agar payload lama tidak berubah.
+- Public receipt hanya mengekspos state keputusan yang aman; detail retrieval dan
+  authorization snapshot tetap berada pada boundary internal.
+
+## [1.3.1] - 2026-09-19
+
+### Diperbaiki
+
+- Generator TypeScript kini menghasilkan regex trailing-slash yang valid pada client
+  `getCapabilityDetail`, sehingga artifact dapat diparse oleh TypeScript consumer.
+- Regression test mencegah double-escaping regex pada generated Factory client.
+
 ## [1.3.0] - 2026-09-19
 
 ### Ditambahkan

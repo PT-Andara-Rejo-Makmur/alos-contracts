@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/research/research-request-receipt.schema.json",
+  "title": "ResearchRequestReceipt",
+  "description": "Safe public receipt for a Backend-governed research request. Internal GENESIS decision details are not exposed.",
+  "type": "object",
+  "required": ["request_id", "state", "correlation_id", "decision"],
+  "properties": {
+    "request_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+    "state": { "type": "string", "enum": ["RECEIVED", "NEEDS_REVIEW"] },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+    "decision": {
+      "type": "string",
+      "enum": ["USE_INTERNAL_SOURCE", "USE_MEMORY", "REQUEST_EXTERNAL_RESEARCH", "INSUFFICIENT_EVIDENCE", "NEEDS_INFORMATION"]
+    }
+  },
+  "additionalProperties": false
+}

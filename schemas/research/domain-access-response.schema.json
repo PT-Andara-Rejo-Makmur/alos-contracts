@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/research/domain-access-response.schema.json",
+  "title": "ResearchDomainAccessResponse",
+  "description": "Backend-authoritative public projection of research-domain access.",
+  "type": "object",
+  "required": ["domains", "correlation_id"],
+  "properties": {
+    "domains": {
+      "type": "array",
+      "minItems": 4,
+      "maxItems": 4,
+      "items": {
+        "type": "object",
+        "required": ["domain", "status", "is_allowed", "reason"],
+        "properties": {
+          "domain": { "type": "string", "enum": ["TECHNOLOGY", "PROPERTY_BUSINESS", "MANAGEMENT", "PROPERTY_MARKET"] },
+          "status": { "type": "string", "enum": ["AUTHORIZED", "DENIED", "UNAVAILABLE"] },
+          "is_allowed": { "type": "boolean" },
+          "reason": { "type": "string", "minLength": 1 },
+          "required_scope": { "type": "string", "minLength": 1 }
+        },
+        "allOf": [
+          {
+            "if": { "properties": { "status": { "const": "AUTHORIZED" } }, "required": ["status"] },
+            "then": { "properties": { "is_allowed": { "const": true } } },
+            "else": { "properties": { "is_allowed": { "const": false } } }
+          }
+        ],
+        "additionalProperties": false
+      },
+      "allOf": [
+        { "contains": { "properties": { "domain": { "const": "TECHNOLOGY" } }, "required": ["domain"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "domain": { "const": "PROPERTY_BUSINESS" } }, "required": ["domain"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "domain": { "const": "MANAGEMENT" } }, "required": ["domain"] }, "minContains": 1, "maxContains": 1 },
+        { "contains": { "properties": { "domain": { "const": "PROPERTY_MARKET" } }, "required": ["domain"] }, "minContains": 1, "maxContains": 1 }
+      ]
+    },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" }
+  },
+  "additionalProperties": false
+}

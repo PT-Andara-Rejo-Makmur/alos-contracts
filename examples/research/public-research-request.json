@@ -1,0 +1,6 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/research/public-research-request.schema.json",
+  "question": "Apa teknologi yang relevan untuk otomasi operasional?",
+  "source_mode": "EXTERNAL",
+  "domain": "TECHNOLOGY"
+}

@@ -161,6 +161,12 @@ def test_generated_typescript_is_current():
     assert TYPESCRIPT_OUTPUT.read_text(encoding="utf-8") == render_typescript()
 
 
+def test_generated_typescript_uses_valid_trailing_slash_regex():
+    generated = render_typescript()
+    assert 'baseUrl.replace(/\\/$/, "")' in generated
+    assert 'baseUrl.replace(/\\\\/$/, "")' not in generated
+
+
 # ---------------------------------------------------------------------------
 # MVP2 stage contract freeze (M2-H01-BE-02):
 # Requirement -> RequirementUnderstanding -> CapabilityDecision ->

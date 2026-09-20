@@ -191,6 +191,87 @@ def test_research_decision_does_not_carry_raw_authorization_snapshot(
         )
 
 
+def test_public_context_projection_is_explicit_and_correlation_aware(schemas, registry):
+    payload = {
+        "status": "ACTIVE",
+        "context_id": "context_public_001",
+        "tenant_id": "tenant_public",
+        "organization_id": "org_public",
+        "workspace_id": "workspace_public",
+        "actor_id": "actor_public",
+        "data_classification": "INTERNAL",
+        "scope_refs": ["research.technology"],
+        "evidence_refs": [],
+        "items": [],
+        "correlation_id": "corr_context_public_001",
+    }
+    validate(
+        f"{SCHEMA_BASE}/context/context-projection.schema.json",
+        payload,
+        schemas,
+        registry,
+    )
+    assert "permission_refs" not in payload
+    assert "allowed_tool_ids" not in payload
+
+
+def test_research_domain_access_cannot_claim_authorized_while_denied(schemas, registry):
+    domains = [
+        "TECHNOLOGY",
+        "PROPERTY_BUSINESS",
+        "MANAGEMENT",
+        "PROPERTY_MARKET",
+    ]
+    payload = {
+        "domains": [
+            {
+                "domain": domain,
+                "status": "DENIED",
+                "is_allowed": False,
+                "reason": "Denied by Backend policy.",
+                "required_scope": f"research.{domain.lower()}",
+            }
+            for domain in domains
+        ],
+        "correlation_id": "corr_domain_access_001",
+    }
+    schema_id = f"{SCHEMA_BASE}/research/domain-access-response.schema.json"
+    validate(schema_id, payload, schemas, registry)
+    payload["domains"][0]["is_allowed"] = True
+    with pytest.raises(ValidationError):
+        validate(schema_id, payload, schemas, registry)
+
+
+def test_public_research_request_cannot_supply_authority(schemas, registry):
+    payload = {
+        "question": "Apa teknologi yang relevan untuk operasi?",
+        "source_mode": "INTERNAL",
+        "domain": "TECHNOLOGY",
+    }
+    schema_id = f"{SCHEMA_BASE}/research/public-research-request.schema.json"
+    validate(schema_id, payload, schemas, registry)
+    payload["execution_context"] = {"permission_refs": ["admin"]}
+    with pytest.raises(ValidationError):
+        validate(schema_id, payload, schemas, registry)
+
+
+def test_public_research_receipt_exposes_safe_decision_state_only(schemas, registry):
+    payload = {
+        "request_id": "research_public_001",
+        "state": "NEEDS_REVIEW",
+        "correlation_id": "corr_research_public_001",
+        "decision": "REQUEST_EXTERNAL_RESEARCH",
+    }
+    validate(
+        f"{SCHEMA_BASE}/research/research-request-receipt.schema.json",
+        payload,
+        schemas,
+        registry,
+    )
+    assert "retrieval" not in payload
+    assert "authorized_permission_refs" not in payload
+
+
 @pytest.mark.parametrize(
     "code",
     (

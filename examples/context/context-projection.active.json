@@ -1,0 +1,14 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/context/context-projection.schema.json",
+  "status": "ACTIVE",
+  "context_id": "context_public_001",
+  "tenant_id": "tenant_public_001",
+  "organization_id": "org_public_001",
+  "workspace_id": "workspace_public_001",
+  "actor_id": "actor_public_001",
+  "data_classification": "INTERNAL",
+  "scope_refs": ["research.technology"],
+  "evidence_refs": [],
+  "items": [],
+  "correlation_id": "corr_context_public_001"
+}
