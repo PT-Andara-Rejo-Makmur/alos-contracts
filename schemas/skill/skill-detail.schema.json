@@ -1,0 +1,31 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/skill/skill-detail.schema.json",
+  "title": "SkillDetail",
+  "type": "object",
+  "required": ["skill_id", "skill_version", "name", "description", "input_schema_ref", "output_schema_ref", "lifecycle_state", "correlation_id"],
+  "properties": {
+    "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
+    "skill_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "purpose": { "type": "string", "minLength": 1 },
+    "when_to_use": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "input_schema_ref": { "type": "string", "format": "uri" },
+    "output_schema_ref": { "type": "string", "format": "uri" },
+    "procedure": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "required_tool_ids": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "uniqueItems": true },
+    "permission_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "scope_refs": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "owner_actor_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id" },
+    "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] },
+    "evidence_requirements": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "restrictions": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "failure_modes": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "escalation": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "evaluation": { "type": "array", "items": { "type": "string", "minLength": 1 } },
+    "lifecycle_state": { "type": "string", "enum": ["DRAFT", "APPROVED", "ACTIVE", "SUSPENDED", "RETIRED"] },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" }
+  },
+  "additionalProperties": false
+}

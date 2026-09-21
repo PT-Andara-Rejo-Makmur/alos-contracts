@@ -1,0 +1,1 @@
+{"$schema":"https://schemas.alos.dev/v1/skill/skill-list-response.schema.json","skills":[{"skill_id":"skill.research.core","skill_version":"1.0.0","name":"Research Core","description":"Shared evidence-led research procedure.","lifecycle_state":"ACTIVE","owner_actor_id":"actor_platform_owner","risk_level":"MEDIUM"}],"correlation_id":"corr_skill_list_001"}

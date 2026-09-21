@@ -19,6 +19,12 @@
       "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
       "uniqueItems": true
     },
+    "authorized_skill_refs": {
+      "description": "Exact active skill versions authorized by Backend for this run. These references are an immutable snapshot and cannot be expanded by GENESIS.",
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/skill/skill-ref.schema.json" },
+      "uniqueItems": true
+    },
     "execution_mode": { "type": "string", "enum": ["NORMAL", "TEST"] },
     "context_bundle": { "$ref": "https://schemas.alos.dev/v1/context/context-bundle.schema.json" }
   },

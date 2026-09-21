@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/skill/skill-ref.schema.json",
+  "title": "SkillRef",
+  "description": "An exact immutable skill version reference. A reference carries no authority.",
+  "type": "object",
+  "required": ["skill_id", "skill_version"],
+  "properties": {
+    "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
+    "skill_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" }
+  },
+  "additionalProperties": false
+}

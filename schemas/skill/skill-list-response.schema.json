@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/skill/skill-list-response.schema.json",
+  "title": "SkillListResponse",
+  "type": "object",
+  "required": ["skills", "correlation_id"],
+  "properties": {
+    "skills": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/skill/skill-list-item.schema.json" } },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" }
+  },
+  "additionalProperties": false
+}

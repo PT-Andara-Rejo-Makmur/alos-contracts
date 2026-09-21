@@ -1,0 +1,13 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/skill/skill-version-list.schema.json",
+  "title": "SkillVersionList",
+  "type": "object",
+  "required": ["skill_id", "versions", "correlation_id"],
+  "properties": {
+    "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
+    "versions": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" }, "uniqueItems": true },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" }
+  },
+  "additionalProperties": false
+}

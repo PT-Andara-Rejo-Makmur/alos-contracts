@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/skill/agent-skill-projection.schema.json",
+  "title": "AgentSkillProjection",
+  "type": "object",
+  "required": ["agent_id", "agent_version", "lifecycle_state", "skill_refs", "correlation_id"],
+  "properties": {
+    "agent_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_id" },
+    "agent_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_version" },
+    "lifecycle_state": { "type": "string", "enum": ["DRAFT", "APPROVED", "ACTIVE", "SUSPENDED", "RETIRED"] },
+    "skill_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/skill/skill-ref.schema.json" }, "uniqueItems": true },
+    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" }
+  },
+  "additionalProperties": false
+}

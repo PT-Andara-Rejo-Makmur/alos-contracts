@@ -1,0 +1,17 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/skill/skill-list-item.schema.json",
+  "title": "SkillListItem",
+  "type": "object",
+  "required": ["skill_id", "skill_version", "name", "description", "lifecycle_state"],
+  "properties": {
+    "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
+    "skill_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" },
+    "name": { "type": "string", "minLength": 1 },
+    "description": { "type": "string", "minLength": 1 },
+    "lifecycle_state": { "type": "string", "enum": ["DRAFT", "APPROVED", "ACTIVE", "SUSPENDED", "RETIRED"] },
+    "owner_actor_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id" },
+    "risk_level": { "type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"] }
+  },
+  "additionalProperties": false
+}

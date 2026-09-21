@@ -19,15 +19,8 @@
     "capability_ids": { "type": "array", "minItems": 1, "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" }, "uniqueItems": true },
     "skill_refs": {
       "type": "array",
-      "items": {
-        "type": "object",
-        "required": ["skill_id", "skill_version"],
-        "properties": {
-          "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
-          "skill_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" }
-        },
-        "additionalProperties": false
-      }
+      "items": { "$ref": "https://schemas.alos.dev/v1/skill/skill-ref.schema.json" },
+      "uniqueItems": true
     },
     "model_policy_ref": { "type": "string", "minLength": 1 },
     "input_schema": { "type": "object" },

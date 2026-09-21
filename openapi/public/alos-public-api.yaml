@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ALOS Public API
-  version: 1.2.0
+  version: 1.5.0
   description: >-
     The public contract exposed by the authoritative ALOS Backend. ARA, GIIVEPRO,
     and other frontend clients use this API and never call GENESIS directly.
@@ -11,6 +11,84 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/skills:
+    get:
+      operationId: listSkills
+      summary: List Backend-authorized active skill versions
+      responses:
+        "200":
+          description: Authorized skill projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/skill/skill-list-response.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/v1/skills/{skill_id}:
+    parameters:
+      - $ref: "#/components/parameters/SkillId"
+    get:
+      operationId: getSkillDetail
+      summary: Get an authorized skill detail
+      responses:
+        "200":
+          description: Exact skill detail
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/skill/skill-detail.schema.json
+        "404":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/v1/skills/{skill_id}/versions:
+    parameters:
+      - $ref: "#/components/parameters/SkillId"
+    get:
+      operationId: listSkillVersions
+      summary: List skill versions visible in the authority context
+      responses:
+        "200":
+          description: Version list
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/skill/skill-version-list.schema.json
+  /api/v1/agents/{agent_id}/skills:
+    parameters:
+      - $ref: "#/components/parameters/AgentId"
+    get:
+      operationId: listAgentSkills
+      summary: Project canonical skill refs from an AgentDefinition
+      responses:
+        "200":
+          description: Agent skill projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/skill/agent-skill-projection.schema.json
+    post:
+      operationId: assignAgentSkill
+      summary: Propose a new immutable AgentDefinition DRAFT with an exact skill ref
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/skill/agent-skill-assignment-request.schema.json
+      responses:
+        "201":
+          description: New AgentDefinition DRAFT receipt; no approval or activation occurred
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/skill/agent-skill-assignment-receipt.schema.json
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+        "409":
+          $ref: "#/components/responses/ErrorResponse"
   /api/v1/genesis/context-options:
     get:
       operationId: getActiveContextProjection
@@ -223,6 +301,18 @@ components:
       required: true
       schema:
         $ref: ../../schemas/common/identifiers.schema.json#/$defs/capability_id
+    SkillId:
+      name: skill_id
+      in: path
+      required: true
+      schema:
+        $ref: ../../schemas/common/identifiers.schema.json#/$defs/skill_id
+    AgentId:
+      name: agent_id
+      in: path
+      required: true
+      schema:
+        $ref: ../../schemas/common/identifiers.schema.json#/$defs/agent_id
   responses:
     ErrorResponse:
       description: Contract error

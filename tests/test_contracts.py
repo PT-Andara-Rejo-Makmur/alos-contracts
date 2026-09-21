@@ -20,6 +20,13 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/agent/agent-run-request.schema.json",
     f"{SCHEMA_BASE}/agent/agent-run-result.schema.json",
     f"{SCHEMA_BASE}/skill/skill-definition.schema.json",
+    f"{SCHEMA_BASE}/skill/skill-ref.schema.json",
+    f"{SCHEMA_BASE}/skill/skill-list-response.schema.json",
+    f"{SCHEMA_BASE}/skill/skill-detail.schema.json",
+    f"{SCHEMA_BASE}/skill/skill-version-list.schema.json",
+    f"{SCHEMA_BASE}/skill/agent-skill-assignment-request.schema.json",
+    f"{SCHEMA_BASE}/skill/agent-skill-assignment-receipt.schema.json",
+    f"{SCHEMA_BASE}/skill/agent-skill-projection.schema.json",
     f"{SCHEMA_BASE}/skill/skill-execution-request.schema.json",
     f"{SCHEMA_BASE}/skill/skill-execution-result.schema.json",
     f"{SCHEMA_BASE}/tool/tool-request.schema.json",
@@ -262,3 +269,27 @@ def test_ai_review_cannot_claim_authoritative_approval(load_json, schemas, regis
 
     with pytest.raises(ValidationError):
         validator(f"{SCHEMA_BASE}/review/ai-review-result.schema.json", schemas, registry).validate(payload)
+
+
+def test_authorized_skill_refs_are_exact_and_cannot_embed_grants(load_json, schemas, registry):
+    payload = without_schema(load_json("examples/agent/agent-run-request.json"))
+    payload["authorized_skill_refs"] = [{"skill_id": "skill.research.core", "skill_version": "1.0.0"}]
+    run_validator = validator(f"{SCHEMA_BASE}/agent/agent-run-request.schema.json", schemas, registry)
+    run_validator.validate(payload)
+    payload["authorized_skill_refs"][0]["permission_refs"] = ["permission.expanded"]
+    with pytest.raises(ValidationError):
+        run_validator.validate(payload)
+
+
+def test_assignment_receipt_is_draft_only(schemas, registry):
+    payload = {
+        "agent_id": "agent.research", "base_agent_version": "1.0.0",
+        "draft_agent_version": "1.1.0",
+        "skill_ref": {"skill_id": "skill.research.core", "skill_version": "1.0.0"},
+        "lifecycle_state": "DRAFT", "correlation_id": "corr_assignment_001",
+    }
+    receipt_validator = validator(f"{SCHEMA_BASE}/skill/agent-skill-assignment-receipt.schema.json", schemas, registry)
+    receipt_validator.validate(payload)
+    payload["lifecycle_state"] = "ACTIVE"
+    with pytest.raises(ValidationError):
+        receipt_validator.validate(payload)

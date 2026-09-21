@@ -1,0 +1,1 @@
+{"$schema":"https://schemas.alos.dev/v1/skill/agent-skill-assignment-request.schema.json","agent_id":"agent.research","agent_version":"1.0.0","skill_id":"skill.research.core","skill_version":"1.0.0","proposed_agent_version":"1.1.0"}

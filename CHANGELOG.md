@@ -2,6 +2,18 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.5.0] - 2026-09-21
+
+### Ditambahkan
+
+- Referensi skill exact-version, projection API, snapshot otorisasi run, dan receipt assignment DRAFT.
+- Artifact Python dan TypeScript untuk bahasa skill lintas service.
+
+### Diubah
+
+- `required_tool_ids` menjadi satu-satunya prerequisite tool canonical; `tool_ids` tetap diterima sebagai alias deprecated yang wajib diabaikan consumer.
+- Permission, scope, dan tool pada SkillDefinition ditegaskan sebagai prerequisite, bukan grant authority.
+
 ## [1.4.0] - 2026-09-20
 
 ### Ditambahkan

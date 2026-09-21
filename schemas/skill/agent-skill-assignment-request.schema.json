@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/skill/agent-skill-assignment-request.schema.json",
+  "title": "AgentSkillAssignmentRequest",
+  "description": "A command to propose a new immutable AgentDefinition DRAFT; it does not activate either subject.",
+  "type": "object",
+  "required": ["agent_id", "agent_version", "skill_id", "skill_version"],
+  "properties": {
+    "agent_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_id" },
+    "agent_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_version" },
+    "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
+    "skill_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" },
+    "proposed_agent_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_version" }
+  },
+  "additionalProperties": false
+}
