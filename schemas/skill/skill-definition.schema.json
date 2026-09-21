@@ -3,7 +3,7 @@
   "$id": "https://schemas.alos.dev/v1/skill/skill-definition.schema.json",
   "title": "SkillDefinition",
   "type": "object",
-  "required": ["skill_id", "skill_version", "name", "description", "input_schema_ref", "output_schema_ref", "owner_actor_id", "risk_level", "permission_refs", "scope_refs"],
+  "required": ["skill_id", "skill_version", "name", "description", "input_schema_ref", "output_schema_ref"],
   "properties": {
     "skill_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_id" },
     "skill_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/skill_version" },
