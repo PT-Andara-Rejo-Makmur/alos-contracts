@@ -24,6 +24,11 @@ class SkillDefinition(SkillRef, total=False):
     scope_refs: list[str]
     owner_actor_id: str
     risk_level: SkillRiskLevel
+    evidence_requirements: list[str]
+    restrictions: list[str]
+    failure_modes: list[str]
+    escalation: list[str]
+    evaluation: list[str]
 
 class AgentSkillAssignmentRequest(SkillRef):
     agent_id: str
