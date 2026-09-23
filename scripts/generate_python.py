@@ -338,6 +338,16 @@ class ActiveWorkspaceProjection(TypedDict):
     workspace: WorkspaceProjection
     membership: WorkspaceAccessProjection
 
+class ProvisionAccountRequest(TypedDict, total=False):
+    email: Required[str]
+    password: Required[str]
+    display_name: Required[str]
+    workspace_id: Required[str]
+    role_refs: Required[list[AuthorizationRole]]
+    permission_refs: list[str]
+    scope_refs: list[str]
+    data_scope: IdentityDataScope
+
 class MembershipMutationRequest(TypedDict, total=False):
     workspace_id: Required[str]
     role_refs: Required[list[AuthorizationRole]]

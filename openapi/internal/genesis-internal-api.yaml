@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ALOS–GENESIS Internal API
-  version: 1.7.0
+  version: 1.8.0
   description: >-
     Internal service contract between authoritative ALOS Backend and the GENESIS
     AI Control Plane. It does not grant GENESIS business authority or direct

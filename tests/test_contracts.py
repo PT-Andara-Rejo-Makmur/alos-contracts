@@ -14,6 +14,7 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/identity/workspace-access-projection.schema.json",
     f"{SCHEMA_BASE}/identity/authenticated-principal-projection.schema.json",
     f"{SCHEMA_BASE}/identity/active-workspace-projection.schema.json",
+    f"{SCHEMA_BASE}/identity/provision-account-request.schema.json",
     f"{SCHEMA_BASE}/identity/membership-mutation-request.schema.json",
     f"{SCHEMA_BASE}/identity/account-access-projection.schema.json",
     f"{SCHEMA_BASE}/identity/account-state-projection.schema.json",
@@ -121,6 +122,26 @@ def validator(schema_id, schemas, registry):
 
 def without_schema(document):
     return {key: value for key, value in document.items() if key != "$schema"}
+
+
+def test_provision_account_request_cannot_select_tenant_or_organization(schemas, registry):
+    schema_id = f"{SCHEMA_BASE}/identity/provision-account-request.schema.json"
+    validate = validator(schema_id, schemas, registry)
+    payload = {
+        "email": "new-account@andara.local",
+        "password": "StrongPass!123",
+        "display_name": "New Account",
+        "workspace_id": "workspace_existing",
+        "role_refs": ["WORKSPACE_MEMBER"],
+    }
+    validate.validate(payload)
+
+    with pytest.raises(ValidationError):
+        validate.validate({**payload, "tenant_id": "tenant_browser_selected"})
+    with pytest.raises(ValidationError):
+        validate.validate({**payload, "organization_id": "org_browser_selected"})
+    with pytest.raises(ValidationError):
+        validate.validate({**payload, "role_refs": ["IT_LEAD"]})
 
 
 def test_all_schemas_load_and_pass_meta_schema(schemas):

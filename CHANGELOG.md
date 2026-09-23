@@ -2,6 +2,19 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.8.0] - 2026-09-24
+
+### Diubah
+
+- Provisioning account publik hanya menerima account facts dan `workspace_id`; tenant,
+  organization, serta metadata workspace berasal dari authority Backend.
+- Generated TypeScript dan Python menambahkan `ProvisionAccountRequest` kanonis.
+
+### Keamanan
+
+- Browser tidak dapat lagi memilih tenant atau organization target pada request provisioning.
+- Canonical provisioning dan membership contracts hanya menerima authorization role kanonis.
+
 ## [1.7.0] - 2026-09-24
 
 ### Ditambahkan

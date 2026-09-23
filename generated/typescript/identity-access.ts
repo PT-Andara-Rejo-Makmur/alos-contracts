@@ -31,6 +31,12 @@ export interface ActiveWorkspaceProjection {
   readonly actor_id: string; readonly organization_id: string;
   readonly workspace: WorkspaceProjection; readonly membership: WorkspaceAccessProjection;
 }
+export interface ProvisionAccountRequest {
+  readonly email: string; readonly password: string; readonly display_name: string;
+  readonly workspace_id: string; readonly role_refs: readonly AuthorizationRole[];
+  readonly permission_refs?: readonly string[]; readonly scope_refs?: readonly string[];
+  readonly data_scope?: IdentityDataScope;
+}
 export interface MembershipMutationRequest {
   readonly workspace_id: string; readonly role_refs: readonly AuthorizationRole[];
   readonly permission_refs?: readonly string[]; readonly scope_refs?: readonly string[];
