@@ -1,0 +1,25 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/review/review-invocation.schema.json",
+  "subject": {
+    "review_id": "review.integration.001",
+    "subject_id": "agent.runtime.diagnostic",
+    "subject_version": "1.0.0",
+    "tenant_id": "tenant.integration.001",
+    "organization_id": "org.integration.001",
+    "workspace_id": "workspace.integration.001",
+    "correlation_id": "corr.integration.review.001",
+    "purpose": "Provide advisory assurance before human governance.",
+    "materiality": "NON_MATERIAL",
+    "business_context": {"domain": "TECHNOLOGY"},
+    "capability": {"capability_id": "capability.runtime.diagnostic", "version": "1.0.0", "name": "Runtime Diagnostic", "purpose": "Validate governed integration.", "owner": "actor.integration", "capability_type": "AGENT", "output_state": "NEEDS_REVIEW", "lifecycle_state": "DRAFT", "scope_refs": ["scope.diagnostic"]},
+    "scope": ["scope.diagnostic"],
+    "permissions": ["tools.diagnostic.execute"],
+    "skills": [],
+    "tools": [{"tool_id": "diagnostic.echo", "purpose": "Backend diagnostic.", "backend_executor": true}],
+    "model_policy": {"gateway_required": true, "policy_ref": "policy.runtime-test"},
+    "delegation_policy": {"enabled": false, "lineage_required": true, "max_depth": 0},
+    "execution_budget": {"max_tokens": 100, "max_steps": 3},
+    "evidence_refs": [{"tenant_id": "tenant.integration.001", "organization_id": "org.integration.001", "workspace_id": "workspace.integration.001", "correlation_id": "corr.integration.review.001", "scope_refs": ["scope.diagnostic"], "evidence_id": "evidence.integration.review", "source_id": "source.integration.review", "uri": "urn:alos:integration:evidence", "captured_at": "2026-09-23T10:00:00Z", "content_hash": "sha256:bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb", "data_classification": "INTERNAL", "validation_status": "VALID"}]
+  },
+  "evaluation_subject": {"subject_id": "agent.runtime.diagnostic", "subject_version": "1.0.0", "tenant_id": "tenant.integration.001", "organization_id": "org.integration.001", "workspace_id": "workspace.integration.001", "correlation_id": "corr.integration.review.001", "observations": {}}
+}

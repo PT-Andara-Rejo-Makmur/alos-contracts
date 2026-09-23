@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ALOS–GENESIS Internal API
-  version: 1.5.0
+  version: 1.6.0
   description: >-
     Internal service contract between authoritative ALOS Backend and the GENESIS
     AI Control Plane. It does not grant GENESIS business authority or direct
@@ -34,6 +34,33 @@ paths:
             application/json:
               schema:
                 $ref: ../../schemas/research/research-decision.schema.json
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/ErrorResponse"
+        "503":
+          $ref: "#/components/responses/ErrorResponse"
+  /internal/v1/research/run:
+    post:
+      operationId: runEvidenceBoundResearch
+      summary: Analyze a canonical Backend-issued research request
+      description: >-
+        Backend supplies the complete authorized context and canonical evidence.
+        GENESIS returns non-authoritative findings and recommendations; Backend
+        remains responsible for persistence and backlog governance.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/research/research-request.schema.json
+      responses:
+        "200":
+          description: Canonical evidence-bound research result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/research/research-result.schema.json
         "401":
           $ref: "#/components/responses/ErrorResponse"
         "422":
@@ -89,20 +116,37 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../../schemas/agent/agent-run-request.schema.json
+              $ref: ../../schemas/runtime/agent-runtime-invocation.schema.json
       responses:
-        "202":
-          description: Accepted by the control plane
+        "200":
+          description: Canonical terminal result from the bounded GENESIS runtime
           content:
             application/json:
               schema:
-                type: object
-                required: [run_id, status]
-                properties:
-                  run_id:
-                    $ref: ../../schemas/common/identifiers.schema.json#/$defs/run_id
-                  status:
-                    const: QUEUED
+                $ref: ../../schemas/agent/agent-run-result.schema.json
+        "400":
+          $ref: "#/components/responses/ErrorResponse"
+  /internal/v1/reviews:
+    post:
+      operationId: assembleInternalReviewPackage
+      summary: Produce deterministic assurance and an advisory review package
+      description: >-
+        Backend supplies the authoritative subject snapshot and evidence. GENESIS
+        returns advisory assurance material only and cannot approve, release, or
+        activate the subject.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/review/review-invocation.schema.json
+      responses:
+        "200":
+          description: Canonical advisory ReviewPackage
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/review/review-package.schema.json
         "400":
           $ref: "#/components/responses/ErrorResponse"
   /internal/v1/agent-runs/{run_id}:

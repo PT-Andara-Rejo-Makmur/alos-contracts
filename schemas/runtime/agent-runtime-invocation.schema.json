@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/runtime/agent-runtime-invocation.schema.json",
+  "title": "AgentRuntimeInvocation",
+  "description": "Canonical Backend-to-GENESIS invocation envelope. Backend remains the issuer of every authorization fact.",
+  "type": "object",
+  "required": ["agent_definition", "run_request", "runtime_authorization"],
+  "properties": {
+    "agent_definition": { "$ref": "https://schemas.alos.dev/v1/agent/agent-definition.schema.json" },
+    "run_request": { "$ref": "https://schemas.alos.dev/v1/agent/agent-run-request.schema.json" },
+    "runtime_authorization": { "$ref": "https://schemas.alos.dev/v1/runtime/runtime-authorization.schema.json" }
+  },
+  "additionalProperties": false
+}

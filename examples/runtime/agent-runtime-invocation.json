@@ -1,0 +1,49 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/runtime/agent-runtime-invocation.schema.json",
+  "agent_definition": {
+    "agent_id": "agent.runtime.diagnostic",
+    "agent_version": "1.0.0",
+    "name": "Runtime Diagnostic",
+    "purpose": "Validate the governed runtime boundary.",
+    "capability_ids": ["capability.runtime.diagnostic"],
+    "skill_refs": [{"skill_id": "skill.runtime.diagnostic", "skill_version": "1.2.3"}],
+    "model_policy_ref": "policy.runtime-test",
+    "tool_ids": ["diagnostic.echo"],
+    "permission_refs": ["tools.diagnostic.execute"],
+    "scope_refs": ["scope.diagnostic"],
+    "input_schema": {"type": "object"},
+    "output_schema": {"type": "object"},
+    "approval_required": false,
+    "delegation_policy": {"enabled": false, "max_depth": 0}
+  },
+  "run_request": {
+    "run_id": "run_runtime_integration_001",
+    "root_run_id": "run_runtime_integration_001",
+    "agent_id": "agent.runtime.diagnostic",
+    "agent_version": "1.0.0",
+    "capability_id": "capability.runtime.diagnostic",
+    "execution_context": {
+      "tenant_id": "tenant_integration_001",
+      "organization_id": "org_integration_001",
+      "workspace_id": "workspace_integration_001",
+      "actor_id": "actor_integration_001",
+      "authority_context": {"role": "integration_runner", "authority_level": "SYSTEM"},
+      "permission_refs": ["tools.diagnostic.execute"],
+      "allowed_tool_ids": ["diagnostic.echo"],
+      "scope_refs": ["scope.diagnostic"],
+      "data_classification": "INTERNAL",
+      "correlation_id": "corr_runtime_integration_001",
+      "execution_budget": {"max_tokens": 200, "max_steps": 2, "max_tool_calls": 1, "timeout_seconds": 5}
+    },
+    "input": {"message": "integration"},
+    "requested_tool_ids": ["diagnostic.echo"],
+    "authorized_skill_refs": [{"skill_id": "skill.runtime.diagnostic", "skill_version": "1.2.3"}],
+    "execution_mode": "TEST"
+  },
+  "runtime_authorization": {
+    "run_id": "run_runtime_integration_001",
+    "registry_digest": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "lifecycle_state": "TEST_AUTHORIZED",
+    "allowed_tool_ids": ["diagnostic.echo"]
+  }
+}

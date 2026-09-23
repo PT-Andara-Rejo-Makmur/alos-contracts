@@ -2,6 +2,20 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.6.0] - 2026-09-23
+
+### Ditambahkan
+
+- Wadah kanonis `AgentRuntimeInvocation` untuk batas layanan Backend ke GENESIS.
+- Snapshot `RuntimeAuthorization` yang tidak dapat diubah dan hanya dapat diterbitkan Backend.
+- `ReviewInvocation` untuk snapshot subjek dan fakta evaluasi Backend ke GENESIS.
+
+### Dipertahankan
+
+- `AgentRunRequest`, `AgentDefinition`, dan `AgentRunResult` tetap kompatibel; wadah baru
+  bersifat tambahan dan tidak memindahkan kewenangan siklus hidup, alat, cakupan, atau keahlian
+  ke GENESIS.
+
 ## [1.5.0] - 2026-09-21
 
 ### Ditambahkan

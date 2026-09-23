@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/review/review-invocation.schema.json",
+  "title": "ReviewInvocation",
+  "description": "Backend-issued exact subject snapshot and observable facts for GENESIS advisory assurance. It carries no approval or release authority.",
+  "type": "object",
+  "required": ["subject", "evaluation_subject"],
+  "properties": {
+    "subject": {
+      "type": "object",
+      "required": ["review_id", "subject_id", "subject_version", "tenant_id", "workspace_id", "correlation_id", "purpose", "materiality", "business_context", "capability", "scope", "permissions", "skills", "tools", "model_policy", "delegation_policy", "execution_budget", "evidence_refs"],
+      "properties": {
+        "review_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/review_id" },
+        "subject_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+        "subject_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/semantic_version" },
+        "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+        "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
+        "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+        "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+        "purpose": { "type": "string", "minLength": 1 },
+        "materiality": { "type": "string", "enum": ["NON_MATERIAL", "MATERIAL"] },
+        "business_context": { "type": "object", "minProperties": 1 },
+        "capability": { "$ref": "https://schemas.alos.dev/v1/capability/capability-draft.schema.json" },
+        "scope": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "permissions": { "type": "array", "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+        "skills": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/skill/skill-definition.schema.json" } },
+        "tools": { "type": "array", "items": { "type": "object", "required": ["tool_id", "purpose", "backend_executor"], "properties": { "tool_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" }, "purpose": { "type": "string", "minLength": 1 }, "backend_executor": { "const": true } }, "additionalProperties": false } },
+        "model_policy": { "type": "object", "required": ["gateway_required", "policy_ref"], "properties": { "gateway_required": { "const": true }, "policy_ref": { "type": "string", "minLength": 1 } }, "additionalProperties": false },
+        "delegation_policy": { "type": "object", "required": ["enabled", "lineage_required", "max_depth"], "properties": { "enabled": { "type": "boolean" }, "lineage_required": { "const": true }, "max_depth": { "type": "integer", "minimum": 0 } }, "additionalProperties": false },
+        "execution_budget": { "$ref": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json" },
+        "evidence_refs": { "type": "array", "minItems": 1, "items": { "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json" } }
+      },
+      "additionalProperties": false
+    },
+    "evaluation_subject": {
+      "type": "object",
+      "required": ["subject_id", "subject_version", "tenant_id", "workspace_id", "correlation_id", "observations"],
+      "properties": {
+        "subject_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+        "subject_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/semantic_version" },
+        "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
+        "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
+        "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
+        "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
+        "observations": { "type": "object" }
+      },
+      "additionalProperties": false
+    }
+  },
+  "additionalProperties": false
+}

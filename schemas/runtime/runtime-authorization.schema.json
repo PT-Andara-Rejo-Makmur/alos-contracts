@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/runtime/runtime-authorization.schema.json",
+  "title": "RuntimeAuthorization",
+  "description": "Immutable Backend-issued authorization facts for one GENESIS runtime invocation. This snapshot cannot grant authority beyond the canonical run request.",
+  "type": "object",
+  "required": ["run_id", "registry_digest", "lifecycle_state", "allowed_tool_ids"],
+  "properties": {
+    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "registry_digest": { "type": "string", "pattern": "^[a-f0-9]{64}$" },
+    "lifecycle_state": { "type": "string", "enum": ["ACTIVE", "TEST_AUTHORIZED"] },
+    "allowed_tool_ids": {
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}

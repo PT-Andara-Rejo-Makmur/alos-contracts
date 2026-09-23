@@ -12,6 +12,8 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/common/data-classification.schema.json",
     f"{SCHEMA_BASE}/common/source-semantics.schema.json",
     f"{SCHEMA_BASE}/runtime/execution-budget.schema.json",
+    f"{SCHEMA_BASE}/runtime/runtime-authorization.schema.json",
+    f"{SCHEMA_BASE}/runtime/agent-runtime-invocation.schema.json",
     f"{SCHEMA_BASE}/context/context-bundle.schema.json",
     f"{SCHEMA_BASE}/capability/capability-draft.schema.json",
     f"{SCHEMA_BASE}/capability/capability-definition.schema.json",
@@ -42,6 +44,7 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/research/recommendation.schema.json",
     f"{SCHEMA_BASE}/review/ai-review-result.schema.json",
     f"{SCHEMA_BASE}/review/review-package.schema.json",
+    f"{SCHEMA_BASE}/review/review-invocation.schema.json",
     f"{SCHEMA_BASE}/decision/decision-ref.schema.json",
     f"{SCHEMA_BASE}/release/release-state.schema.json",
     f"{SCHEMA_BASE}/runtime/run-status.schema.json",
@@ -115,6 +118,22 @@ def test_all_schemas_load_and_pass_meta_schema(schemas):
     assert len(schemas) >= 20
     for schema in schemas.values():
         validator_for(schema).check_schema(schema)
+
+
+def test_runtime_invocation_preserves_backend_authority(schemas, registry, load_json):
+    schema_id = f"{SCHEMA_BASE}/runtime/agent-runtime-invocation.schema.json"
+    payload = without_schema(load_json("examples/runtime/agent-runtime-invocation.json"))
+    validator(schema_id, schemas, registry).validate(payload)
+    assert payload["runtime_authorization"]["run_id"] == payload["run_request"]["run_id"]
+    assert payload["run_request"]["authorized_skill_refs"] == payload["agent_definition"]["skill_refs"]
+
+
+def test_runtime_authorization_rejects_injected_authority(schemas, registry, load_json):
+    schema_id = f"{SCHEMA_BASE}/runtime/agent-runtime-invocation.schema.json"
+    payload = without_schema(load_json("examples/runtime/agent-runtime-invocation.json"))
+    payload["runtime_authorization"]["permission_refs"] = ["admin"]
+    with pytest.raises(ValidationError):
+        validator(schema_id, schemas, registry).validate(payload)
 
 
 def test_all_baseline_contracts_are_present(schemas):
