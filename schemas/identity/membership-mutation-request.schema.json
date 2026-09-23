@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/membership-mutation-request.schema.json",
+  "title": "Membership Mutation Request",
+  "description": "Requested membership facts. The Backend validates the actor and workspace authority boundary before applying them.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["workspace_id", "role_refs"],
+  "properties": {
+    "workspace_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+    "role_refs": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/authorization_role"}
+    },
+    "permission_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}},
+    "scope_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}},
+    "data_scope": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/data_scope"}
+  }
+}

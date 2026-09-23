@@ -2,6 +2,22 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.7.0] - 2026-09-24
+
+### Ditambahkan
+
+- Vocabulary otorisasi kanonis dan projection actor, workspace, membership, principal, serta active workspace.
+- Transport publik untuk login, whoami, logout, daftar workspace, dan pemilihan active workspace.
+
+### Diubah
+
+- Public OpenAPI disejajarkan dengan prefix runtime `/api/v1`, bearer token opaque, response terminal agent run, cancellation, dan pembuatan review aktual.
+- Generated Python dan TypeScript kini menyediakan contract identity/access yang sama untuk Backend dan Web.
+
+### Keamanan
+
+- Authority role, permission, scope, dan workspace ditegaskan sebagai fakta Backend; payload frontend tidak boleh memperluas authority.
+
 ## [1.6.0] - 2026-09-23
 
 ### Ditambahkan

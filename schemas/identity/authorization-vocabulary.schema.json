@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json",
+  "title": "Canonical authorization vocabulary",
+  "description": "Stable authority archetypes and data scopes. Organizational positions are not authorization roles.",
+  "$defs": {
+    "authorization_role": {
+      "type": "string",
+      "enum": [
+        "EXECUTIVE",
+        "WORKSPACE_LEAD",
+        "WORKSPACE_MEMBER",
+        "BUSINESS_REVIEWER",
+        "IT_ADMIN",
+        "AI_ADMIN",
+        "TECHNICAL_REVIEWER",
+        "QA_ASSURANCE"
+      ]
+    },
+    "data_scope": {
+      "type": "string",
+      "enum": ["COMPANY", "ORGANIZATIONAL_UNIT", "WORKSPACE", "PROJECT", "OWN_ASSIGNED"]
+    },
+    "workspace_type": {
+      "type": "string",
+      "enum": ["EXECUTIVE", "BUSINESS", "IT_OPERATIONS", "GOVERNANCE", "SHARED"]
+    }
+  }
+}

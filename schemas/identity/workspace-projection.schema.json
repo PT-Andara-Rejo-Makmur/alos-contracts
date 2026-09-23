@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/workspace-projection.schema.json",
+  "title": "Workspace Projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["workspace_id", "workspace_key", "organization_id", "workspace_name", "workspace_type", "active"],
+  "properties": {
+    "workspace_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+    "workspace_key": {"type": "string", "pattern": "^[A-Z][A-Z0-9_]{1,63}$"},
+    "organization_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"},
+    "workspace_name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "workspace_type": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/workspace_type"},
+    "organizational_unit_id": {"type": ["string", "null"], "minLength": 1, "maxLength": 128},
+    "division_code": {"type": ["string", "null"], "minLength": 1, "maxLength": 64, "deprecated": true},
+    "active": {"type": "boolean"}
+  }
+}

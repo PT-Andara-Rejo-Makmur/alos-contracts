@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/active-workspace-projection.schema.json",
+  "title": "Active Workspace Projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor_id", "organization_id", "workspace", "membership"],
+  "properties": {
+    "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+    "organization_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"},
+    "workspace": {"$ref": "https://schemas.alos.dev/v1/identity/workspace-projection.schema.json"},
+    "membership": {"$ref": "https://schemas.alos.dev/v1/identity/workspace-access-projection.schema.json"}
+  }
+}

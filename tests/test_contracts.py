@@ -8,6 +8,15 @@ from jsonschema.validators import validator_for
 SCHEMA_BASE = "https://schemas.alos.dev/v1"
 
 REQUIRED_CONTRACT_IDS = {
+    f"{SCHEMA_BASE}/identity/authorization-vocabulary.schema.json",
+    f"{SCHEMA_BASE}/identity/actor-projection.schema.json",
+    f"{SCHEMA_BASE}/identity/workspace-projection.schema.json",
+    f"{SCHEMA_BASE}/identity/workspace-access-projection.schema.json",
+    f"{SCHEMA_BASE}/identity/authenticated-principal-projection.schema.json",
+    f"{SCHEMA_BASE}/identity/active-workspace-projection.schema.json",
+    f"{SCHEMA_BASE}/identity/membership-mutation-request.schema.json",
+    f"{SCHEMA_BASE}/identity/account-access-projection.schema.json",
+    f"{SCHEMA_BASE}/identity/account-state-projection.schema.json",
     f"{SCHEMA_BASE}/common/execution-context.schema.json",
     f"{SCHEMA_BASE}/common/data-classification.schema.json",
     f"{SCHEMA_BASE}/common/source-semantics.schema.json",

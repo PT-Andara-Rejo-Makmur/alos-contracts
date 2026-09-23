@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/authenticated-principal-projection.schema.json",
+  "title": "Authenticated Principal Projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor", "email", "workspace_access", "active_workspace", "issued_at", "expires_at"],
+  "properties": {
+    "actor": {"$ref": "https://schemas.alos.dev/v1/identity/actor-projection.schema.json"},
+    "email": {"type": "string", "format": "email", "maxLength": 255},
+    "workspace_access": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/identity/workspace-access-projection.schema.json"}},
+    "active_workspace": {"anyOf": [{"$ref": "https://schemas.alos.dev/v1/identity/workspace-access-projection.schema.json"}, {"type": "null"}]},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"}
+  }
+}

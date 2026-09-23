@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/account-state-projection.schema.json",
+  "title": "Account State Projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor_id", "active"],
+  "properties": {
+    "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+    "active": {"type": "boolean"}
+  }
+}

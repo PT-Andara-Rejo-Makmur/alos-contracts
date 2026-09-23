@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/workspace-access-projection.schema.json",
+  "title": "Workspace Access Projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["workspace", "role_refs", "permission_refs", "scope_refs", "data_scope", "active"],
+  "properties": {
+    "workspace": {"$ref": "https://schemas.alos.dev/v1/identity/workspace-projection.schema.json"},
+    "role_refs": {
+      "type": "array",
+      "uniqueItems": true,
+      "items": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/authorization_role"}
+    },
+    "permission_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}},
+    "scope_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}},
+    "data_scope": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/data_scope"},
+    "access_level": {"type": ["string", "null"], "maxLength": 64, "description": "Presentation hint only; it grants no authority."},
+    "active": {"type": "boolean"}
+  }
+}

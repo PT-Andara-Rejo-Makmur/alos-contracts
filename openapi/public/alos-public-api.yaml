@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ALOS Public API
-  version: 1.5.0
+  version: 1.7.0
   description: >-
     The public contract exposed by the authoritative ALOS Backend. ARA, GIIVEPRO,
     and other frontend clients use this API and never call GENESIS directly.
@@ -11,6 +11,264 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/auth/login:
+    post:
+      operationId: login
+      summary: Authenticate one account and create a revocable Backend session
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [email, password]
+              properties:
+                email: {type: string, format: email, maxLength: 255}
+                password: {type: string, minLength: 8, maxLength: 256}
+      responses:
+        "200":
+          description: Opaque bearer session and canonical principal projection
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [access_token, token_type, principal]
+                properties:
+                  access_token: {type: string, minLength: 32}
+                  token_type: {const: bearer}
+                  principal:
+                    $ref: ../../schemas/identity/authenticated-principal-projection.schema.json
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/auth/whoami:
+    get:
+      operationId: whoami
+      summary: Return the canonical principal and current active-workspace context
+      responses:
+        "200":
+          description: Canonical authenticated principal
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/authenticated-principal-projection.schema.json
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/accounts:
+    post:
+      operationId: provisionIdentityAccount
+      summary: Provision an account and initial membership under Backend authorization
+      description: Requires the canonical `identity.accounts.manage` permission.
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required:
+                - email
+                - password
+                - display_name
+                - tenant_id
+                - organization_id
+                - workspace_id
+                - workspace_key
+                - workspace_name
+                - workspace_type
+                - role_refs
+              properties:
+                email: {type: string, format: email, maxLength: 255}
+                password: {type: string, minLength: 8, maxLength: 256, writeOnly: true}
+                display_name: {type: string, minLength: 1, maxLength: 200}
+                tenant_id:
+                  $ref: ../../schemas/common/identifiers.schema.json#/$defs/tenant_id
+                organization_id:
+                  $ref: ../../schemas/common/identifiers.schema.json#/$defs/organization_id
+                workspace_id:
+                  $ref: ../../schemas/common/identifiers.schema.json#/$defs/workspace_id
+                workspace_key: {type: string, minLength: 2, maxLength: 64}
+                workspace_name: {type: string, minLength: 1, maxLength: 200}
+                workspace_type:
+                  $ref: ../../schemas/identity/authorization-vocabulary.schema.json#/$defs/workspace_type
+                organizational_unit_id: {type: [string, "null"], maxLength: 128}
+                division_code: {type: [string, "null"], maxLength: 64}
+                role_refs:
+                  type: array
+                  minItems: 1
+                  uniqueItems: true
+                  items:
+                    $ref: ../../schemas/identity/authorization-vocabulary.schema.json#/$defs/authorization_role
+                permission_refs:
+                  type: array
+                  uniqueItems: true
+                  items: {type: string, minLength: 1, maxLength: 200}
+                scope_refs:
+                  type: array
+                  uniqueItems: true
+                  items: {type: string, minLength: 1, maxLength: 200}
+                data_scope:
+                  $ref: ../../schemas/identity/authorization-vocabulary.schema.json#/$defs/data_scope
+      responses:
+        "201":
+          description: Provisioned actor and initial authoritative workspace access
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [actor, email, workspace_access]
+                properties:
+                  actor:
+                    $ref: ../../schemas/identity/actor-projection.schema.json
+                  email: {type: string, format: email, maxLength: 255}
+                  workspace_access:
+                    type: array
+                    items:
+                      $ref: ../../schemas/identity/workspace-access-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/access:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+    get:
+      operationId: listIdentityAccountAccess
+      summary: List authoritative workspace memberships for an actor in the caller organization
+      responses:
+        "200":
+          description: Active and revoked workspace-access projections
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/account-access-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/memberships:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+    post:
+      operationId: assignIdentityMembership
+      summary: Assign an existing actor to an existing workspace in the caller organization
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/identity/membership-mutation-request.schema.json
+      responses:
+        "201":
+          description: Assigned membership
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/workspace-access-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+    put:
+      operationId: updateIdentityMembership
+      summary: Replace authority facts on an active workspace membership
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/identity/membership-mutation-request.schema.json
+      responses:
+        "200":
+          description: Updated membership
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/workspace-access-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/memberships/{workspace_id}:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+      - $ref: "#/components/parameters/WorkspaceId"
+    delete:
+      operationId: revokeIdentityMembership
+      summary: Revoke one actor workspace membership
+      responses:
+        "204": {description: Membership revoked}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/activate:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+    post:
+      operationId: activateIdentityAccount
+      summary: Activate an account and actor without restoring revoked sessions
+      responses:
+        "200":
+          description: Account state
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/account-state-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/suspend:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+    post:
+      operationId: suspendIdentityAccount
+      summary: Suspend an account and actor and revoke all current sessions
+      responses:
+        "200":
+          description: Account state
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/account-state-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/auth/logout:
+    post:
+      operationId: logout
+      summary: Revoke the current Backend session
+      responses:
+        "204": {description: Session revoked}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/auth/active-workspace:
+    put:
+      operationId: selectActiveWorkspace
+      summary: Select a workspace after Backend validates active membership
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [workspace_id]
+              properties:
+                workspace_id:
+                  $ref: ../../schemas/common/identifiers.schema.json#/$defs/workspace_id
+      responses:
+        "200":
+          description: Validated active workspace
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/active-workspace-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/workspaces:
+    get:
+      operationId: listAuthorizedWorkspaces
+      summary: List only active workspaces authorized by active membership
+      responses:
+        "200":
+          description: Backend-authorized workspace access projections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../../schemas/identity/workspace-access-projection.schema.json
+        "401": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/skills:
     get:
       operationId: listSkills
@@ -223,7 +481,7 @@ paths:
           $ref: "#/components/responses/ErrorResponse"
         "500":
           $ref: "#/components/responses/ErrorResponse"
-  /v1/agent-runs:
+  /api/v1/agent-runs:
     post:
       operationId: createAgentRun
       summary: Request an agent run through ALOS Backend
@@ -234,60 +492,64 @@ paths:
             schema:
               $ref: ../../schemas/agent/agent-run-request.schema.json
       responses:
-        "202":
-          description: Run accepted
-          content:
-            application/json:
-              schema:
-                type: object
-                required: [run_id, status]
-                properties:
-                  run_id:
-                    $ref: ../../schemas/common/identifiers.schema.json#/$defs/run_id
-                  status:
-                    const: QUEUED
-        "400":
-          $ref: "#/components/responses/ErrorResponse"
-  /v1/agent-runs/{run_id}:
-    parameters:
-      - $ref: "#/components/parameters/RunId"
-    get:
-      operationId: getAgentRun
-      summary: Get an agent run result
-      responses:
         "200":
-          description: Current or terminal run result
+          description: Terminal governed run result
           content:
             application/json:
               schema:
                 $ref: ../../schemas/agent/agent-run-result.schema.json
-        "404":
+        "400":
           $ref: "#/components/responses/ErrorResponse"
-  /v1/review-packages/{review_id}:
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/v1/agent-runs/{run_id}/cancellation:
     parameters:
-      - name: review_id
-        in: path
-        required: true
-        schema:
-          $ref: ../../schemas/common/identifiers.schema.json#/$defs/review_id
-    get:
-      operationId: getReviewPackage
-      summary: Get an assurance package and any authoritative decisions
+      - $ref: "#/components/parameters/RunId"
+    post:
+      operationId: cancelAgentRun
+      summary: Request cancellation through Backend runtime authority
       responses:
         "200":
-          description: Review package
+          description: Cancellation state
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [run_id, status]
+                properties:
+                  run_id:
+                    $ref: ../../schemas/common/identifiers.schema.json#/$defs/run_id
+                  status: {type: string, enum: [CANCEL_REQUESTED, CANCELLED]}
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+  /api/v1/reviews:
+    post:
+      operationId: requestAdvisoryReview
+      summary: Request a non-authoritative GENESIS review through Backend authority
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/review/review-invocation.schema.json
+      responses:
+        "200":
+          description: Evidence-linked review package
           content:
             application/json:
               schema:
                 $ref: ../../schemas/review/review-package.schema.json
-        "404":
+        "403":
+          $ref: "#/components/responses/ErrorResponse"
+        "422":
           $ref: "#/components/responses/ErrorResponse"
 components:
   securitySchemes:
     bearerAuth:
       type: http
       scheme: bearer
-      bearerFormat: JWT
+      bearerFormat: opaque-session-token
   parameters:
     RunId:
       name: run_id
@@ -313,6 +575,18 @@ components:
       required: true
       schema:
         $ref: ../../schemas/common/identifiers.schema.json#/$defs/agent_id
+    ActorId:
+      name: actor_id
+      in: path
+      required: true
+      schema:
+        $ref: ../../schemas/common/identifiers.schema.json#/$defs/actor_id
+    WorkspaceId:
+      name: workspace_id
+      in: path
+      required: true
+      schema:
+        $ref: ../../schemas/common/identifiers.schema.json#/$defs/workspace_id
   responses:
     ErrorResponse:
       description: Contract error

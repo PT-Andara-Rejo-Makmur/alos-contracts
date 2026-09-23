@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/actor-projection.schema.json",
+  "title": "Actor Projection",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor_id", "tenant_id", "organization_id", "display_name", "active"],
+  "properties": {
+    "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+    "tenant_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"},
+    "organization_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"},
+    "display_name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "active": {"type": "boolean"}
+  }
+}
