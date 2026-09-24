@@ -1,7 +1,7 @@
 openapi: 3.1.0
 info:
   title: ALOS Public API
-  version: 1.8.0
+  version: 1.9.0
   description: >-
     The public contract exposed by the authoritative ALOS Backend. ARA, GIIVEPRO,
     and other frontend clients use this API and never call GENESIS directly.

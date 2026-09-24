@@ -2,6 +2,17 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.9.0] - 2026-09-24
+
+### Diubah
+
+- Internal OpenAPI sekarang membedakan operasi yang diimplementasikan GENESIS dari callback
+  yang diimplementasikan ALOS Backend melalui ownership tag dan metadata eksplisit.
+- Callback cancellation diselaraskan ke path runtime Backend
+  `/internal/v1/agent-runs/{run_id}/cancellation` dan response aktualnya.
+- Status validasi agent-run serta review diselaraskan ke `422` dan system info GENESIS
+  kini tercakup dalam contract.
+
 ## [1.8.0] - 2026-09-24
 
 ### Diubah
