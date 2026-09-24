@@ -450,7 +450,7 @@ paths:
         content:
           application/json:
             schema:
-              $ref: ../../schemas/agent/agent-run-request.schema.json
+              $ref: ../../schemas/agent/agent-run-create-request.schema.json
       responses:
         "200":
           description: Terminal governed run result

@@ -29,6 +29,7 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/capability/capability-definition.schema.json",
     f"{SCHEMA_BASE}/agent/agent-draft.schema.json",
     f"{SCHEMA_BASE}/agent/agent-definition.schema.json",
+    f"{SCHEMA_BASE}/agent/agent-run-create-request.schema.json",
     f"{SCHEMA_BASE}/agent/agent-run-request.schema.json",
     f"{SCHEMA_BASE}/agent/agent-run-result.schema.json",
     f"{SCHEMA_BASE}/skill/skill-definition.schema.json",
@@ -122,6 +123,27 @@ def validator(schema_id, schemas, registry):
 
 def without_schema(document):
     return {key: value for key, value in document.items() if key != "$schema"}
+
+
+def test_public_agent_run_request_cannot_select_backend_authority(
+    load_json, schemas, registry
+):
+    schema_id = f"{SCHEMA_BASE}/agent/agent-run-create-request.schema.json"
+    validate = validator(schema_id, schemas, registry)
+    payload = without_schema(load_json("examples/agent/agent-run-create-request.json"))
+    validate.validate(payload)
+
+    for field, value in {
+        "execution_context": {"tenant_id": "tenant_client_selected"},
+        "execution_budget": {"max_tokens": 1_000_000},
+        "data_classification": "PUBLIC",
+        "permission_refs": ["admin.all"],
+        "tenant_id": "tenant_client_selected",
+        "workspace_id": "workspace_client_selected",
+        "actor_id": "actor_client_selected",
+    }.items():
+        with pytest.raises(ValidationError):
+            validate.validate({**payload, field: value})
 
 
 def test_provision_account_request_cannot_select_tenant_or_organization(schemas, registry):

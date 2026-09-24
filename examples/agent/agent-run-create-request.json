@@ -1,0 +1,10 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/agent/agent-run-create-request.schema.json",
+  "agent_id": "agent_order_reviewer",
+  "agent_version": "1.0.0",
+  "capability_id": "cap_order_review",
+  "input": { "order_id": "order_2026_001" },
+  "requested_tool_ids": ["orders.read"],
+  "scope_refs": ["scope.orders.region-west"],
+  "execution_mode": "NORMAL"
+}

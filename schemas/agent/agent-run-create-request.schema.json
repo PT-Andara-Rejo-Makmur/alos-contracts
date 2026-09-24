@@ -1,0 +1,29 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/agent/agent-run-create-request.schema.json",
+  "title": "AgentRunCreateRequest",
+  "description": "Public client intent for starting a governed Agent run. Backend derives identity, authority, lifecycle, classification, budget, run identity, and correlation context.",
+  "type": "object",
+  "required": ["agent_id", "agent_version", "capability_id", "input"],
+  "properties": {
+    "agent_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_id" },
+    "agent_version": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/agent_version" },
+    "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
+    "input": { "type": "object" },
+    "requested_tool_ids": {
+      "description": "Requested tool intent only; Backend intersects it with the immutable AgentDefinition and issues the runtime allowlist.",
+      "type": "array",
+      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+      "uniqueItems": true
+    },
+    "scope_refs": {
+      "description": "Optional narrowing of the authenticated principal scope; it cannot expand Backend authority.",
+      "type": "array",
+      "minItems": 1,
+      "items": { "type": "string", "minLength": 1 },
+      "uniqueItems": true
+    },
+    "execution_mode": { "type": "string", "enum": ["NORMAL", "TEST"] }
+  },
+  "additionalProperties": false
+}
