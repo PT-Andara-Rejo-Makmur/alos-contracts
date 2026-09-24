@@ -187,7 +187,12 @@ paths:
           content:
             application/json:
               schema:
-                $ref: ../../schemas/review/review-package.schema.json
+                allOf:
+                  - $ref: ../../schemas/review/review-package.schema.json
+                  - not:
+                      anyOf:
+                        - required: [it_decision]
+                        - required: [director_decision]
         "422":
           $ref: "#/components/responses/ErrorResponse"
   /internal/v1/agent-runs/{run_id}/cancellation:

@@ -495,11 +495,16 @@ paths:
               $ref: ../../schemas/review/review-invocation.schema.json
       responses:
         "200":
-          description: Evidence-linked review package
+          description: Evidence-linked advisory review package
           content:
             application/json:
               schema:
-                $ref: ../../schemas/review/review-package.schema.json
+                allOf:
+                  - $ref: ../../schemas/review/review-package.schema.json
+                  - not:
+                      anyOf:
+                        - required: [it_decision]
+                        - required: [director_decision]
         "403":
           $ref: "#/components/responses/ErrorResponse"
         "422":
