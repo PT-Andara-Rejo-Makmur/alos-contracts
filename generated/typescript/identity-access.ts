@@ -45,4 +45,8 @@ export interface MembershipMutationRequest {
 export interface AccountAccessProjection {
   readonly actor_id: string; readonly workspace_access: readonly WorkspaceAccessProjection[];
 }
+export interface IdentityAccountProjection {
+  readonly actor_id: string; readonly display_name: string; readonly email: string;
+  readonly active: boolean; readonly workspace_access: readonly WorkspaceAccessProjection[];
+}
 export interface AccountStateProjection { readonly actor_id: string; readonly active: boolean; }

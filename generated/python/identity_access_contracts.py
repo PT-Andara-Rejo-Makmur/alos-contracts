@@ -68,6 +68,13 @@ class AccountAccessProjection(TypedDict):
     actor_id: str
     workspace_access: list[WorkspaceAccessProjection]
 
+class IdentityAccountProjection(TypedDict):
+    actor_id: str
+    display_name: str
+    email: str
+    active: bool
+    workspace_access: list[WorkspaceAccessProjection]
+
 class AccountStateProjection(TypedDict):
     actor_id: str
     active: bool

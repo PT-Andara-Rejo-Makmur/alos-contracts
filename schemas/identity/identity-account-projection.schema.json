@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/identity-account-projection.schema.json",
+  "title": "Identity Account Projection",
+  "description": "Minimal organization-bounded account projection for identity administration.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor_id", "display_name", "email", "active", "workspace_access"],
+  "properties": {
+    "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+    "display_name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "email": {"type": "string", "format": "email", "maxLength": 255},
+    "active": {"type": "boolean"},
+    "workspace_access": {
+      "type": "array",
+      "items": {"$ref": "https://schemas.alos.dev/v1/identity/workspace-access-projection.schema.json"}
+    }
+  }
+}

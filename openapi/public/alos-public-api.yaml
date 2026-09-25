@@ -56,6 +56,22 @@ paths:
         "401": {$ref: "#/components/responses/ErrorResponse"}
         "403": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/identity/accounts:
+    get:
+      operationId: listIdentityAccounts
+      summary: List account projections within the caller organization
+      description: >-
+        Requires `identity.accounts.manage` and the active IT_ADMIN policy guard.
+        Results are restricted to the authenticated tenant and organization.
+      responses:
+        "200":
+          description: Organization-bounded identity account projections
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../../schemas/identity/identity-account-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
     post:
       operationId: provisionIdentityAccount
       summary: Provision an account and initial membership under Backend authorization
@@ -89,6 +105,41 @@ paths:
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "409": {$ref: "#/components/responses/ErrorResponse"}
         "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/assignable-roles:
+    get:
+      operationId: listAssignableIdentityRoles
+      summary: List canonical roles assignable by identity administrators
+      description: >-
+        Requires `identity.accounts.manage` and the active IT_ADMIN policy guard.
+      responses:
+        "200":
+          description: Canonical authorization roles
+          content:
+            application/json:
+              schema:
+                type: array
+                uniqueItems: true
+                items:
+                  $ref: ../../schemas/identity/authorization-vocabulary.schema.json#/$defs/authorization_role
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/workspaces:
+    get:
+      operationId: listIdentityWorkspaceCatalog
+      summary: List active workspace facts within the caller organization
+      description: >-
+        Organization workspace catalog for identity administration. Items are
+        workspace facts, not user memberships, and require `identity.accounts.manage`
+        plus the active IT_ADMIN policy guard.
+      responses:
+        "200":
+          description: Active organization workspace catalog
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../../schemas/identity/workspace-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/identity/actors/{actor_id}/access:
     parameters:
       - $ref: "#/components/parameters/ActorId"
