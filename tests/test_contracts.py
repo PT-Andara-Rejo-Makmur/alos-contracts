@@ -71,6 +71,27 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/factory/factory-analysis-result.schema.json",
     f"{SCHEMA_BASE}/factory/factory-analyze-response.schema.json",
     f"{SCHEMA_BASE}/events/run/run-event.schema.json",
+    f"{SCHEMA_BASE}/strategy/business-period.schema.json",
+    f"{SCHEMA_BASE}/strategy/business-scope.schema.json",
+    f"{SCHEMA_BASE}/strategy/metric-observation.schema.json",
+    f"{SCHEMA_BASE}/strategy/strategic-plan.schema.json",
+    f"{SCHEMA_BASE}/strategy/strategy-plan-create-request.schema.json",
+    f"{SCHEMA_BASE}/strategy/strategy-authority-projection.schema.json",
+    f"{SCHEMA_BASE}/strategy/operating-plan.schema.json",
+    f"{SCHEMA_BASE}/strategy/strategic-objective.schema.json",
+    f"{SCHEMA_BASE}/strategy/business-target.schema.json",
+    f"{SCHEMA_BASE}/strategy/business-target-detail.schema.json",
+    f"{SCHEMA_BASE}/strategy/target-relationship.schema.json",
+    f"{SCHEMA_BASE}/strategy/target-revision.schema.json",
+    f"{SCHEMA_BASE}/strategy/planning-assumption.schema.json",
+    f"{SCHEMA_BASE}/strategy/cascade-rule.schema.json",
+    f"{SCHEMA_BASE}/strategy/cascade-preview-request.schema.json",
+    f"{SCHEMA_BASE}/strategy/cascade-preview-response.schema.json",
+    f"{SCHEMA_BASE}/strategy/cascade-run.schema.json",
+    f"{SCHEMA_BASE}/strategy/planning-constraint.schema.json",
+    f"{SCHEMA_BASE}/strategy/constraint-result.schema.json",
+    f"{SCHEMA_BASE}/strategy/kpi-definition.schema.json",
+    f"{SCHEMA_BASE}/strategy/initiative.schema.json",
 }
 
 CANONICAL_IDENTIFIERS = {
@@ -94,7 +115,78 @@ CANONICAL_IDENTIFIERS = {
     "release_id",
     "correlation_id",
     "requirement_id",
+    "plan_id",
+    "objective_id",
+    "target_id",
+    "observation_id",
+    "relationship_id",
+    "assumption_id",
+    "cascade_rule_id",
+    "cascade_run_id",
+    "constraint_id",
+    "revision_id",
+    "initiative_id",
+    "kpi_id",
 }
+
+
+def test_strategy_ratio_and_manual_evidence_are_fail_closed(schemas, registry):
+    assumption = {
+        "assumption_id": "assumption_conversion",
+        "version": 1,
+        "tenant_id": "tenant_arm",
+        "organization_id": "org_arm",
+        "owner_workspace_id": "workspace_sales",
+        "category": "CONVERSION_RATIO",
+        "name": "Conversion assumption",
+        "value": 0.5,
+        "unit": "RATIO",
+        "period": {"granularity": "ANNUAL", "starts_at": "2026-01-01", "ends_at": "2026-12-31"},
+        "scope": {"type": "DIVISION", "ref": "sales"},
+        "source_mode": "MANUAL_EVIDENCED",
+        "evidence_refs": ["evidence_conversion"],
+        "verification_state": "UNVERIFIED",
+        "owner_role_ref": "WORKSPACE_LEAD",
+        "lifecycle_state": "DRAFT",
+    }
+    validate = validator(f"{SCHEMA_BASE}/strategy/planning-assumption.schema.json", schemas, registry)
+    validate.validate(assumption)
+    for invalid_ratio in (-0.1, 1.1):
+        with pytest.raises(ValidationError):
+            validate.validate({**assumption, "value": invalid_ratio})
+    with pytest.raises(ValidationError):
+        validate.validate({**assumption, "evidence_refs": []})
+    with pytest.raises(ValidationError):
+        validate.validate({**assumption, "unexpected": True})
+
+
+def test_metric_observation_is_null_safe_and_value_kinds_remain_explicit(schemas, registry):
+    schema_id = f"{SCHEMA_BASE}/strategy/metric-observation.schema.json"
+    validate = validator(schema_id, schemas, registry)
+    base = {
+        "observation_id": "observation_target",
+        "tenant_id": "tenant_arm",
+        "organization_id": "org_arm",
+        "target_id": "target_closing",
+        "target_version": 1,
+        "kind": "TARGET",
+        "value": 10,
+        "unit": "COUNT",
+        "period": {
+            "granularity": "ANNUAL",
+            "starts_at": "2027-01-01",
+            "ends_at": "2027-12-31",
+        },
+        "source_mode": "SOURCE_LINKED",
+        "source_ref": "cascade.run",
+        "observed_at": "2026-09-27T00:00:00Z",
+        "verification_state": "VERIFIED",
+        "evidence_refs": [],
+    }
+    validate.validate(base)
+    validate.validate({**base, "kind": "ACTUAL", "value": None})
+    with pytest.raises(ValidationError):
+        validate.validate({**base, "kind": "TARGET", "actual": 10})
 
 MVP1_COMPATIBILITY_FIXTURES = [
     "compatibility/fixtures/mvp1/agent-definition.adapted.json",

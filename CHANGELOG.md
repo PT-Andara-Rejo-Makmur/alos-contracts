@@ -2,6 +2,19 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.10.0] - 2026-09-27
+
+### Ditambahkan
+
+- Kontrak canonical Strategy Planning, target versioning, observation, assumption, constraint,
+  deterministic cascade preview/run, KPI, initiative, dan target revision.
+- Public Strategy API untuk planning lifecycle dan penerimaan cascade sebagai DRAFT.
+
+### Keamanan
+
+- Contract memisahkan exact version reference, manual evidenced input, dan verification state;
+  approval serta activation tetap authority Backend.
+
 ## [1.9.0] - 2026-09-24
 
 ### Diubah

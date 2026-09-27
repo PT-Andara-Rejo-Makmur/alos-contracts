@@ -34,6 +34,18 @@
     "release_id": { "$ref": "#/$defs/canonical_id" },
     "correlation_id": { "$ref": "#/$defs/canonical_id" },
     "requirement_id": { "$ref": "#/$defs/canonical_id" },
-    "event_id": { "$ref": "#/$defs/canonical_id" }
+    "event_id": { "$ref": "#/$defs/canonical_id" },
+    "plan_id": { "$ref": "#/$defs/canonical_id" },
+    "objective_id": { "$ref": "#/$defs/canonical_id" },
+    "target_id": { "$ref": "#/$defs/canonical_id" },
+    "observation_id": { "$ref": "#/$defs/canonical_id" },
+    "relationship_id": { "$ref": "#/$defs/canonical_id" },
+    "assumption_id": { "$ref": "#/$defs/canonical_id" },
+    "cascade_rule_id": { "$ref": "#/$defs/canonical_id" },
+    "cascade_run_id": { "$ref": "#/$defs/canonical_id" },
+    "constraint_id": { "$ref": "#/$defs/canonical_id" },
+    "revision_id": { "$ref": "#/$defs/canonical_id" },
+    "initiative_id": { "$ref": "#/$defs/canonical_id" },
+    "kpi_id": { "$ref": "#/$defs/canonical_id" }
   }
 }

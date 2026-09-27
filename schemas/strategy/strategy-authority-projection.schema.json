@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/strategy-authority-projection.schema.json",
+  "title": "StrategyAuthorityProjection",
+  "type": "object",
+  "required": ["authorized_actions"],
+  "properties": {
+    "authorized_actions": {
+      "type": "array",
+      "items": {"type": "string", "enum": ["CREATE_COMPANY_PLAN", "CREATE_DIVISION_PLAN"]},
+      "uniqueItems": true
+    }
+  },
+  "additionalProperties": false
+}
