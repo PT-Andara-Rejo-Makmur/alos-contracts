@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/target-revision-create-request.schema.json",
+  "title": "TargetRevisionCreateRequest",
+  "type": "object",
+  "required": ["reason"],
+  "properties": {
+    "reason": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}

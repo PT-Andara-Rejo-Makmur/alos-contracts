@@ -2,6 +2,19 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [1.11.0] - 2026-09-27
+
+### Diubah
+
+- Request Strategy kini memiliki schema command tersendiri sehingga client tidak diminta mengirim
+  tenant, organization, actor, lifecycle, timestamp, atau state authority milik Backend.
+- OpenAPI Strategy membedakan payload create/accept/revision dari projection response canonical.
+
+### Keamanan
+
+- Authority dan server-owned state tidak lagi direpresentasikan sebagai input wajib pada operasi
+  mutasi Strategy.
+
 ## [1.10.0] - 2026-09-27
 
 ### Ditambahkan

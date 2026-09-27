@@ -1,0 +1,35 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/planning-assumption-create-request.schema.json",
+  "title": "PlanningAssumptionCreateRequest",
+  "type": "object",
+  "required": ["assumption_id", "version", "category", "name", "value", "unit", "period", "scope", "source_mode", "evidence_refs", "verification_state", "owner_role_ref", "owner_workspace_id"],
+  "properties": {
+    "assumption_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/assumption_id"},
+    "version": {"type": "integer", "minimum": 1},
+    "category": {"type": "string", "enum": ["AVERAGE_SELLING_PRICE", "CONVERSION_RATIO", "EXPECTED_CPL", "AVAILABLE_INVENTORY", "MARKETING_BUDGET", "TEAM_CAPACITY", "CUSTOM"]},
+    "name": {"type": "string", "minLength": 1},
+    "description": {"type": ["string", "null"]},
+    "value": {"type": "number"},
+    "unit": {"type": "string", "enum": ["IDR", "COUNT", "PERCENT", "RATIO", "MINUTE", "HOUR", "DAY", "SCORE", "UNIT", "BOOLEAN"]},
+    "period": {"$ref": "https://schemas.alos.dev/v1/strategy/business-period.schema.json"},
+    "scope": {"$ref": "https://schemas.alos.dev/v1/strategy/business-scope.schema.json"},
+    "source_ref": {"type": ["string", "null"]},
+    "source_mode": {"type": "string", "enum": ["MANUAL_EVIDENCED", "SOURCE_LINKED"]},
+    "evidence_refs": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id"}, "uniqueItems": true},
+    "verification_state": {"type": "string", "enum": ["UNVERIFIED", "PENDING_VERIFICATION", "VERIFIED", "CONFLICT", "REJECTED"]},
+    "owner_role_ref": {"type": "string", "minLength": 1},
+    "owner_workspace_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"}
+  },
+  "allOf": [
+    {
+      "if": {"properties": {"unit": {"const": "RATIO"}}, "required": ["unit"]},
+      "then": {"properties": {"value": {"type": "number", "minimum": 0, "maximum": 1}}}
+    },
+    {
+      "if": {"properties": {"source_mode": {"const": "MANUAL_EVIDENCED"}}, "required": ["source_mode"]},
+      "then": {"properties": {"evidence_refs": {"minItems": 1}}}
+    }
+  ],
+  "additionalProperties": false
+}

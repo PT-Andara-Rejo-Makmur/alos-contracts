@@ -74,16 +74,22 @@ REQUIRED_CONTRACT_IDS = {
     f"{SCHEMA_BASE}/strategy/business-period.schema.json",
     f"{SCHEMA_BASE}/strategy/business-scope.schema.json",
     f"{SCHEMA_BASE}/strategy/metric-observation.schema.json",
+    f"{SCHEMA_BASE}/strategy/metric-observation-create-request.schema.json",
     f"{SCHEMA_BASE}/strategy/strategic-plan.schema.json",
     f"{SCHEMA_BASE}/strategy/strategy-plan-create-request.schema.json",
     f"{SCHEMA_BASE}/strategy/strategy-authority-projection.schema.json",
     f"{SCHEMA_BASE}/strategy/operating-plan.schema.json",
     f"{SCHEMA_BASE}/strategy/strategic-objective.schema.json",
+    f"{SCHEMA_BASE}/strategy/strategic-objective-create-request.schema.json",
     f"{SCHEMA_BASE}/strategy/business-target.schema.json",
+    f"{SCHEMA_BASE}/strategy/business-target-create-request.schema.json",
     f"{SCHEMA_BASE}/strategy/business-target-detail.schema.json",
     f"{SCHEMA_BASE}/strategy/target-relationship.schema.json",
+    f"{SCHEMA_BASE}/strategy/target-relationship-create-request.schema.json",
     f"{SCHEMA_BASE}/strategy/target-revision.schema.json",
+    f"{SCHEMA_BASE}/strategy/target-revision-create-request.schema.json",
     f"{SCHEMA_BASE}/strategy/planning-assumption.schema.json",
+    f"{SCHEMA_BASE}/strategy/planning-assumption-create-request.schema.json",
     f"{SCHEMA_BASE}/strategy/cascade-rule.schema.json",
     f"{SCHEMA_BASE}/strategy/cascade-preview-request.schema.json",
     f"{SCHEMA_BASE}/strategy/cascade-preview-response.schema.json",
@@ -187,6 +193,37 @@ def test_metric_observation_is_null_safe_and_value_kinds_remain_explicit(schemas
     validate.validate({**base, "kind": "ACTUAL", "value": None})
     with pytest.raises(ValidationError):
         validate.validate({**base, "kind": "TARGET", "actual": 10})
+
+
+def test_strategy_create_command_rejects_backend_owned_authority_fields(schemas, registry):
+    schema_id = f"{SCHEMA_BASE}/strategy/business-target-create-request.schema.json"
+    validate = validator(schema_id, schemas, registry)
+    command = {
+        "target_id": "target_company_e2e",
+        "version": 1,
+        "code": "KPI-E2E-01",
+        "name": "Contract-safe target command",
+        "plan_ref": {"id": "plan_rkap_e2e", "version": 1},
+        "objective_ref": None,
+        "metric_code": "KPI-E2E-01",
+        "scope": {"type": "COMPANY", "ref": None},
+        "period": {
+            "granularity": "ANNUAL",
+            "starts_at": "2027-01-01",
+            "ends_at": "2027-12-31",
+        },
+        "measurement_type": "CUMULATIVE",
+        "unit": "COUNT",
+        "owner_workspace_id": "workspace_executive",
+        "owner_role_ref": "EXECUTIVE",
+        "materiality": "MATERIAL",
+        "evidence_refs": ["evidence_target_e2e"],
+        "source_refs": ["source:approved-plan"],
+    }
+    validate.validate(command)
+    for backend_owned in ("tenant_id", "organization_id", "created_by", "lifecycle_state"):
+        with pytest.raises(ValidationError):
+            validate.validate({**command, backend_owned: "client-controlled"})
 
 MVP1_COMPATIBILITY_FIXTURES = [
     "compatibility/fixtures/mvp1/agent-definition.adapted.json",

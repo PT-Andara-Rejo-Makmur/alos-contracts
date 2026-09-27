@@ -1,0 +1,16 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/target-relationship-create-request.schema.json",
+  "title": "TargetRelationshipCreateRequest",
+  "type": "object",
+  "required": ["relationship_id", "relationship_type", "parent_target_id", "parent_target_version", "child_target_id", "child_target_version"],
+  "properties": {
+    "relationship_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/relationship_id"},
+    "relationship_type": {"type": "string", "enum": ["CASCADE", "CONTRIBUTES_TO", "DEPENDS_ON"]},
+    "parent_target_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"},
+    "parent_target_version": {"type": "integer", "minimum": 1},
+    "child_target_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"},
+    "child_target_version": {"type": "integer", "minimum": 1}
+  },
+  "additionalProperties": false
+}

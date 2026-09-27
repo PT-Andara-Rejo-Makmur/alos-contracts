@@ -1,0 +1,20 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/strategic-objective-create-request.schema.json",
+  "title": "StrategicObjectiveCreateRequest",
+  "type": "object",
+  "required": ["objective_id", "version", "plan_id", "plan_version", "code", "name", "scope", "owner_role_ref"],
+  "properties": {
+    "objective_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/objective_id"},
+    "version": {"type": "integer", "minimum": 1},
+    "plan_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/plan_id"},
+    "plan_version": {"type": "integer", "minimum": 1},
+    "code": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "description": {"type": ["string", "null"]},
+    "workspace_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+    "scope": {"$ref": "https://schemas.alos.dev/v1/strategy/business-scope.schema.json"},
+    "owner_role_ref": {"type": "string", "minLength": 1}
+  },
+  "additionalProperties": false
+}
