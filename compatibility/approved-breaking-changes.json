@@ -63,6 +63,12 @@
       "migration": "Project one authoritative role per workspace membership after the append-only identity data migration."
     },
     {
+      "schema": "schemas/identity/identity-account-projection.schema.json",
+      "violation": "$: required properties added: ['activation_state', 'administrative_state', 'primary_workspace_id']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "All Identity consumers now use the canonical account lifecycle projection and primary workspace projection."
+    },
+    {
       "schema": "schemas/identity/membership-mutation-request.schema.json",
       "violation": "$: required properties added: ['effective_at']",
       "decision": "INTENTIONALLY_CHANGED",
