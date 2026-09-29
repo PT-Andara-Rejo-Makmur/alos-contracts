@@ -4,6 +4,9 @@ Folder ini memiliki projection transport kanonis untuk actor, workspace, members
 principal terautentikasi, dan active workspace. Projection ini membawa hasil keputusan Backend;
 ia tidak memberikan authority sendiri.
 
+Provisioning candidate projection hanya memuat fakta karyawan minimum yang telah difilter Backend
+berdasarkan tenant, organisasi, status kerja, dan linkage actor.
+
 Credential, password hash, activation token hash, session repository, dan account database tetap
 concern privat ALOS Backend dan tidak boleh ditambahkan ke Contracts. Provisioning mengacu ke
 employee yang sudah ada di HR, menerima tepat satu role workspace, dan tidak menerima password

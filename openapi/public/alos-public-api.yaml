@@ -87,21 +87,11 @@ paths:
               $ref: ../../schemas/identity/provision-account-request.schema.json
       responses:
         "201":
-          description: Provisioned actor and initial authoritative workspace access
+          description: Provisioned employee account and initial authoritative workspace access
           content:
             application/json:
               schema:
-                type: object
-                additionalProperties: false
-                required: [actor, email, workspace_access]
-                properties:
-                  actor:
-                    $ref: ../../schemas/identity/actor-projection.schema.json
-                  email: {type: string, format: email, maxLength: 255}
-                  workspace_access:
-                    type: array
-                    items:
-                      $ref: ../../schemas/identity/workspace-access-projection.schema.json
+                $ref: ../../schemas/identity/identity-account-projection.schema.json
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "409": {$ref: "#/components/responses/ErrorResponse"}
         "422": {$ref: "#/components/responses/ErrorResponse"}
@@ -121,6 +111,23 @@ paths:
                 uniqueItems: true
                 items:
                   $ref: ../../schemas/identity/authorization-vocabulary.schema.json#/$defs/authorization_role
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/provisioning-candidates:
+    get:
+      operationId: listIdentityProvisioningCandidates
+      summary: List eligible unlinked employees within the caller organization
+      description: >-
+        Backend filters employee status, actor linkage, tenant, organization, and
+        employment dates. The projection contains only minimum identity facts.
+      responses:
+        "200":
+          description: Organization-bounded employee provisioning candidates
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../../schemas/identity/provisioning-candidate-projection.schema.json
         "403": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/identity/workspaces:
     get:
@@ -202,6 +209,15 @@ paths:
     delete:
       operationId: revokeIdentityMembership
       summary: Revoke one actor workspace membership
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                reason: {type: [string, "null"], maxLength: 2000}
       responses:
         "204": {description: Membership revoked}
         "403": {$ref: "#/components/responses/ErrorResponse"}
@@ -227,6 +243,15 @@ paths:
     post:
       operationId: suspendIdentityAccount
       summary: Suspend an account and actor and revoke all current sessions
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              properties:
+                reason: {type: [string, "null"], maxLength: 2000}
       responses:
         "200":
           description: Account state
@@ -236,6 +261,73 @@ paths:
                 $ref: ../../schemas/identity/account-state-projection.schema.json
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/sessions:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+    get:
+      operationId: listIdentityAccountSessions
+      summary: List safe session metadata for an account
+      responses:
+        "200":
+          description: Session IDs, timestamps, workspace, and revocation state
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../../schemas/identity/admin-session-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/sessions/{session_id}:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+      - name: session_id
+        in: path
+        required: true
+        schema: {type: string, minLength: 1, maxLength: 128}
+    delete:
+      operationId: revokeIdentityAccountSession
+      summary: Revoke one account session within the caller organization
+      responses:
+        "204": {description: Session revoked}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/history:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+    get:
+      operationId: listIdentityAccountHistory
+      summary: List safe identity audit event summaries for an account
+      responses:
+        "200":
+          description: Append-only identity audit event summaries
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: ../../schemas/identity/identity-audit-projection.schema.json
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/activate:
+    post:
+      operationId: activateEmployeeAccount
+      summary: Activate a pending employee account using a one-time challenge
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              type: object
+              additionalProperties: false
+              required: [token, password, password_confirmation]
+              properties:
+                token: {type: string, minLength: 20, maxLength: 256}
+                password: {type: string, minLength: 8, maxLength: 256}
+                password_confirmation: {type: string, minLength: 8, maxLength: 256}
+      responses:
+        "200": {description: Account activated}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/auth/logout:
     post:
       operationId: logout

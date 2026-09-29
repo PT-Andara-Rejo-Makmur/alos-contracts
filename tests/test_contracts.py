@@ -344,7 +344,14 @@ def test_canonical_identifier_definitions_and_references_are_consistent(schemas)
             properties = node.get("properties", {})
             for field_name in CANONICAL_IDENTIFIERS & properties.keys():
                 expected = f"{identifiers_id}#/$defs/{field_name}"
-                assert properties[field_name].get("$ref") == expected
+                property_schema = properties[field_name]
+                refs = {property_schema.get("$ref")}
+                refs.update(
+                    alternative.get("$ref")
+                    for alternative in property_schema.get("anyOf", [])
+                    if isinstance(alternative, dict)
+                )
+                assert expected in refs
             for value in node.values():
                 inspect(value)
         elif isinstance(node, list):

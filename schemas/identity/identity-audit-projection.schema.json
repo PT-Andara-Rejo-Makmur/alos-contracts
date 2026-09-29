@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/identity-audit-projection.schema.json",
+  "title": "Identity Audit Projection",
+  "description": "Safe append-only identity audit event summary within the caller organization.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["occurred_at", "event_type", "entity_type", "entity_id", "workspace_id", "actor_id", "outcome"],
+  "properties": {
+    "occurred_at": {"type": "string", "format": "date-time"},
+    "event_type": {"type": "string", "minLength": 1, "maxLength": 128},
+    "entity_type": {"type": "string", "minLength": 1, "maxLength": 128},
+    "entity_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "workspace_id": {
+      "anyOf": [
+        {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+        {"type": "null"}
+      ]
+    },
+    "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+    "outcome": {"type": "string", "minLength": 1, "maxLength": 64}
+  }
+}

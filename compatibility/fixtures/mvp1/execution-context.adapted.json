@@ -5,8 +5,8 @@
   "workspace_id": "workspace_mvp1_ops",
   "actor_id": "actor_mvp1_it_lead",
   "authority_context": {
-    "role": "IT_LEAD",
-    "role_refs": ["IT_LEAD", "PLATFORM_OPERATOR"],
+    "role": "IT_ADMIN",
+    "role_refs": ["IT_ADMIN"],
     "authority_level": "IT_APPROVER"
   },
   "permission_refs": ["permission.agent.run", "permission.tool.request"],

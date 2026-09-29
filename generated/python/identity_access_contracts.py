@@ -47,22 +47,49 @@ class ActiveWorkspaceProjection(TypedDict):
     workspace: WorkspaceProjection
     membership: WorkspaceAccessProjection
 
+class ProvisioningCandidateProjection(TypedDict):
+    employee_id: str
+    employee_number: str | None
+    full_name: str
+    email: NotRequired[str | None]
+    department_code: NotRequired[str | None]
+    position_title: NotRequired[str | None]
+    employment_status: Literal["ACTIVE"]
+    linkage_state: Literal["AVAILABLE"]
+
 class ProvisionAccountRequest(TypedDict, total=False):
+    employee_id: Required[str]
     email: Required[str]
-    password: Required[str]
-    display_name: Required[str]
     workspace_id: Required[str]
     role_refs: Required[list[AuthorizationRole]]
-    permission_refs: list[str]
-    scope_refs: list[str]
-    data_scope: IdentityDataScope
+    effective_at: Required[str]
+    expires_at: str | None
+    note: str | None
+
+class AdminSessionProjection(TypedDict):
+    session_id: str
+    issued_at: str
+    expires_at: str
+    active_workspace_id: str | None
+    revoked: bool
+    expired: NotRequired[bool]
+    last_activity_at: NotRequired[str | None]
+
+class IdentityAuditProjection(TypedDict):
+    occurred_at: str
+    event_type: str
+    entity_type: str
+    entity_id: str
+    workspace_id: str | None
+    actor_id: str
+    outcome: str
 
 class MembershipMutationRequest(TypedDict, total=False):
     workspace_id: Required[str]
     role_refs: Required[list[AuthorizationRole]]
-    permission_refs: list[str]
-    scope_refs: list[str]
-    data_scope: IdentityDataScope
+    effective_at: Required[str]
+    expires_at: str | None
+    note: str | None
 
 class AccountAccessProjection(TypedDict):
     actor_id: str
@@ -73,6 +100,16 @@ class IdentityAccountProjection(TypedDict):
     display_name: str
     email: str
     active: bool
+    administrative_state: str
+    activation_state: str
+    primary_workspace_id: str | None
+    employee_id: NotRequired[str | None]
+    employee_number: NotRequired[str | None]
+    position_title: NotRequired[str | None]
+    department_code: NotRequired[str | None]
+    employment_status: NotRequired[str | None]
+    created_at: NotRequired[str | None]
+    last_login_at: NotRequired[str | None]
     workspace_access: list[WorkspaceAccessProjection]
 
 class AccountStateProjection(TypedDict):

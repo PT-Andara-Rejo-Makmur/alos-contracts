@@ -1,0 +1,23 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/admin-session-projection.schema.json",
+  "title": "Administrative Session Projection",
+  "description": "Safe session facts for account administration; credential material is never projected.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["session_id", "issued_at", "expires_at", "active_workspace_id", "revoked"],
+  "properties": {
+    "session_id": {"type": "string", "minLength": 1, "maxLength": 128},
+    "issued_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": "string", "format": "date-time"},
+    "active_workspace_id": {
+      "anyOf": [
+        {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+        {"type": "null"}
+      ]
+    },
+    "revoked": {"type": "boolean"},
+    "expired": {"type": "boolean"},
+    "last_activity_at": {"type": ["string", "null"], "format": "date-time"}
+  }
+}

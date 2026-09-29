@@ -31,22 +31,44 @@ export interface ActiveWorkspaceProjection {
   readonly actor_id: string; readonly organization_id: string;
   readonly workspace: WorkspaceProjection; readonly membership: WorkspaceAccessProjection;
 }
+export interface ProvisioningCandidateProjection {
+  readonly employee_id: string; readonly employee_number: string | null;
+  readonly full_name: string; readonly email?: string | null;
+  readonly department_code?: string | null; readonly position_title?: string | null;
+  readonly employment_status: "ACTIVE"; readonly linkage_state: "AVAILABLE";
+}
 export interface ProvisionAccountRequest {
-  readonly email: string; readonly password: string; readonly display_name: string;
-  readonly workspace_id: string; readonly role_refs: readonly AuthorizationRole[];
-  readonly permission_refs?: readonly string[]; readonly scope_refs?: readonly string[];
-  readonly data_scope?: IdentityDataScope;
+  readonly employee_id: string; readonly email: string; readonly workspace_id: string;
+  readonly role_refs: readonly [AuthorizationRole]; readonly effective_at: string;
+  readonly expires_at?: string | null; readonly note?: string | null;
+}
+export interface AdminSessionProjection {
+  readonly session_id: string; readonly issued_at: string; readonly expires_at: string;
+  readonly active_workspace_id: string | null; readonly revoked: boolean;
+  readonly expired?: boolean;
+  readonly last_activity_at?: string | null;
+}
+export interface IdentityAuditProjection {
+  readonly occurred_at: string; readonly event_type: string; readonly entity_type: string;
+  readonly entity_id: string; readonly workspace_id: string | null;
+  readonly actor_id: string; readonly outcome: string;
 }
 export interface MembershipMutationRequest {
-  readonly workspace_id: string; readonly role_refs: readonly AuthorizationRole[];
-  readonly permission_refs?: readonly string[]; readonly scope_refs?: readonly string[];
-  readonly data_scope?: IdentityDataScope;
+  readonly workspace_id: string; readonly role_refs: readonly [AuthorizationRole];
+  readonly effective_at: string; readonly expires_at?: string | null; readonly note?: string | null;
 }
 export interface AccountAccessProjection {
   readonly actor_id: string; readonly workspace_access: readonly WorkspaceAccessProjection[];
 }
 export interface IdentityAccountProjection {
   readonly actor_id: string; readonly display_name: string; readonly email: string;
-  readonly active: boolean; readonly workspace_access: readonly WorkspaceAccessProjection[];
+  readonly active: boolean; readonly administrative_state: "ENABLED" | "SUSPENDED" | "DISABLED";
+  readonly activation_state: "PENDING" | "ACTIVATED" | "EXPIRED";
+  readonly primary_workspace_id: string | null;
+  readonly employee_id?: string | null; readonly employee_number?: string | null;
+  readonly position_title?: string | null; readonly department_code?: string | null;
+  readonly employment_status?: string | null; readonly created_at?: string | null;
+  readonly last_login_at?: string | null;
+  readonly workspace_access: readonly WorkspaceAccessProjection[];
 }
 export interface AccountStateProjection { readonly actor_id: string; readonly active: boolean; }

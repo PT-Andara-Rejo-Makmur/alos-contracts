@@ -5,12 +5,22 @@
   "description": "Minimal organization-bounded account projection for identity administration.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["actor_id", "display_name", "email", "active", "workspace_access"],
+  "required": ["actor_id", "display_name", "email", "active", "administrative_state", "activation_state", "primary_workspace_id", "workspace_access"],
   "properties": {
     "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
     "display_name": {"type": "string", "minLength": 1, "maxLength": 200},
     "email": {"type": "string", "format": "email", "maxLength": 255},
     "active": {"type": "boolean"},
+    "administrative_state": {"type": "string", "enum": ["ENABLED", "SUSPENDED", "DISABLED"]},
+    "activation_state": {"type": "string", "enum": ["PENDING", "ACTIVATED", "EXPIRED"]},
+    "primary_workspace_id": {"type": ["string", "null"]},
+    "employee_id": {"type": ["string", "null"]},
+    "employee_number": {"type": ["string", "null"]},
+    "position_title": {"type": ["string", "null"]},
+    "department_code": {"type": ["string", "null"]},
+    "employment_status": {"type": ["string", "null"]},
+    "created_at": {"type": ["string", "null"], "format": "date-time"},
+    "last_login_at": {"type": ["string", "null"], "format": "date-time"},
     "workspace_access": {
       "type": "array",
       "items": {"$ref": "https://schemas.alos.dev/v1/identity/workspace-access-projection.schema.json"}

@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/provisioning-candidate-projection.schema.json",
+  "title": "Provisioning Candidate Projection",
+  "description": "Minimum employee facts that Backend determines are eligible for account provisioning within the administrator's organization.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["employee_id", "employee_number", "full_name", "employment_status", "linkage_state"],
+  "properties": {
+    "employee_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"},
+    "employee_number": {"type": ["string", "null"], "maxLength": 128},
+    "full_name": {"type": "string", "minLength": 1, "maxLength": 200},
+    "email": {"type": ["string", "null"], "format": "email", "maxLength": 255},
+    "department_code": {"type": ["string", "null"], "maxLength": 128},
+    "position_title": {"type": ["string", "null"], "maxLength": 200},
+    "employment_status": {"type": "string", "enum": ["ACTIVE"]},
+    "linkage_state": {"type": "string", "enum": ["AVAILABLE"]}
+  }
+}
