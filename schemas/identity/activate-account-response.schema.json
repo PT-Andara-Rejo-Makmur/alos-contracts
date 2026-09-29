@@ -1,0 +1,21 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/activate-account-response.schema.json",
+  "title": "Activate Account Response",
+  "description": "Account activation result without an authenticated session.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor_id", "activation_state", "tenant_id", "organization_id", "workspace_id"],
+  "properties": {
+    "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+    "activation_state": {"const": "ACTIVATED"},
+    "tenant_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"},
+    "organization_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"},
+    "workspace_id": {
+      "anyOf": [
+        {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+        {"const": ""}
+      ]
+    }
+  }
+}

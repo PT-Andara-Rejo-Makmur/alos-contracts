@@ -42,6 +42,13 @@ export interface ProvisionAccountRequest {
   readonly role_refs: readonly [AuthorizationRole]; readonly effective_at: string;
   readonly expires_at?: string | null; readonly note?: string | null;
 }
+export interface ActivateAccountRequest {
+  readonly token: string; readonly password: string; readonly password_confirmation: string;
+}
+export interface ActivateAccountResponse {
+  readonly actor_id: string; readonly activation_state: "ACTIVATED";
+  readonly tenant_id: string; readonly organization_id: string; readonly workspace_id: string;
+}
 export interface AdminSessionProjection {
   readonly session_id: string; readonly issued_at: string; readonly expires_at: string;
   readonly active_workspace_id: string | null; readonly revoked: boolean;

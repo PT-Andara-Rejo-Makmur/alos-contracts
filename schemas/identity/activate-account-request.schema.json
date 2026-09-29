@@ -1,0 +1,14 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/activate-account-request.schema.json",
+  "title": "Activate Account Request",
+  "description": "One-time employee activation credential and employee-chosen password.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["token", "password", "password_confirmation"],
+  "properties": {
+    "token": {"type": "string", "minLength": 20, "maxLength": 256},
+    "password": {"type": "string", "minLength": 8, "maxLength": 256},
+    "password_confirmation": {"type": "string", "minLength": 8, "maxLength": 256}
+  }
+}
