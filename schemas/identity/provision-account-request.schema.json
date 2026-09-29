@@ -2,23 +2,23 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.alos.dev/v1/identity/provision-account-request.schema.json",
   "title": "Provision Account Request",
-  "description": "Account facts and an existing workspace target. Tenant and organization authority are derived from the authenticated Backend principal.",
+  "description": "Employee account request and an existing workspace target. Tenant, organization, actor, and authority facts are derived by Backend.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["email", "password", "display_name", "workspace_id", "role_refs"],
+  "required": ["employee_id", "email", "workspace_id", "role_refs", "effective_at"],
   "properties": {
+    "employee_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"},
     "email": {"type": "string", "format": "email", "maxLength": 255},
-    "password": {"type": "string", "minLength": 8, "maxLength": 256, "writeOnly": true},
-    "display_name": {"type": "string", "minLength": 1, "maxLength": 200},
     "workspace_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
     "role_refs": {
       "type": "array",
       "minItems": 1,
+      "maxItems": 1,
       "uniqueItems": true,
       "items": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/authorization_role"}
     },
-    "permission_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}},
-    "scope_refs": {"type": "array", "uniqueItems": true, "items": {"type": "string", "minLength": 1, "maxLength": 200}},
-    "data_scope": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/data_scope"}
+    "effective_at": {"type": "string", "format": "date-time"},
+    "expires_at": {"type": ["string", "null"], "format": "date-time"},
+    "note": {"type": ["string", "null"], "maxLength": 2000}
   }
 }

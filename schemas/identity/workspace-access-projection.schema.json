@@ -9,6 +9,7 @@
     "workspace": {"$ref": "https://schemas.alos.dev/v1/identity/workspace-projection.schema.json"},
     "role_refs": {
       "type": "array",
+      "maxItems": 1,
       "uniqueItems": true,
       "items": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/authorization_role"}
     },

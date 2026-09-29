@@ -79,11 +79,26 @@ def breaking_changes(old: dict, new: dict, location: str = "$") -> list[str]:
         issues.extend(breaking_changes(old_properties[name], new_properties[name], f"{location}.{name}"))
 
     for keyword in ("minLength", "minimum", "minItems", "minProperties"):
-        if keyword in new and new[keyword] > old.get(keyword, new[keyword]):
+        if keyword in new and (keyword not in old or new[keyword] > old[keyword]):
             issues.append(f"{location}: {keyword} became more restrictive")
     for keyword in ("maxLength", "maximum", "maxItems", "maxProperties"):
-        if keyword in new and new[keyword] < old.get(keyword, new[keyword]):
+        if keyword in new and (keyword not in old or new[keyword] < old[keyword]):
             issues.append(f"{location}: {keyword} became more restrictive")
+
+    for keyword in ("$defs", "definitions"):
+        old_definitions = old.get(keyword, {})
+        new_definitions = new.get(keyword, {})
+        for name in set(old_definitions) & set(new_definitions):
+            issues.extend(
+                breaking_changes(
+                    old_definitions[name], new_definitions[name], f"{location}.{keyword}.{name}"
+                )
+            )
+
+    old_items = old.get("items")
+    new_items = new.get("items")
+    if isinstance(old_items, dict) and isinstance(new_items, dict):
+        issues.extend(breaking_changes(old_items, new_items, f"{location}.items"))
     return issues
 
 
@@ -179,7 +194,7 @@ def main() -> int:
     args = parser.parse_args()
     approved, violations = split_approved(compare_ref(args.baseline_ref))
     if approved:
-        print("Approved bootstrap breaking changes (strict schemas retained):")
+        print("Approved breaking changes (strict schemas retained):")
         for violation in approved:
             print(f"- {violation}")
     if violations:

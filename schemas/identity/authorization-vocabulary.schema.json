@@ -8,13 +8,9 @@
       "type": "string",
       "enum": [
         "EXECUTIVE",
-        "WORKSPACE_LEAD",
-        "WORKSPACE_MEMBER",
-        "BUSINESS_REVIEWER",
-        "IT_ADMIN",
-        "AI_ADMIN",
-        "TECHNICAL_REVIEWER",
-        "QA_ASSURANCE"
+        "DIVISION_LEAD",
+        "DIVISION_MEMBER",
+        "IT_ADMIN"
       ]
     },
     "data_scope": {

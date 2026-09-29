@@ -2,6 +2,19 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [2.0.0] - 2026-09-30
+
+### Diubah
+
+- Vocabulary role authorization dibatasi ke `EXECUTIVE`, `DIVISION_LEAD`, `DIVISION_MEMBER`, dan `IT_ADMIN`.
+- Provisioning akun merujuk employee dan tidak lagi menerima password, permission, scope, atau data scope dari IT.
+- Mutasi membership menetapkan tepat satu role dan hanya menerima role serta masa berlaku; Backend menentukan authority.
+
+### Keamanan
+
+- Role legacy dan metadata authority pilihan client dihapus dari Identity contract.
+- Kontrak menetapkan activation password oleh employee dan tanggal efektif membership.
+
 ## [1.11.0] - 2026-09-27
 
 ### Diubah

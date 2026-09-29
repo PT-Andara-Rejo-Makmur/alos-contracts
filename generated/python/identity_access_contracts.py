@@ -3,7 +3,7 @@
 
 from typing import Literal, NotRequired, Required, TypedDict
 
-AuthorizationRole = Literal['EXECUTIVE', 'WORKSPACE_LEAD', 'WORKSPACE_MEMBER', 'BUSINESS_REVIEWER', 'IT_ADMIN', 'AI_ADMIN', 'TECHNICAL_REVIEWER', 'QA_ASSURANCE']
+AuthorizationRole = Literal['EXECUTIVE', 'DIVISION_LEAD', 'DIVISION_MEMBER', 'IT_ADMIN']
 IdentityDataScope = Literal['COMPANY', 'ORGANIZATIONAL_UNIT', 'WORKSPACE', 'PROJECT', 'OWN_ASSIGNED']
 WorkspaceType = Literal['EXECUTIVE', 'BUSINESS', 'IT_OPERATIONS', 'GOVERNANCE', 'SHARED']
 

@@ -275,15 +275,15 @@ def test_public_agent_run_request_cannot_select_backend_authority(
             validate.validate({**payload, field: value})
 
 
-def test_provision_account_request_cannot_select_tenant_or_organization(schemas, registry):
+def test_provision_account_request_uses_one_role_and_backend_owned_authority(schemas, registry):
     schema_id = f"{SCHEMA_BASE}/identity/provision-account-request.schema.json"
     validate = validator(schema_id, schemas, registry)
     payload = {
+        "employee_id": "employee-001",
         "email": "new-account@andara.local",
-        "password": "StrongPass!123",
-        "display_name": "New Account",
         "workspace_id": "workspace_existing",
-        "role_refs": ["WORKSPACE_MEMBER"],
+        "role_refs": ["DIVISION_MEMBER"],
+        "effective_at": "2026-09-30T00:00:00Z",
     }
     validate.validate(payload)
 
@@ -293,6 +293,19 @@ def test_provision_account_request_cannot_select_tenant_or_organization(schemas,
         validate.validate({**payload, "organization_id": "org_browser_selected"})
     with pytest.raises(ValidationError):
         validate.validate({**payload, "role_refs": ["IT_LEAD"]})
+    with pytest.raises(ValidationError):
+        validate.validate({**payload, "role_refs": ["DIVISION_MEMBER", "IT_ADMIN"]})
+    for field, value in {
+        "password": "IT-selected-secret",
+        "permission_refs": ["finance.read"],
+        "scope_refs": ["scope.finance"],
+        "data_scope": "COMPANY",
+        "tenant_id": "tenant_browser_selected",
+        "organization_id": "org_browser_selected",
+        "actor_id": "actor_browser_selected",
+    }.items():
+        with pytest.raises(ValidationError):
+            validate.validate({**payload, field: value})
 
 
 def test_all_schemas_load_and_pass_meta_schema(schemas):

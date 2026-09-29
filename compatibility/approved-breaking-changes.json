@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "purpose": "Reviewed bootstrap-v1 cutovers from the MVP-1 monolith. Every entry remains a breaking change and requires its documented adapter before a legacy producer can use the v1 schema.",
+  "purpose": "Reviewed contract breaking changes with explicit consumer migration decisions. Every entry remains a breaking change; the checker reports it and succeeds only when the complete recorded violation matches.",
   "approved_breaking_changes": [
     {
       "schema": "schemas/agent/agent-run-result.schema.json",
@@ -31,6 +31,78 @@
       "violation": "$: required properties added: ['correlation_id', 'organization_id', 'tenant_id', 'workspace_id']",
       "decision": "INTENTIONALLY_CHANGED",
       "migration": "Resolve research result authority and tenant/workspace lineage from the originating execution context."
+    },
+    {
+      "schema": "schemas/identity/account-access-projection.schema.json",
+      "violation": "$.workspace_access.items.role_refs: maxItems became more restrictive",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Project one authoritative role per workspace membership after the append-only identity data migration."
+    },
+    {
+      "schema": "schemas/identity/active-workspace-projection.schema.json",
+      "violation": "$.membership.role_refs: maxItems became more restrictive",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Project one authoritative role per workspace membership after the append-only identity data migration."
+    },
+    {
+      "schema": "schemas/identity/authenticated-principal-projection.schema.json",
+      "violation": "$.workspace_access.items.role_refs: maxItems became more restrictive",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Project one authoritative role per workspace membership after the append-only identity data migration."
+    },
+    {
+      "schema": "schemas/identity/authorization-vocabulary.schema.json",
+      "violation": "$.$defs.authorization_role: enum values removed: ['AI_ADMIN', 'BUSINESS_REVIEWER', 'QA_ASSURANCE', 'TECHNICAL_REVIEWER', 'WORKSPACE_LEAD', 'WORKSPACE_MEMBER']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Map only equivalent persisted workspace roles; stop for active non-equivalent roles pending governed remediation."
+    },
+    {
+      "schema": "schemas/identity/identity-account-projection.schema.json",
+      "violation": "$.workspace_access.items.role_refs: maxItems became more restrictive",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Project one authoritative role per workspace membership after the append-only identity data migration."
+    },
+    {
+      "schema": "schemas/identity/membership-mutation-request.schema.json",
+      "violation": "$: required properties added: ['effective_at']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Callers provide an effective date for every new or changed membership."
+    },
+    {
+      "schema": "schemas/identity/membership-mutation-request.schema.json",
+      "violation": "$: properties removed: ['data_scope', 'permission_refs', 'scope_refs']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Backend derives permission, scope, and data scope from the selected role and organization policy."
+    },
+    {
+      "schema": "schemas/identity/membership-mutation-request.schema.json",
+      "violation": "$.role_refs: maxItems became more restrictive",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Callers assign exactly one primary role to each workspace membership."
+    },
+    {
+      "schema": "schemas/identity/provision-account-request.schema.json",
+      "violation": "$: required properties added: ['effective_at', 'employee_id']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Provisioning references an existing HR employee and supplies the initial membership effective date."
+    },
+    {
+      "schema": "schemas/identity/provision-account-request.schema.json",
+      "violation": "$: properties removed: ['data_scope', 'display_name', 'password', 'permission_refs', 'scope_refs']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Backend reads employee identity and derives authority; employees set their own password through activation."
+    },
+    {
+      "schema": "schemas/identity/provision-account-request.schema.json",
+      "violation": "$.role_refs: maxItems became more restrictive",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Callers assign exactly one primary role to the initial workspace membership."
+    },
+    {
+      "schema": "schemas/identity/workspace-access-projection.schema.json",
+      "violation": "$.role_refs: maxItems became more restrictive",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Project at most one authoritative role per workspace membership."
     }
   ]
 }

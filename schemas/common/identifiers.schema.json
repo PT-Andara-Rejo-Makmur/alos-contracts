@@ -16,6 +16,7 @@
     },
     "tenant_id": { "$ref": "#/$defs/canonical_id" },
     "organization_id": { "$ref": "#/$defs/canonical_id" },
+    "employee_id": { "$ref": "#/$defs/canonical_id" },
     "workspace_id": { "$ref": "#/$defs/canonical_id" },
     "actor_id": { "$ref": "#/$defs/canonical_id" },
     "capability_id": { "$ref": "#/$defs/canonical_id" },
