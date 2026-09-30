@@ -372,6 +372,29 @@ class ActivateAccountResponse(TypedDict):
     actor_id: str
     activation_state: Literal["ACTIVATED"]
 
+class ResendActivationRequest(TypedDict, total=False):
+    note: str | None
+
+class ResendActivationResponse(TypedDict):
+    actor_id: str
+    activation_state: Literal["PENDING"]
+    email_delivered: bool
+    expires_at: NotRequired[str]
+
+class PasswordResetRequest(TypedDict):
+    email: str
+
+class PasswordResetResponse(TypedDict):
+    message: str
+
+class PasswordResetConfirmRequest(TypedDict):
+    token: str
+    password: str
+    password_confirmation: str
+
+class PasswordResetConfirmResponse(TypedDict):
+    message: str
+
 class AdminSessionProjection(TypedDict):
     session_id: str
     issued_at: str
@@ -416,6 +439,7 @@ class IdentityAccountProjection(TypedDict):
     employment_status: NotRequired[str | None]
     created_at: NotRequired[str | None]
     last_login_at: NotRequired[str | None]
+    email_delivered: NotRequired[bool | None]
     workspace_access: list[WorkspaceAccessProjection]
 
 class AccountStateProjection(TypedDict):

@@ -1,0 +1,11 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/resend-activation-request.schema.json",
+  "title": "Resend Activation Request",
+  "description": "Optional payload for resending employee account activation invitation.",
+  "type": "object",
+  "additionalProperties": false,
+  "properties": {
+    "note": {"type": ["string", "null"], "maxLength": 1000}
+  }
+}

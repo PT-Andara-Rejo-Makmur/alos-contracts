@@ -1,0 +1,15 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/identity/resend-activation-response.schema.json",
+  "title": "Resend Activation Response",
+  "description": "Result of resending an activation invitation.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["actor_id", "activation_state", "email_delivered"],
+  "properties": {
+    "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+    "activation_state": {"type": "string", "enum": ["PENDING"]},
+    "email_delivered": {"type": "boolean"},
+    "expires_at": {"type": "string", "format": "date-time"}
+  }
+}

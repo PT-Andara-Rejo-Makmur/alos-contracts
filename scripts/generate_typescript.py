@@ -584,6 +584,25 @@ export interface ActivateAccountRequest {{
 export interface ActivateAccountResponse {{
   readonly actor_id: string; readonly activation_state: "ACTIVATED";
 }}
+export interface ResendActivationRequest {{
+  readonly note?: string | null;
+}}
+export interface ResendActivationResponse {{
+  readonly actor_id: string; readonly activation_state: "PENDING";
+  readonly email_delivered: boolean; readonly expires_at?: string;
+}}
+export interface PasswordResetRequest {{
+  readonly email: string;
+}}
+export interface PasswordResetResponse {{
+  readonly message: string;
+}}
+export interface PasswordResetConfirmRequest {{
+  readonly token: string; readonly password: string; readonly password_confirmation: string;
+}}
+export interface PasswordResetConfirmResponse {{
+  readonly message: string;
+}}
 export interface AdminSessionProjection {{
   readonly session_id: string; readonly issued_at: string; readonly expires_at: string;
   readonly active_workspace_id: string | null; readonly revoked: boolean;
@@ -611,6 +630,7 @@ export interface IdentityAccountProjection {{
   readonly position_title?: string | null; readonly department_code?: string | null;
   readonly employment_status?: string | null; readonly created_at?: string | null;
   readonly last_login_at?: string | null;
+  readonly email_delivered?: boolean | null;
   readonly workspace_access: readonly WorkspaceAccessProjection[];
 }}
 export interface AccountStateProjection {{ readonly actor_id: string; readonly active: boolean; }}

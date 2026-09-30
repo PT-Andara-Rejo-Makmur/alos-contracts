@@ -21,6 +21,7 @@
     "employment_status": {"type": ["string", "null"]},
     "created_at": {"type": ["string", "null"], "format": "date-time"},
     "last_login_at": {"type": ["string", "null"], "format": "date-time"},
+    "email_delivered": {"type": ["boolean", "null"]},
     "workspace_access": {
       "type": "array",
       "items": {"$ref": "https://schemas.alos.dev/v1/identity/workspace-access-projection.schema.json"}

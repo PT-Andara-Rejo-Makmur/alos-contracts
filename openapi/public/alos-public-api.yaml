@@ -765,6 +765,45 @@ paths:
                   principal:
                     $ref: ../../schemas/identity/authenticated-principal-projection.schema.json
         "401": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/auth/password-reset/request:
+    post:
+      operationId: requestPasswordReset
+      summary: Request password reset email for an existing account
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/identity/password-reset-request.schema.json
+      responses:
+        "200":
+          description: Generic confirmation message to prevent enumeration
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/password-reset-response.schema.json
+        "429": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/auth/password-reset/confirm:
+    post:
+      operationId: confirmPasswordReset
+      summary: Reset account password using a one-time challenge token
+      security: []
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/identity/password-reset-confirm-request.schema.json
+      responses:
+        "200":
+          description: Password reset confirmation
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/password-reset-confirm-response.schema.json
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "429": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/auth/whoami:
     get:
       operationId: whoami
@@ -984,6 +1023,29 @@ paths:
                 $ref: ../../schemas/identity/account-state-projection.schema.json
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/identity/actors/{actor_id}/activation/resend:
+    parameters:
+      - $ref: "#/components/parameters/ActorId"
+    post:
+      operationId: resendActivationInvitation
+      summary: Invalidate pending activation challenge and issue a new 24-hour invitation
+      requestBody:
+        required: false
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/identity/resend-activation-request.schema.json
+      responses:
+        "200":
+          description: Resend activation status
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/identity/resend-activation-response.schema.json
+        "400": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "429": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/identity/actors/{actor_id}/sessions:
     parameters:
       - $ref: "#/components/parameters/ActorId"
