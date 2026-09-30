@@ -11,6 +11,70 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/documents:
+    get:
+      operationId: listDocuments
+      summary: List documents in the authenticated active workspace
+      description: Requires document.read or legacy work.read.
+      parameters:
+        - {name: status, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentStatus}}
+        - {name: classification, in: query, schema: {$ref: ../../schemas/common/data-classification.schema.json}}
+        - {name: category, in: query, schema: {type: string}}
+        - {name: search, in: query, schema: {type: string}}
+      responses:
+        "200": {description: Visible documents, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createDocument
+      summary: Create document metadata in the authenticated active workspace
+      description: Requires document.create or legacy work.write. Backend assigns scope, owner and DRAFT status.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentCreateRequest}}}}
+      responses:
+        "201": {description: Created document, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/documents/{document_id}:
+    get:
+      operationId: getDocument
+      summary: Get a document in the authenticated active workspace
+      description: Requires document.read or legacy work.read.
+      parameters:
+        - {name: document_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Visible document, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/documents/{document_id}/versions:
+    get:
+      operationId: listDocumentVersions
+      summary: List immutable versions of a visible document
+      description: Requires document.read or legacy work.read.
+      parameters:
+        - {name: document_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Document versions, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentVersionProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createDocumentVersion
+      summary: Register an immutable reference to a scoped authoritative source version
+      description: Requires document.version. Backend copies URI and content hash from the source version.
+      parameters:
+        - {name: document_id, in: path, required: true, schema: {type: string}}
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentVersionCreateRequest}}}}
+      responses:
+        "201": {description: Created document version, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentVersionProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/approvals:
     get:
       operationId: listApprovals

@@ -646,6 +646,18 @@
         }
       }
     },
+    "DocumentVersionCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["version", "source_id", "source_version"],
+      "properties": {
+        "version": {"type": "string", "minLength": 1, "maxLength": 100},
+        "source_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id"
+        },
+        "source_version": {"type": "string", "minLength": 1, "maxLength": 100}
+      }
+    },
     "ReportProjection": {
       "type": "object",
       "additionalProperties": false,

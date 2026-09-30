@@ -142,6 +142,12 @@ export interface SharedWorkDocumentVersionProjection {
   readonly created_at: string;
 }
 
+export interface SharedWorkDocumentVersionCreateRequest {
+  readonly version: string;
+  readonly source_id: string;
+  readonly source_version: string;
+}
+
 export interface SharedWorkReportProjection {
   readonly report_id: string;
   readonly tenant_id: string;

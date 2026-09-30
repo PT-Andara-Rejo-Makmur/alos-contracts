@@ -142,6 +142,11 @@ class SharedWorkDocumentVersionProjection(TypedDict, total=False):
     created_by: Required[str]
     created_at: Required[str]
 
+class SharedWorkDocumentVersionCreateRequest(TypedDict, total=False):
+    version: Required[str]
+    source_id: Required[str]
+    source_version: Required[str]
+
 class SharedWorkReportProjection(TypedDict, total=False):
     report_id: Required[str]
     tenant_id: Required[str]

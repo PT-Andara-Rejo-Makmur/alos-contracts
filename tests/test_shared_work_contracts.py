@@ -173,3 +173,28 @@ def test_approval_workflow_is_typed_and_authority_fields_are_server_owned(
         operation = paths[f"/api/v1/approvals/{{approval_id}}/{action}"]["post"]
         assert operation["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "ApprovalDecisionRequest"
         assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "ApprovalProjection"
+
+
+def test_document_metadata_and_version_reference_have_canonical_public_contracts(
+    load_json, registry
+) -> None:
+    schema = load_json("schemas/shared-work/shared-work.schema.json")
+    request = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/DocumentVersionCreateRequest"},
+        registry=registry,
+    )
+    valid = {"version": "1.0", "source_id": "source_123", "source_version": "1"}
+    assert request.is_valid(valid)
+    for field in ("storage_uri", "content_hash", "created_by", "tenant_id", "workspace_id"):
+        assert not request.is_valid({**valid, field: "injected"})
+    assert not request.is_valid({"version": "1.0"})
+
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    paths = spec["paths"]
+    base = "../../schemas/shared-work/shared-work.schema.json#/$defs/"
+    assert paths["/api/v1/documents"]["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "DocumentCreateRequest"
+    assert paths["/api/v1/documents"]["get"]["responses"]["200"]["content"]["application/json"]["schema"]["items"]["$ref"] == base + "DocumentProjection"
+    versions = paths["/api/v1/documents/{document_id}/versions"]
+    assert versions["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "DocumentVersionCreateRequest"
+    assert versions["post"]["responses"]["201"]["content"]["application/json"]["schema"]["$ref"] == base + "DocumentVersionProjection"
+    assert "patch" not in versions
