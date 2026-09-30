@@ -75,6 +75,18 @@ paths:
         "404": {$ref: "#/components/responses/ErrorResponse"}
         "409": {$ref: "#/components/responses/ErrorResponse"}
         "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/documents/{document_id}/source-options:
+    get:
+      operationId: listDocumentSourceOptions
+      summary: List verified source versions eligible for a visible draft document
+      description: Requires document.version. Storage URI and internal credentials are not exposed.
+      parameters:
+        - {name: document_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Eligible source versions, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentSourceOptionProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/documents/{document_id}/review:
     post:
       operationId: reviewDocument
@@ -211,6 +223,15 @@ paths:
         "404": {$ref: "#/components/responses/ErrorResponse"}
         "409": {$ref: "#/components/responses/ErrorResponse"}
         "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/workspace-members:
+    get:
+      operationId: listSharedWorkWorkspaceMembers
+      summary: List active members of the authenticated active workspace
+      description: Read-only directory for Shared Work presentation and assignment. Requires a Shared Work read or assign permission.
+      responses:
+        "200": {description: Eligible workspace members, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/WorkspaceMemberProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/projects:
     get:
       operationId: listProjects
@@ -256,6 +277,14 @@ paths:
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}
         "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/projects/{project_id}/relations:
+    get:
+      operationId: listProjectRelations
+      parameters: [{$ref: "#/components/parameters/ProjectId"}]
+      responses:
+        "200": {description: Scoped project relations, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/RelationProjection}}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/projects/{project_id}/archive:
     post:
       operationId: archiveProject
@@ -334,6 +363,43 @@ paths:
       parameters: [{$ref: "#/components/parameters/TaskId"}]
       responses:
         "200": {description: Completed task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+  /api/v1/work/reports/definitions:
+    get:
+      operationId: listReportDefinitions
+      summary: List definitions in the authenticated active workspace
+      responses:
+        "200": {description: Visible definitions, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportDefinitionProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createReportDefinition
+      summary: Create an owned report definition
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportDefinitionCreateRequest}}}}
+      responses:
+        "201": {description: Created definition, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportDefinitionProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/reports/definitions/{definition_id}:
+    get:
+      operationId: getReportDefinition
+      parameters: [{name: definition_id, in: path, required: true, schema: {type: string}}]
+      responses:
+        "200": {description: Visible definition, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportDefinitionProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+    patch:
+      operationId: updateReportDefinition
+      summary: Update owned definition configuration
+      parameters: [{name: definition_id, in: path, required: true, schema: {type: string}}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportDefinitionUpdateRequest}}}}
+      responses:
+        "200": {description: Updated definition, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportDefinitionProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/work/reports/results:
     get:
       operationId: listReportResults
@@ -538,6 +604,113 @@ paths:
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}
         "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/evidence-candidates:
+    get:
+      operationId: listSharedWorkEvidenceCandidates
+      description: Read visible verified EvidenceRef candidates for authorized linking.
+      responses:
+        "200": {description: Visible evidence candidates, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/EvidenceCandidateProjection}}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/{entity_type}/{entity_id}/relations:
+    parameters:
+      - {name: entity_type, in: path, required: true, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/EntityType}}
+      - {name: entity_id, in: path, required: true, schema: {type: string}}
+    get:
+      operationId: listSharedWorkRelations
+      responses:
+        "200": {description: Scoped linked records, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/RelationProjection}}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/documents/{document_id}/links:
+    parameters: [{name: document_id, in: path, required: true, schema: {type: string}}]
+    post:
+      operationId: linkDocumentToWork
+      description: Requires work.relation.link and visibility of both records in the active workspace.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentLinkRequest}}}}
+      responses:
+        "201": {description: Linked record, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/RelationProjection}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/{entity_type}/{entity_id}/checklist:
+    parameters:
+      - {name: entity_type, in: path, required: true, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ChecklistEntityType}}
+      - {name: entity_id, in: path, required: true, schema: {type: string}}
+    get:
+      operationId: listSharedWorkChecklist
+      responses:
+        "200": {description: Scoped checklist items, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ChecklistItemProjection}}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createSharedWorkChecklistItem
+      description: Requires work.checklist.manage.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ChecklistCreateRequest}}}}
+      responses:
+        "201": {description: Created item, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ChecklistItemProjection}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/{entity_type}/{entity_id}/checklist/{item_id}/complete:
+    parameters:
+      - {name: entity_type, in: path, required: true, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ChecklistEntityType}}
+      - {name: entity_id, in: path, required: true, schema: {type: string}}
+      - {name: item_id, in: path, required: true, schema: {type: string}}
+    post:
+      operationId: completeSharedWorkChecklistItem
+      description: Requires work.checklist.manage; repeated completion is idempotent.
+      responses:
+        "200": {description: Completed item, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ChecklistItemProjection}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/{entity_type}/{entity_id}/evidence:
+    parameters:
+      - {name: entity_type, in: path, required: true, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/EntityType}}
+      - {name: entity_id, in: path, required: true, schema: {type: string}}
+    get:
+      operationId: listSharedWorkEvidence
+      responses:
+        "200": {description: Linked evidence references, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/EvidenceProjection}}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: linkSharedWorkEvidence
+      description: Requires work.evidence.link and a visible verified EvidenceRef.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/EvidenceLinkRequest}}}}
+      responses:
+        "201": {description: Linked evidence, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/EvidenceProjection}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/{entity_type}/{entity_id}/activity:
+    parameters:
+      - {name: entity_type, in: path, required: true, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/EntityType}}
+      - {name: entity_id, in: path, required: true, schema: {type: string}}
+    get:
+      operationId: listSharedWorkActivity
+      responses:
+        "200": {description: Scoped audit events, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ActivityProjection}}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/{entity_type}/{entity_id}/comments:
+    parameters:
+      - {name: entity_type, in: path, required: true, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/EntityType}}
+      - {name: entity_id, in: path, required: true, schema: {type: string}}
+    get:
+      operationId: listSharedWorkComments
+      responses:
+        "200": {description: Scoped comments, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/CommentProjection}}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createSharedWorkComment
+      description: Requires work.comment.create and entity visibility.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/CommentRequest}}}}
+      responses:
+        "201": {description: Created comment, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/CommentProjection}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/auth/login:
     post:
       operationId: login

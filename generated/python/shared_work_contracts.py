@@ -5,7 +5,23 @@ from typing import Literal, Required, TypedDict
 
 SharedWorkDataClassification = Literal['PUBLIC', 'INTERNAL', 'CONFIDENTIAL', 'RESTRICTED']
 
+class SharedWorkWorkspaceMemberProjection(TypedDict, total=False):
+    actor_id: Required[str]
+    display_name: Required[str]
+    employee_id: str | None
+    employee_number: str | None
+    position_title: str | None
+    department_code: str | None
+    division_code: str | None
+    workspace_id: Required[str]
+    role_refs: Required[list[str]]
+    active: Required[bool]
+    task_assignable: Required[bool]
+    finding_assignable: Required[bool]
+
 SharedWorkProjectStatus = Literal['PLANNED', 'ACTIVE', 'ON_HOLD', 'COMPLETED', 'CANCELLED', 'ARCHIVED']
+
+SharedWorkProjectRisk = Literal['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
 
 SharedWorkTaskStatus = Literal['OPEN', 'IN_PROGRESS', 'BLOCKED', 'UNDER_REVIEW', 'COMPLETED', 'CANCELLED']
 
@@ -25,7 +41,7 @@ SharedWorkFindingStatus = Literal['OPEN', 'ASSIGNED', 'IN_PROGRESS', 'PENDING_VE
 
 SharedWorkFindingSeverity = Literal['LOW', 'MEDIUM', 'HIGH', 'CRITICAL']
 
-SharedWorkPermission = Literal['project.read', 'project.create', 'project.update', 'project.archive', 'task.read', 'task.create', 'task.update', 'task.assign', 'task.complete', 'approval.read', 'approval.request', 'approval.review', 'approval.approve', 'approval.return', 'approval.reject', 'approval.hold', 'document.read', 'document.create', 'document.version', 'document.review', 'document.approve', 'document.retire', 'report.read', 'report.create', 'report.review', 'report.publish', 'report.archive', 'finding.read', 'finding.create', 'finding.update', 'finding.assign', 'finding.verify', 'finding.close']
+SharedWorkPermission = Literal['project.read', 'project.create', 'project.update', 'project.archive', 'task.read', 'task.create', 'task.update', 'task.assign', 'task.complete', 'approval.read', 'approval.request', 'approval.review', 'approval.approve', 'approval.return', 'approval.reject', 'approval.hold', 'document.read', 'document.create', 'document.version', 'document.review', 'document.approve', 'document.retire', 'report.read', 'report.create', 'report.review', 'report.publish', 'report.archive', 'finding.read', 'finding.create', 'finding.update', 'finding.assign', 'finding.verify', 'finding.close', 'work.evidence.link', 'work.comment.create', 'work.relation.link', 'work.checklist.manage']
 
 class SharedWorkProjectProjection(TypedDict, total=False):
     project_id: Required[str]
@@ -39,6 +55,16 @@ class SharedWorkProjectProjection(TypedDict, total=False):
     owner_actor_id: str | None
     start_date: str | None
     target_end_date: str | None
+    owner_name: str | None
+    workspace_name: str | None
+    progress_percentage: int
+    risk_level: SharedWorkProjectRisk
+    tasks_count: int
+    documents_count: int
+    approvals_count: int
+    findings_count: int
+    reports_count: int
+    evidence_count: int
     created_at: Required[str]
     updated_at: Required[str]
 
@@ -68,6 +94,16 @@ class SharedWorkTaskProjection(TypedDict, total=False):
     owner_actor_id: str | None
     created_by: Required[str]
     due_at: str | None
+    start_date: str | None
+    project_name: str | None
+    project_code: str | None
+    owner_name: str | None
+    creator_name: str | None
+    workspace_name: str | None
+    documents_count: int
+    findings_count: int
+    evidence_count: int
+    comments_count: int
     created_at: Required[str]
     updated_at: Required[str]
 
@@ -76,6 +112,7 @@ class SharedWorkTaskCreateRequest(TypedDict, total=False):
     title: Required[str]
     description: str | None
     priority: SharedWorkTaskPriority
+    start_date: str | None
     due_at: str | None
 
 class SharedWorkTaskUpdateRequest(TypedDict, total=False):
@@ -83,6 +120,7 @@ class SharedWorkTaskUpdateRequest(TypedDict, total=False):
     title: str
     description: str | None
     priority: SharedWorkTaskPriority
+    start_date: str | None
     due_at: str | None
 
 class SharedWorkTaskAssignRequest(TypedDict, total=False):
@@ -103,6 +141,13 @@ class SharedWorkApprovalProjection(TypedDict, total=False):
     decision_reason: str | None
     requested_at: Required[str]
     decided_at: str | None
+    subject_title: str | None
+    requester_name: str | None
+    approver_name: str | None
+    workspace_name: str | None
+    documents_count: int
+    evidence_count: int
+    comments_count: int
 
 class SharedWorkApprovalRequest(TypedDict, total=False):
     subject_type: Required[SharedWorkApprovalSubjectType]
@@ -122,12 +167,29 @@ class SharedWorkDocumentProjection(TypedDict, total=False):
     data_classification: Required[SharedWorkDataClassification]
     status: Required[SharedWorkDocumentStatus]
     owner_actor_id: Required[str]
+    description: str | None
+    project_id: str | None
+    project_name: str | None
+    project_code: str | None
+    effective_date: str | None
+    expiry_date: str | None
+    updated_at: str | None
+    current_version: str | None
+    owner_name: str | None
+    workspace_name: str | None
+    tasks_count: int
+    approvals_count: int
+    evidence_count: int
     created_at: Required[str]
 
 class SharedWorkDocumentCreateRequest(TypedDict, total=False):
     title: Required[str]
     category: Required[str]
     data_classification: Required[SharedWorkDataClassification]
+    description: str | None
+    project_id: str | None
+    effective_date: str | None
+    expiry_date: str | None
 
 class SharedWorkDocumentVersionProjection(TypedDict, total=False):
     document_id: Required[str]
@@ -137,10 +199,18 @@ class SharedWorkDocumentVersionProjection(TypedDict, total=False):
     version: Required[str]
     source_id: Required[str]
     source_version: Required[str]
+    source_title: str | None
     storage_uri: Required[str]
     content_hash: Required[str]
     created_by: Required[str]
+    creator_name: str | None
     created_at: Required[str]
+
+class SharedWorkDocumentSourceOptionProjection(TypedDict, total=False):
+    source_id: Required[str]
+    source_title: Required[str]
+    source_version: Required[str]
+    content_hash: Required[str]
 
 class SharedWorkDocumentVersionCreateRequest(TypedDict, total=False):
     version: Required[str]
@@ -156,12 +226,74 @@ class SharedWorkReportProjection(TypedDict, total=False):
     report_type: Required[str]
     status: Required[SharedWorkReportStatus]
     owner_actor_id: str | None
+    description: str | None
+    period_start: str | None
+    period_end: str | None
+    scope: str | None
+    published_at: str | None
+    project_id: str | None
+    owner_name: str | None
+    workspace_name: str | None
+    evidence_count: int
+    comments_count: int
     created_at: Required[str]
     updated_at: Required[str]
 
 class SharedWorkReportCreateRequest(TypedDict, total=False):
     title: Required[str]
     report_type: Required[str]
+    description: str | None
+    period_start: str | None
+    period_end: str | None
+    scope: str | None
+    project_id: str | None
+
+SharedWorkReportFrequency = Literal['DAILY', 'WEEKLY', 'MONTHLY', 'QUARTERLY', 'ON_DEMAND']
+
+class SharedWorkReportDefinitionProjection(TypedDict, total=False):
+    report_definition_id: Required[str]
+    tenant_id: Required[str]
+    organization_id: Required[str]
+    workspace_id: Required[str]
+    name: Required[str]
+    description: str | None
+    report_type: Required[str]
+    frequency: Required[SharedWorkReportFrequency]
+    scope: str | None
+    owner_actor_id: Required[str]
+    owner_name: str
+    workspace_name: str | None
+    review_required: Required[bool]
+    recipients: Required[list[str]]
+    sections: Required[list[str]]
+    data_sources: Required[list[str]]
+    schedule_config: Required[dict[str, object]]
+    created_at: Required[str]
+    updated_at: Required[str]
+
+class SharedWorkReportDefinitionCreateRequest(TypedDict, total=False):
+    name: Required[str]
+    description: str | None
+    report_type: Required[str]
+    frequency: Required[SharedWorkReportFrequency]
+    scope: str | None
+    review_required: Required[bool]
+    recipients: list[str]
+    sections: list[str]
+    data_sources: list[str]
+    schedule_config: dict[str, object]
+
+class SharedWorkReportDefinitionUpdateRequest(TypedDict, total=False):
+    name: str
+    description: str | None
+    report_type: str
+    frequency: SharedWorkReportFrequency
+    scope: str | None
+    review_required: bool
+    recipients: list[str]
+    sections: list[str]
+    data_sources: list[str]
+    schedule_config: dict[str, object]
 
 class SharedWorkFindingProjection(TypedDict, total=False):
     finding_id: Required[str]
@@ -174,6 +306,22 @@ class SharedWorkFindingProjection(TypedDict, total=False):
     status: Required[SharedWorkFindingStatus]
     source_type: Required[str]
     owner_actor_id: str | None
+    category: str | None
+    project_id: str | None
+    project_name: str | None
+    identified_at: str
+    due_date: str | None
+    impact: str | None
+    root_cause: str | None
+    corrective_action_task_id: str | None
+    corrective_action_task_title: str | None
+    verifier_actor_id: str | None
+    verified_at: str | None
+    owner_name: str | None
+    verifier_name: str | None
+    workspace_name: str | None
+    evidence_count: int
+    tasks_count: int
     created_at: Required[str]
     updated_at: Required[str]
 
@@ -181,11 +329,95 @@ class SharedWorkFindingCreateRequest(TypedDict, total=False):
     title: Required[str]
     description: str | None
     severity: SharedWorkFindingSeverity
+    category: str | None
+    project_id: str | None
+    due_date: str | None
+    impact: str | None
+    root_cause: str | None
+    corrective_action_task_id: str | None
 
 class SharedWorkFindingUpdateRequest(TypedDict, total=False):
     title: str
     description: str | None
     severity: SharedWorkFindingSeverity
+    category: str | None
+    project_id: str | None
+    due_date: str | None
+    impact: str | None
+    root_cause: str | None
+    corrective_action_task_id: str | None
+
+SharedWorkEntityType = Literal['PROJECT', 'TASK', 'APPROVAL', 'DOCUMENT', 'REPORT', 'FINDING']
+
+class SharedWorkRelationProjection(TypedDict, total=False):
+    entity_type: Required[SharedWorkEntityType]
+    entity_id: Required[str]
+    title: Required[str]
+    status: Required[str]
+
+class SharedWorkDocumentLinkRequest(TypedDict, total=False):
+    target_type: Required[str]
+    target_id: Required[str]
+
+SharedWorkChecklistEntityType = Literal['TASK', 'DOCUMENT']
+
+class SharedWorkChecklistCreateRequest(TypedDict, total=False):
+    body: Required[str]
+
+class SharedWorkChecklistItemProjection(TypedDict, total=False):
+    item_id: Required[str]
+    entity_type: Required[SharedWorkChecklistEntityType]
+    entity_id: Required[str]
+    body: Required[str]
+    completed: Required[bool]
+    created_by: Required[str]
+    completed_by: str | None
+    created_at: Required[str]
+    completed_at: str | None
+
+class SharedWorkEvidenceLinkRequest(TypedDict, total=False):
+    evidence_id: Required[str]
+
+class SharedWorkEvidenceCandidateProjection(TypedDict, total=False):
+    evidence_id: Required[str]
+    source_id: Required[str]
+    source_title: str | None
+    source_version: str | None
+    content_hash: Required[str]
+    validation_status: Required[str]
+    captured_at: Required[str]
+
+class SharedWorkEvidenceProjection(TypedDict, total=False):
+    link_id: Required[str]
+    entity_type: Required[SharedWorkEntityType]
+    entity_id: Required[str]
+    evidence_id: Required[str]
+    source_id: Required[str]
+    source_title: str | None
+    source_version: str | None
+    content_hash: str
+    validation_status: Required[str]
+    linked_by: Required[str]
+    linked_at: Required[str]
+
+class SharedWorkActivityProjection(TypedDict, total=False):
+    audit_id: Required[int]
+    event_type: Required[str]
+    actor_id: Required[str]
+    actor_name: Required[str]
+    occurred_at: Required[str]
+
+class SharedWorkCommentRequest(TypedDict, total=False):
+    body: Required[str]
+
+class SharedWorkCommentProjection(TypedDict, total=False):
+    comment_id: Required[str]
+    entity_type: Required[SharedWorkEntityType]
+    entity_id: Required[str]
+    actor_id: Required[str]
+    actor_name: Required[str]
+    body: Required[str]
+    created_at: Required[str]
 
 class SharedWorkFindingAssignmentRequest(TypedDict, total=False):
     owner_actor_id: Required[str]

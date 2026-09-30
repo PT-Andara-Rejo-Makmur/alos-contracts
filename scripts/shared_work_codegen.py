@@ -31,6 +31,8 @@ def _type(property_schema: dict, *, python: bool) -> str:
     if kind == "array":
         item = _type(property_schema["items"], python=python)
         return f"list[{item}]" if python else f"readonly {item}[]"
+    if kind == "object":
+        return "dict[str, object]" if python else "Readonly<Record<string, unknown>>"
     return {
         "string": "str" if python else "string",
         "integer": "int" if python else "number",

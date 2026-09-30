@@ -69,6 +69,33 @@ def test_generated_artifacts_match_schema() -> None:
     assert "SharedWorkApprovalProjection" in render_python()
 
 
+def test_document_links_and_checklist_are_scoped_requests(load_json, registry) -> None:
+    schema = load_json("schemas/shared-work/shared-work.schema.json")
+    definitions = schema["$defs"]
+    assert {"work.relation.link", "work.checklist.manage"} <= set(
+        definitions["Permission"]["enum"]
+    )
+    for name, valid, forbidden in (
+        ("DocumentLinkRequest", {"target_type": "TASK", "target_id": "task_1"},
+         {"tenant_id": "tenant_other"}),
+        ("ChecklistCreateRequest", {"body": "Inspect"}, {"completed": True}),
+    ):
+        validator = Draft202012Validator(
+            {"$ref": schema["$id"] + "#/$defs/" + name}, registry=registry
+        )
+        assert validator.is_valid(valid)
+        assert not validator.is_valid({**valid, **forbidden})
+    link = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/DocumentLinkRequest"}, registry=registry
+    )
+    assert not link.is_valid({"target_type": "REPORT", "target_id": "report_1"})
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    paths = spec["paths"]
+    assert "/api/v1/documents/{document_id}/links" in paths
+    assert "/api/v1/work/{entity_type}/{entity_id}/checklist" in paths
+    assert "/api/v1/work/{entity_type}/{entity_id}/relations" in paths
+
+
 def test_create_request_rejects_authority_fields(load_json, registry) -> None:
     schema = load_json("schemas/shared-work/shared-work.schema.json")
     validator = Draft202012Validator({"$ref": schema["$id"] + "#/$defs/ApprovalRequest"}, registry=registry)
@@ -241,7 +268,10 @@ def test_reports_and_findings_have_canonical_public_contracts(load_json, registr
         operation = paths[f"/api/v1/work/reports/results/{{report_id}}/{action}"]["post"]
         assert "requestBody" not in operation
         assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportProjection"
-    assert "/api/v1/work/reports/definitions" not in paths
+    definitions = paths["/api/v1/work/reports/definitions"]
+    assert definitions["get"]["responses"]["200"]["content"]["application/json"]["schema"]["items"]["$ref"] == base + "ReportDefinitionProjection"
+    assert definitions["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportDefinitionCreateRequest"
+    assert paths["/api/v1/work/reports/definitions/{definition_id}"]["patch"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportDefinitionUpdateRequest"
 
     # Findings
     findings = paths["/api/v1/work/findings"]
@@ -279,4 +309,29 @@ def test_finding_lifecycle_requests_reject_authority_and_use_dedicated_routes(lo
         operation = paths[f"/api/v1/work/findings/{{finding_id}}/{action}"]["post"]
         assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "FindingProjection"
         assert "requestBody" not in operation
+
+
+def test_document_source_selector_and_task_start_date_are_canonical(load_json, registry) -> None:
+    schema = load_json("schemas/shared-work/shared-work.schema.json")
+    task_request = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/TaskCreateRequest"}, registry=registry,
+        format_checker=Draft202012Validator.FORMAT_CHECKER,
+    )
+    assert task_request.is_valid({"title": "Inspect site", "start_date": "2026-10-01"})
+    assert not task_request.is_valid({"title": "Inspect site", "start_date": "yesterday"})
+    option = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/DocumentSourceOptionProjection"},
+        registry=registry,
+    )
+    valid = {
+        "source_id": "source_one", "source_title": "Verified source",
+        "source_version": "1", "content_hash": "sha256:abc",
+    }
+    assert option.is_valid(valid)
+    assert not option.is_valid({**valid, "storage_uri": "secret"})
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    operation = spec["paths"]["/api/v1/documents/{document_id}/source-options"]["get"]
+    assert operation["responses"]["200"]["content"]["application/json"]["schema"]["items"]["$ref"].endswith(
+        "#/$defs/DocumentSourceOptionProjection"
+    )
 

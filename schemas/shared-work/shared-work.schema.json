@@ -4,6 +4,25 @@
   "title": "Shared Work canonical vocabulary",
   "description": "Backend-owned Shared Work projections and client-supplied creation inputs. Declarations do not grant authority or publish an API.",
   "$defs": {
+    "WorkspaceMemberProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["actor_id", "display_name", "workspace_id", "role_refs", "active", "task_assignable", "finding_assignable"],
+      "properties": {
+        "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+        "display_name": {"type": "string", "minLength": 1},
+        "employee_id": {"anyOf": [{"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"}, {"type": "null"}]},
+        "employee_number": {"type": ["string", "null"]},
+        "position_title": {"type": ["string", "null"]},
+        "department_code": {"type": ["string", "null"]},
+        "division_code": {"type": ["string", "null"]},
+        "workspace_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+        "role_refs": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "active": {"type": "boolean", "const": true},
+        "task_assignable": {"type": "boolean"},
+        "finding_assignable": {"type": "boolean"}
+      }
+    },
     "ProjectStatus": {
       "type": "string",
       "enum": [
@@ -15,6 +34,7 @@
         "ARCHIVED"
       ]
     },
+    "ProjectRisk": {"type": "string", "enum": ["LOW", "MEDIUM", "HIGH", "CRITICAL"]},
     "TaskStatus": {
       "type": "string",
       "enum": [
@@ -133,7 +153,11 @@
         "finding.update",
         "finding.assign",
         "finding.verify",
-        "finding.close"
+        "finding.close",
+        "work.evidence.link",
+        "work.comment.create",
+        "work.relation.link",
+        "work.checklist.manage"
       ]
     },
     "ProjectProjection": {
@@ -202,6 +226,16 @@
           ],
           "format": "date"
         },
+        "owner_name": {"type": ["string", "null"]},
+        "workspace_name": {"type": ["string", "null"]},
+        "progress_percentage": {"type": "integer", "minimum": 0, "maximum": 100},
+        "risk_level": {"$ref": "#/$defs/ProjectRisk"},
+        "tasks_count": {"type": "integer", "minimum": 0},
+        "documents_count": {"type": "integer", "minimum": 0},
+        "approvals_count": {"type": "integer", "minimum": 0},
+        "findings_count": {"type": "integer", "minimum": 0},
+        "reports_count": {"type": "integer", "minimum": 0},
+        "evidence_count": {"type": "integer", "minimum": 0},
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -335,6 +369,16 @@
           ],
           "format": "date-time"
         },
+        "start_date": {"type": ["string", "null"], "format": "date"},
+        "project_name": {"type": ["string", "null"]},
+        "project_code": {"type": ["string", "null"]},
+        "owner_name": {"type": ["string", "null"]},
+        "creator_name": {"type": ["string", "null"]},
+        "workspace_name": {"type": ["string", "null"]},
+        "documents_count": {"type": "integer", "minimum": 0},
+        "findings_count": {"type": "integer", "minimum": 0},
+        "evidence_count": {"type": "integer", "minimum": 0},
+        "comments_count": {"type": "integer", "minimum": 0},
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -375,6 +419,7 @@
         "priority": {
           "$ref": "#/$defs/TaskPriority"
         },
+        "start_date": {"type": ["string", "null"], "format": "date"},
         "due_at": {
           "type": [
             "string",
@@ -397,6 +442,7 @@
         "title": {"type": "string", "minLength": 1},
         "description": {"type": ["string", "null"]},
         "priority": {"$ref": "#/$defs/TaskPriority"},
+        "start_date": {"type": ["string", "null"], "format": "date"},
         "due_at": {"type": ["string", "null"], "format": "date-time"}
       }
     },
@@ -488,7 +534,14 @@
             "null"
           ],
           "format": "date-time"
-        }
+        },
+        "subject_title": {"type": ["string", "null"]},
+        "requester_name": {"type": ["string", "null"]},
+        "approver_name": {"type": ["string", "null"]},
+        "workspace_name": {"type": ["string", "null"]},
+        "documents_count": {"type": "integer", "minimum": 0},
+        "evidence_count": {"type": "integer", "minimum": 0},
+        "comments_count": {"type": "integer", "minimum": 0}
       }
     },
     "ApprovalRequest": {
@@ -565,6 +618,19 @@
         "owner_actor_id": {
           "type": "string"
         },
+        "description": {"type": ["string", "null"]},
+        "project_id": {"type": ["string", "null"]},
+        "project_name": {"type": ["string", "null"]},
+        "project_code": {"type": ["string", "null"]},
+        "effective_date": {"type": ["string", "null"], "format": "date"},
+        "expiry_date": {"type": ["string", "null"], "format": "date"},
+        "updated_at": {"type": ["string", "null"], "format": "date-time"},
+        "current_version": {"type": ["string", "null"]},
+        "owner_name": {"type": ["string", "null"]},
+        "workspace_name": {"type": ["string", "null"]},
+        "tasks_count": {"type": "integer", "minimum": 0},
+        "approvals_count": {"type": "integer", "minimum": 0},
+        "evidence_count": {"type": "integer", "minimum": 0},
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -590,7 +656,11 @@
         },
         "data_classification": {
           "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json"
-        }
+        },
+        "description": {"type": ["string", "null"]},
+        "project_id": {"type": ["string", "null"]},
+        "effective_date": {"type": ["string", "null"], "format": "date"},
+        "expiry_date": {"type": ["string", "null"], "format": "date"}
       }
     },
     "DocumentVersionProjection": {
@@ -631,6 +701,7 @@
         "source_version": {
           "type": "string"
         },
+        "source_title": {"type": ["string", "null"]},
         "storage_uri": {
           "type": "string"
         },
@@ -640,10 +711,22 @@
         "created_by": {
           "type": "string"
         },
+        "creator_name": {"type": ["string", "null"]},
         "created_at": {
           "type": "string",
           "format": "date-time"
         }
+      }
+    },
+    "DocumentSourceOptionProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["source_id", "source_title", "source_version", "content_hash"],
+      "properties": {
+        "source_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id"},
+        "source_title": {"type": "string"},
+        "source_version": {"type": "string"},
+        "content_hash": {"type": "string"}
       }
     },
     "DocumentVersionCreateRequest": {
@@ -704,6 +787,16 @@
             "null"
           ]
         },
+        "description": {"type": ["string", "null"]},
+        "period_start": {"type": ["string", "null"], "format": "date"},
+        "period_end": {"type": ["string", "null"], "format": "date"},
+        "scope": {"type": ["string", "null"]},
+        "published_at": {"type": ["string", "null"], "format": "date-time"},
+        "project_id": {"type": ["string", "null"]},
+        "owner_name": {"type": ["string", "null"]},
+        "workspace_name": {"type": ["string", "null"]},
+        "evidence_count": {"type": "integer", "minimum": 0},
+        "comments_count": {"type": "integer", "minimum": 0},
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -729,7 +822,77 @@
         "report_type": {
           "type": "string",
           "minLength": 1
-        }
+        },
+        "description": {"type": ["string", "null"]},
+        "period_start": {"type": ["string", "null"], "format": "date"},
+        "period_end": {"type": ["string", "null"], "format": "date"},
+        "scope": {"type": ["string", "null"]},
+        "project_id": {"type": ["string", "null"]}
+      }
+    },
+    "ReportFrequency": {
+      "type": "string",
+      "enum": ["DAILY", "WEEKLY", "MONTHLY", "QUARTERLY", "ON_DEMAND"]
+    },
+    "ReportDefinitionProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["report_definition_id", "tenant_id", "organization_id", "workspace_id", "name", "report_type", "frequency", "owner_actor_id", "review_required", "recipients", "sections", "data_sources", "schedule_config", "created_at", "updated_at"],
+      "properties": {
+        "report_definition_id": {"type": "string"},
+        "tenant_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"},
+        "organization_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"},
+        "workspace_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+        "name": {"type": "string"},
+        "description": {"type": ["string", "null"]},
+        "report_type": {"type": "string"},
+        "frequency": {"$ref": "#/$defs/ReportFrequency"},
+        "scope": {"type": ["string", "null"]},
+        "owner_actor_id": {"type": "string"},
+        "owner_name": {"type": "string"},
+        "workspace_name": {"type": ["string", "null"]},
+        "review_required": {"type": "boolean"},
+        "recipients": {"type": "array", "items": {"type": "string"}},
+        "sections": {"type": "array", "items": {"type": "string"}},
+        "data_sources": {"type": "array", "items": {"type": "string"}},
+        "schedule_config": {"type": "object"},
+        "created_at": {"type": "string", "format": "date-time"},
+        "updated_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "ReportDefinitionCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["name", "report_type", "frequency", "review_required"],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 500},
+        "description": {"type": ["string", "null"]},
+        "report_type": {"type": "string", "minLength": 1},
+        "frequency": {"$ref": "#/$defs/ReportFrequency"},
+        "scope": {"type": ["string", "null"]},
+        "review_required": {"type": "boolean"},
+        "recipients": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "sections": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "data_sources": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "schedule_config": {"type": "object"}
+      }
+    },
+    "ReportDefinitionUpdateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "minProperties": 1,
+      "required": [],
+      "properties": {
+        "name": {"type": "string", "minLength": 1, "maxLength": 500},
+        "description": {"type": ["string", "null"]},
+        "report_type": {"type": "string", "minLength": 1},
+        "frequency": {"$ref": "#/$defs/ReportFrequency"},
+        "scope": {"type": ["string", "null"]},
+        "review_required": {"type": "boolean"},
+        "recipients": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "sections": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "data_sources": {"type": "array", "items": {"type": "string"}, "uniqueItems": true},
+        "schedule_config": {"type": "object"}
       }
     },
     "FindingProjection": {
@@ -788,6 +951,22 @@
             "null"
           ]
         },
+        "category": {"type": ["string", "null"]},
+        "project_id": {"type": ["string", "null"]},
+        "project_name": {"type": ["string", "null"]},
+        "identified_at": {"type": "string", "format": "date-time"},
+        "due_date": {"type": ["string", "null"], "format": "date"},
+        "impact": {"type": ["string", "null"]},
+        "root_cause": {"type": ["string", "null"]},
+        "corrective_action_task_id": {"type": ["string", "null"]},
+        "corrective_action_task_title": {"type": ["string", "null"]},
+        "verifier_actor_id": {"type": ["string", "null"]},
+        "verified_at": {"type": ["string", "null"], "format": "date-time"},
+        "owner_name": {"type": ["string", "null"]},
+        "verifier_name": {"type": ["string", "null"]},
+        "workspace_name": {"type": ["string", "null"]},
+        "evidence_count": {"type": "integer", "minimum": 0},
+        "tasks_count": {"type": "integer", "minimum": 0},
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -817,7 +996,13 @@
         },
         "severity": {
           "$ref": "#/$defs/FindingSeverity"
-        }
+        },
+        "category": {"type": ["string", "null"]},
+        "project_id": {"type": ["string", "null"]},
+        "due_date": {"type": ["string", "null"], "format": "date"},
+        "impact": {"type": ["string", "null"]},
+        "root_cause": {"type": ["string", "null"]},
+        "corrective_action_task_id": {"type": ["string", "null"]}
       }
     },
     "FindingUpdateRequest": {
@@ -828,7 +1013,125 @@
       "properties": {
         "title": {"type": "string", "minLength": 1, "maxLength": 500},
         "description": {"type": ["string", "null"]},
-        "severity": {"$ref": "#/$defs/FindingSeverity"}
+        "severity": {"$ref": "#/$defs/FindingSeverity"},
+        "category": {"type": ["string", "null"]},
+        "project_id": {"type": ["string", "null"]},
+        "due_date": {"type": ["string", "null"], "format": "date"},
+        "impact": {"type": ["string", "null"]},
+        "root_cause": {"type": ["string", "null"]},
+        "corrective_action_task_id": {"type": ["string", "null"]}
+      }
+    },
+    "EntityType": {
+      "type": "string",
+      "enum": ["PROJECT", "TASK", "APPROVAL", "DOCUMENT", "REPORT", "FINDING"]
+    },
+    "RelationProjection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["entity_type", "entity_id", "title", "status"],
+      "properties": {
+        "entity_type": {"$ref": "#/$defs/EntityType"},
+        "entity_id": {"type": "string"},
+        "title": {"type": "string"},
+        "status": {"type": "string"}
+      }
+    },
+    "DocumentLinkRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["target_type", "target_id"],
+      "properties": {
+        "target_type": {"type": "string", "enum": ["TASK", "APPROVAL"]},
+        "target_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"}
+      }
+    },
+    "ChecklistEntityType": {"type": "string", "enum": ["TASK", "DOCUMENT"]},
+    "ChecklistCreateRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["body"],
+      "properties": {"body": {"type": "string", "minLength": 1, "maxLength": 1000}}
+    },
+    "ChecklistItemProjection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["item_id", "entity_type", "entity_id", "body", "completed", "created_by", "created_at"],
+      "properties": {
+        "item_id": {"type": "string"},
+        "entity_type": {"$ref": "#/$defs/ChecklistEntityType"},
+        "entity_id": {"type": "string"},
+        "body": {"type": "string"},
+        "completed": {"type": "boolean"},
+        "created_by": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+        "completed_by": {"type": ["string", "null"]},
+        "created_at": {"type": "string", "format": "date-time"},
+        "completed_at": {"type": ["string", "null"], "format": "date-time"}
+      }
+    },
+    "EvidenceLinkRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["evidence_id"],
+      "properties": {"evidence_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id"}}
+    },
+    "EvidenceCandidateProjection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["evidence_id", "source_id", "content_hash", "validation_status", "captured_at"],
+      "properties": {
+        "evidence_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id"},
+        "source_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id"},
+        "source_title": {"type": ["string", "null"]},
+        "source_version": {"type": ["string", "null"]},
+        "content_hash": {"type": "string"},
+        "validation_status": {"type": "string"},
+        "captured_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "EvidenceProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["link_id", "entity_type", "entity_id", "evidence_id", "source_id", "validation_status", "linked_by", "linked_at"],
+      "properties": {
+        "link_id": {"type": "string"},
+        "entity_type": {"$ref": "#/$defs/EntityType"},
+        "entity_id": {"type": "string"},
+        "evidence_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id"},
+        "source_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id"},
+        "source_title": {"type": ["string", "null"]},
+        "source_version": {"type": ["string", "null"]},
+        "content_hash": {"type": "string"},
+        "validation_status": {"type": "string"},
+        "linked_by": {"type": "string"},
+        "linked_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "ActivityProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["audit_id", "event_type", "actor_id", "actor_name", "occurred_at"],
+      "properties": {
+        "audit_id": {"type": "integer"},
+        "event_type": {"type": "string"},
+        "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+        "actor_name": {"type": "string"},
+        "occurred_at": {"type": "string", "format": "date-time"}
+      }
+    },
+    "CommentRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["body"],
+      "properties": {"body": {"type": "string", "minLength": 1, "maxLength": 10000}}
+    },
+    "CommentProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["comment_id", "entity_type", "entity_id", "actor_id", "actor_name", "body", "created_at"],
+      "properties": {
+        "comment_id": {"type": "string"},
+        "entity_type": {"$ref": "#/$defs/EntityType"},
+        "entity_id": {"type": "string"},
+        "actor_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},
+        "actor_name": {"type": "string"},
+        "body": {"type": "string"},
+        "created_at": {"type": "string", "format": "date-time"}
       }
     },
     "FindingAssignmentRequest": {

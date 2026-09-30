@@ -2,7 +2,23 @@
 // Source of truth: schemas/shared-work/shared-work.schema.json.
 
 export type SharedWorkDataClassification = "PUBLIC" | "INTERNAL" | "CONFIDENTIAL" | "RESTRICTED";
+
+export interface SharedWorkWorkspaceMemberProjection {
+  readonly actor_id: string;
+  readonly display_name: string;
+  readonly employee_id?: string | null;
+  readonly employee_number?: string | null;
+  readonly position_title?: string | null;
+  readonly department_code?: string | null;
+  readonly division_code?: string | null;
+  readonly workspace_id: string;
+  readonly role_refs: readonly string[];
+  readonly active: boolean;
+  readonly task_assignable: boolean;
+  readonly finding_assignable: boolean;
+}
 export type SharedWorkProjectStatus = "PLANNED" | "ACTIVE" | "ON_HOLD" | "COMPLETED" | "CANCELLED" | "ARCHIVED";
+export type SharedWorkProjectRisk = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
 export type SharedWorkTaskStatus = "OPEN" | "IN_PROGRESS" | "BLOCKED" | "UNDER_REVIEW" | "COMPLETED" | "CANCELLED";
 export type SharedWorkTaskPriority = "LOW" | "NORMAL" | "HIGH" | "CRITICAL";
 export type SharedWorkApprovalStatus = "PENDING" | "APPROVED" | "RETURNED" | "REJECTED" | "HELD";
@@ -12,7 +28,7 @@ export type SharedWorkDocumentStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "REJ
 export type SharedWorkReportStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "PUBLISHED" | "ARCHIVED";
 export type SharedWorkFindingStatus = "OPEN" | "ASSIGNED" | "IN_PROGRESS" | "PENDING_VERIFICATION" | "VERIFIED" | "CLOSED";
 export type SharedWorkFindingSeverity = "LOW" | "MEDIUM" | "HIGH" | "CRITICAL";
-export type SharedWorkPermission = "project.read" | "project.create" | "project.update" | "project.archive" | "task.read" | "task.create" | "task.update" | "task.assign" | "task.complete" | "approval.read" | "approval.request" | "approval.review" | "approval.approve" | "approval.return" | "approval.reject" | "approval.hold" | "document.read" | "document.create" | "document.version" | "document.review" | "document.approve" | "document.retire" | "report.read" | "report.create" | "report.review" | "report.publish" | "report.archive" | "finding.read" | "finding.create" | "finding.update" | "finding.assign" | "finding.verify" | "finding.close";
+export type SharedWorkPermission = "project.read" | "project.create" | "project.update" | "project.archive" | "task.read" | "task.create" | "task.update" | "task.assign" | "task.complete" | "approval.read" | "approval.request" | "approval.review" | "approval.approve" | "approval.return" | "approval.reject" | "approval.hold" | "document.read" | "document.create" | "document.version" | "document.review" | "document.approve" | "document.retire" | "report.read" | "report.create" | "report.review" | "report.publish" | "report.archive" | "finding.read" | "finding.create" | "finding.update" | "finding.assign" | "finding.verify" | "finding.close" | "work.evidence.link" | "work.comment.create" | "work.relation.link" | "work.checklist.manage";
 
 export interface SharedWorkProjectProjection {
   readonly project_id: string;
@@ -26,6 +42,16 @@ export interface SharedWorkProjectProjection {
   readonly owner_actor_id?: string | null;
   readonly start_date?: string | null;
   readonly target_end_date?: string | null;
+  readonly owner_name?: string | null;
+  readonly workspace_name?: string | null;
+  readonly progress_percentage?: number;
+  readonly risk_level?: SharedWorkProjectRisk;
+  readonly tasks_count?: number;
+  readonly documents_count?: number;
+  readonly approvals_count?: number;
+  readonly findings_count?: number;
+  readonly reports_count?: number;
+  readonly evidence_count?: number;
   readonly created_at: string;
   readonly updated_at: string;
 }
@@ -58,6 +84,16 @@ export interface SharedWorkTaskProjection {
   readonly owner_actor_id?: string | null;
   readonly created_by: string;
   readonly due_at?: string | null;
+  readonly start_date?: string | null;
+  readonly project_name?: string | null;
+  readonly project_code?: string | null;
+  readonly owner_name?: string | null;
+  readonly creator_name?: string | null;
+  readonly workspace_name?: string | null;
+  readonly documents_count?: number;
+  readonly findings_count?: number;
+  readonly evidence_count?: number;
+  readonly comments_count?: number;
   readonly created_at: string;
   readonly updated_at: string;
 }
@@ -67,6 +103,7 @@ export interface SharedWorkTaskCreateRequest {
   readonly title: string;
   readonly description?: string | null;
   readonly priority?: SharedWorkTaskPriority;
+  readonly start_date?: string | null;
   readonly due_at?: string | null;
 }
 
@@ -75,6 +112,7 @@ export interface SharedWorkTaskUpdateRequest {
   readonly title?: string;
   readonly description?: string | null;
   readonly priority?: SharedWorkTaskPriority;
+  readonly start_date?: string | null;
   readonly due_at?: string | null;
 }
 
@@ -97,6 +135,13 @@ export interface SharedWorkApprovalProjection {
   readonly decision_reason?: string | null;
   readonly requested_at: string;
   readonly decided_at?: string | null;
+  readonly subject_title?: string | null;
+  readonly requester_name?: string | null;
+  readonly approver_name?: string | null;
+  readonly workspace_name?: string | null;
+  readonly documents_count?: number;
+  readonly evidence_count?: number;
+  readonly comments_count?: number;
 }
 
 export interface SharedWorkApprovalRequest {
@@ -119,6 +164,19 @@ export interface SharedWorkDocumentProjection {
   readonly data_classification: SharedWorkDataClassification;
   readonly status: SharedWorkDocumentStatus;
   readonly owner_actor_id: string;
+  readonly description?: string | null;
+  readonly project_id?: string | null;
+  readonly project_name?: string | null;
+  readonly project_code?: string | null;
+  readonly effective_date?: string | null;
+  readonly expiry_date?: string | null;
+  readonly updated_at?: string | null;
+  readonly current_version?: string | null;
+  readonly owner_name?: string | null;
+  readonly workspace_name?: string | null;
+  readonly tasks_count?: number;
+  readonly approvals_count?: number;
+  readonly evidence_count?: number;
   readonly created_at: string;
 }
 
@@ -126,6 +184,10 @@ export interface SharedWorkDocumentCreateRequest {
   readonly title: string;
   readonly category: string;
   readonly data_classification: SharedWorkDataClassification;
+  readonly description?: string | null;
+  readonly project_id?: string | null;
+  readonly effective_date?: string | null;
+  readonly expiry_date?: string | null;
 }
 
 export interface SharedWorkDocumentVersionProjection {
@@ -136,10 +198,19 @@ export interface SharedWorkDocumentVersionProjection {
   readonly version: string;
   readonly source_id: string;
   readonly source_version: string;
+  readonly source_title?: string | null;
   readonly storage_uri: string;
   readonly content_hash: string;
   readonly created_by: string;
+  readonly creator_name?: string | null;
   readonly created_at: string;
+}
+
+export interface SharedWorkDocumentSourceOptionProjection {
+  readonly source_id: string;
+  readonly source_title: string;
+  readonly source_version: string;
+  readonly content_hash: string;
 }
 
 export interface SharedWorkDocumentVersionCreateRequest {
@@ -157,6 +228,16 @@ export interface SharedWorkReportProjection {
   readonly report_type: string;
   readonly status: SharedWorkReportStatus;
   readonly owner_actor_id?: string | null;
+  readonly description?: string | null;
+  readonly period_start?: string | null;
+  readonly period_end?: string | null;
+  readonly scope?: string | null;
+  readonly published_at?: string | null;
+  readonly project_id?: string | null;
+  readonly owner_name?: string | null;
+  readonly workspace_name?: string | null;
+  readonly evidence_count?: number;
+  readonly comments_count?: number;
   readonly created_at: string;
   readonly updated_at: string;
 }
@@ -164,6 +245,60 @@ export interface SharedWorkReportProjection {
 export interface SharedWorkReportCreateRequest {
   readonly title: string;
   readonly report_type: string;
+  readonly description?: string | null;
+  readonly period_start?: string | null;
+  readonly period_end?: string | null;
+  readonly scope?: string | null;
+  readonly project_id?: string | null;
+}
+export type SharedWorkReportFrequency = "DAILY" | "WEEKLY" | "MONTHLY" | "QUARTERLY" | "ON_DEMAND";
+
+export interface SharedWorkReportDefinitionProjection {
+  readonly report_definition_id: string;
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly name: string;
+  readonly description?: string | null;
+  readonly report_type: string;
+  readonly frequency: SharedWorkReportFrequency;
+  readonly scope?: string | null;
+  readonly owner_actor_id: string;
+  readonly owner_name?: string;
+  readonly workspace_name?: string | null;
+  readonly review_required: boolean;
+  readonly recipients: readonly string[];
+  readonly sections: readonly string[];
+  readonly data_sources: readonly string[];
+  readonly schedule_config: Readonly<Record<string, unknown>>;
+  readonly created_at: string;
+  readonly updated_at: string;
+}
+
+export interface SharedWorkReportDefinitionCreateRequest {
+  readonly name: string;
+  readonly description?: string | null;
+  readonly report_type: string;
+  readonly frequency: SharedWorkReportFrequency;
+  readonly scope?: string | null;
+  readonly review_required: boolean;
+  readonly recipients?: readonly string[];
+  readonly sections?: readonly string[];
+  readonly data_sources?: readonly string[];
+  readonly schedule_config?: Readonly<Record<string, unknown>>;
+}
+
+export interface SharedWorkReportDefinitionUpdateRequest {
+  readonly name?: string;
+  readonly description?: string | null;
+  readonly report_type?: string;
+  readonly frequency?: SharedWorkReportFrequency;
+  readonly scope?: string | null;
+  readonly review_required?: boolean;
+  readonly recipients?: readonly string[];
+  readonly sections?: readonly string[];
+  readonly data_sources?: readonly string[];
+  readonly schedule_config?: Readonly<Record<string, unknown>>;
 }
 
 export interface SharedWorkFindingProjection {
@@ -177,6 +312,22 @@ export interface SharedWorkFindingProjection {
   readonly status: SharedWorkFindingStatus;
   readonly source_type: string;
   readonly owner_actor_id?: string | null;
+  readonly category?: string | null;
+  readonly project_id?: string | null;
+  readonly project_name?: string | null;
+  readonly identified_at?: string;
+  readonly due_date?: string | null;
+  readonly impact?: string | null;
+  readonly root_cause?: string | null;
+  readonly corrective_action_task_id?: string | null;
+  readonly corrective_action_task_title?: string | null;
+  readonly verifier_actor_id?: string | null;
+  readonly verified_at?: string | null;
+  readonly owner_name?: string | null;
+  readonly verifier_name?: string | null;
+  readonly workspace_name?: string | null;
+  readonly evidence_count?: number;
+  readonly tasks_count?: number;
   readonly created_at: string;
   readonly updated_at: string;
 }
@@ -185,12 +336,104 @@ export interface SharedWorkFindingCreateRequest {
   readonly title: string;
   readonly description?: string | null;
   readonly severity?: SharedWorkFindingSeverity;
+  readonly category?: string | null;
+  readonly project_id?: string | null;
+  readonly due_date?: string | null;
+  readonly impact?: string | null;
+  readonly root_cause?: string | null;
+  readonly corrective_action_task_id?: string | null;
 }
 
 export interface SharedWorkFindingUpdateRequest {
   readonly title?: string;
   readonly description?: string | null;
   readonly severity?: SharedWorkFindingSeverity;
+  readonly category?: string | null;
+  readonly project_id?: string | null;
+  readonly due_date?: string | null;
+  readonly impact?: string | null;
+  readonly root_cause?: string | null;
+  readonly corrective_action_task_id?: string | null;
+}
+export type SharedWorkEntityType = "PROJECT" | "TASK" | "APPROVAL" | "DOCUMENT" | "REPORT" | "FINDING";
+
+export interface SharedWorkRelationProjection {
+  readonly entity_type: SharedWorkEntityType;
+  readonly entity_id: string;
+  readonly title: string;
+  readonly status: string;
+}
+
+export interface SharedWorkDocumentLinkRequest {
+  readonly target_type: string;
+  readonly target_id: string;
+}
+export type SharedWorkChecklistEntityType = "TASK" | "DOCUMENT";
+
+export interface SharedWorkChecklistCreateRequest {
+  readonly body: string;
+}
+
+export interface SharedWorkChecklistItemProjection {
+  readonly item_id: string;
+  readonly entity_type: SharedWorkChecklistEntityType;
+  readonly entity_id: string;
+  readonly body: string;
+  readonly completed: boolean;
+  readonly created_by: string;
+  readonly completed_by?: string | null;
+  readonly created_at: string;
+  readonly completed_at?: string | null;
+}
+
+export interface SharedWorkEvidenceLinkRequest {
+  readonly evidence_id: string;
+}
+
+export interface SharedWorkEvidenceCandidateProjection {
+  readonly evidence_id: string;
+  readonly source_id: string;
+  readonly source_title?: string | null;
+  readonly source_version?: string | null;
+  readonly content_hash: string;
+  readonly validation_status: string;
+  readonly captured_at: string;
+}
+
+export interface SharedWorkEvidenceProjection {
+  readonly link_id: string;
+  readonly entity_type: SharedWorkEntityType;
+  readonly entity_id: string;
+  readonly evidence_id: string;
+  readonly source_id: string;
+  readonly source_title?: string | null;
+  readonly source_version?: string | null;
+  readonly content_hash?: string;
+  readonly validation_status: string;
+  readonly linked_by: string;
+  readonly linked_at: string;
+}
+
+export interface SharedWorkActivityProjection {
+  readonly audit_id: number;
+  readonly event_type: string;
+  readonly actor_id: string;
+  readonly actor_name: string;
+  readonly occurred_at: string;
+}
+
+export interface SharedWorkCommentRequest {
+  readonly body: string;
+}
+
+export interface SharedWorkCommentProjection {
+  readonly comment_id: string;
+  readonly entity_type: SharedWorkEntityType;
+  readonly entity_id: string;
+  readonly actor_id: string;
+  readonly actor_name: string;
+  readonly body: string;
+  readonly created_at: string;
 }
 
 export interface SharedWorkFindingAssignmentRequest {
