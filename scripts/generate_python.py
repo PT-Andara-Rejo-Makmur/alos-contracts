@@ -6,10 +6,16 @@ import argparse
 import json
 from pathlib import Path
 
+if __package__:
+    from .shared_work_codegen import render_python as render_shared_work
+else:
+    from shared_work_codegen import render_python as render_shared_work
+
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "generated" / "python" / "context_research_contracts.py"
 SKILLS_OUTPUT = ROOT / "generated" / "python" / "skill_contracts.py"
 IDENTITY_OUTPUT = ROOT / "generated" / "python" / "identity_access_contracts.py"
+SHARED_WORK_OUTPUT = ROOT / "generated" / "python" / "shared_work_contracts.py"
 
 
 def load(relative_path: str) -> dict:
@@ -425,6 +431,7 @@ def main() -> int:
     expected = render()
     expected_skills = render_skills()
     expected_identity = render_identity()
+    expected_shared_work = render_shared_work()
     if args.check:
         if not OUTPUT.exists() or OUTPUT.read_text(encoding="utf-8") != expected:
             raise SystemExit(
@@ -437,14 +444,19 @@ def main() -> int:
         if not IDENTITY_OUTPUT.exists() or IDENTITY_OUTPUT.read_text(encoding="utf-8") != expected_identity:
             raise SystemExit("generated/python/identity_access_contracts.py is stale; run the generator")
         print(f"Verified {IDENTITY_OUTPUT.relative_to(ROOT)}")
+        if not SHARED_WORK_OUTPUT.exists() or SHARED_WORK_OUTPUT.read_text(encoding="utf-8") != expected_shared_work:
+            raise SystemExit("generated/python/shared_work_contracts.py is stale; run the generator")
+        print(f"Verified {SHARED_WORK_OUTPUT.relative_to(ROOT)}")
         return 0
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(expected, encoding="utf-8", newline="\n")
     SKILLS_OUTPUT.write_text(expected_skills, encoding="utf-8", newline="\n")
     IDENTITY_OUTPUT.write_text(expected_identity, encoding="utf-8", newline="\n")
+    SHARED_WORK_OUTPUT.write_text(expected_shared_work, encoding="utf-8", newline="\n")
     print(f"Generated {OUTPUT.relative_to(ROOT)}")
     print(f"Generated {SKILLS_OUTPUT.relative_to(ROOT)}")
     print(f"Generated {IDENTITY_OUTPUT.relative_to(ROOT)}")
+    print(f"Generated {SHARED_WORK_OUTPUT.relative_to(ROOT)}")
     return 0
 
 

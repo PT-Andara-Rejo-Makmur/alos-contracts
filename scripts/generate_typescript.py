@@ -6,11 +6,25 @@ import argparse
 import json
 from pathlib import Path
 
+if __package__:
+    from .shared_work_codegen import render_typescript as render_shared_work
+else:
+    from shared_work_codegen import render_typescript as render_shared_work
+
 ROOT = Path(__file__).resolve().parents[1]
 OUTPUT = ROOT / "generated" / "typescript" / "factory.ts"
 CONTEXT_RESEARCH_OUTPUT = ROOT / "generated" / "typescript" / "context-research.ts"
 SKILLS_OUTPUT = ROOT / "generated" / "typescript" / "skills.ts"
 IDENTITY_OUTPUT = ROOT / "generated" / "typescript" / "identity-access.ts"
+SHARED_WORK_OUTPUT = ROOT / "generated" / "typescript" / "shared-work.ts"
+INDEX_OUTPUT = ROOT / "generated" / "typescript" / "index.ts"
+
+
+def render_index() -> str:
+    return "\n".join(
+        f'export * from "./{module}";'
+        for module in ("factory", "context-research", "skills", "identity-access", "strategy", "shared-work")
+    ) + "\n"
 
 
 def load(relative_path: str) -> dict:
@@ -611,6 +625,8 @@ def main() -> int:
     expected_context_research = render_context_research()
     expected_skills = render_skills()
     expected_identity = render_identity()
+    expected_shared_work = render_shared_work()
+    expected_index = render_index()
     if args.check:
         if not OUTPUT.exists() or OUTPUT.read_text(encoding="utf-8") != expected:
             raise SystemExit("generated/typescript/factory.ts is stale; run the generator")
@@ -626,10 +642,16 @@ def main() -> int:
             raise SystemExit("generated/typescript/skills.ts is stale; run the generator")
         if not IDENTITY_OUTPUT.exists() or IDENTITY_OUTPUT.read_text(encoding="utf-8") != expected_identity:
             raise SystemExit("generated/typescript/identity-access.ts is stale; run the generator")
+        if not SHARED_WORK_OUTPUT.exists() or SHARED_WORK_OUTPUT.read_text(encoding="utf-8") != expected_shared_work:
+            raise SystemExit("generated/typescript/shared-work.ts is stale; run the generator")
+        if not INDEX_OUTPUT.exists() or INDEX_OUTPUT.read_text(encoding="utf-8") != expected_index:
+            raise SystemExit("generated/typescript/index.ts is stale; run the generator")
         print(f"Verified {OUTPUT.relative_to(ROOT)}")
         print(f"Verified {CONTEXT_RESEARCH_OUTPUT.relative_to(ROOT)}")
         print(f"Verified {SKILLS_OUTPUT.relative_to(ROOT)}")
         print(f"Verified {IDENTITY_OUTPUT.relative_to(ROOT)}")
+        print(f"Verified {SHARED_WORK_OUTPUT.relative_to(ROOT)}")
+        print(f"Verified {INDEX_OUTPUT.relative_to(ROOT)}")
         return 0
     OUTPUT.parent.mkdir(parents=True, exist_ok=True)
     OUTPUT.write_text(expected, encoding="utf-8", newline="\n")
@@ -638,10 +660,14 @@ def main() -> int:
     )
     SKILLS_OUTPUT.write_text(expected_skills, encoding="utf-8", newline="\n")
     IDENTITY_OUTPUT.write_text(expected_identity, encoding="utf-8", newline="\n")
+    SHARED_WORK_OUTPUT.write_text(expected_shared_work, encoding="utf-8", newline="\n")
+    INDEX_OUTPUT.write_text(expected_index, encoding="utf-8", newline="\n")
     print(f"Generated {OUTPUT.relative_to(ROOT)}")
     print(f"Generated {CONTEXT_RESEARCH_OUTPUT.relative_to(ROOT)}")
     print(f"Generated {SKILLS_OUTPUT.relative_to(ROOT)}")
     print(f"Generated {IDENTITY_OUTPUT.relative_to(ROOT)}")
+    print(f"Generated {SHARED_WORK_OUTPUT.relative_to(ROOT)}")
+    print(f"Generated {INDEX_OUTPUT.relative_to(ROOT)}")
     return 0
 
 

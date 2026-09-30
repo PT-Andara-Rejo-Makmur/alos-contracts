@@ -1,0 +1,760 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json",
+  "title": "Shared Work canonical vocabulary",
+  "description": "Backend-owned Shared Work projections and client-supplied creation inputs. Declarations do not grant authority or publish an API.",
+  "$defs": {
+    "ProjectStatus": {
+      "type": "string",
+      "enum": [
+        "PLANNED",
+        "ACTIVE",
+        "ON_HOLD",
+        "COMPLETED",
+        "CANCELLED",
+        "ARCHIVED"
+      ]
+    },
+    "TaskStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_PROGRESS",
+        "BLOCKED",
+        "UNDER_REVIEW",
+        "COMPLETED",
+        "CANCELLED"
+      ]
+    },
+    "TaskPriority": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "NORMAL",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    "ApprovalStatus": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "APPROVED",
+        "RETURNED",
+        "REJECTED",
+        "HELD"
+      ]
+    },
+    "ApprovalDecision": {
+      "type": "string",
+      "enum": [
+        "APPROVED",
+        "RETURNED",
+        "REJECTED",
+        "HOLD"
+      ]
+    },
+    "DocumentStatus": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "IN_REVIEW",
+        "APPROVED",
+        "REJECTED",
+        "RETIRED"
+      ]
+    },
+    "ReportStatus": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "IN_REVIEW",
+        "APPROVED",
+        "PUBLISHED",
+        "ARCHIVED"
+      ]
+    },
+    "FindingStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "ASSIGNED",
+        "IN_PROGRESS",
+        "PENDING_VERIFICATION",
+        "VERIFIED",
+        "CLOSED"
+      ]
+    },
+    "FindingSeverity": {
+      "type": "string",
+      "enum": [
+        "LOW",
+        "MEDIUM",
+        "HIGH",
+        "CRITICAL"
+      ]
+    },
+    "Permission": {
+      "type": "string",
+      "enum": [
+        "project.read",
+        "project.create",
+        "project.update",
+        "project.archive",
+        "task.read",
+        "task.create",
+        "task.update",
+        "task.assign",
+        "task.complete",
+        "approval.read",
+        "approval.request",
+        "approval.review",
+        "approval.approve",
+        "approval.return",
+        "approval.reject",
+        "approval.hold",
+        "document.read",
+        "document.create",
+        "document.version",
+        "document.review",
+        "document.approve",
+        "document.retire",
+        "report.read",
+        "report.create",
+        "report.review",
+        "report.publish",
+        "report.archive",
+        "finding.read",
+        "finding.create",
+        "finding.update",
+        "finding.assign",
+        "finding.verify",
+        "finding.close"
+      ]
+    },
+    "ProjectProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "project_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_ids",
+        "code",
+        "name",
+        "status",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+          },
+          "uniqueItems": true
+        },
+        "code": {
+          "type": "string"
+        },
+        "name": {
+          "type": "string"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/ProjectStatus"
+        },
+        "owner_actor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "target_end_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ProjectCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "code",
+        "name"
+      ],
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "start_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        },
+        "target_end_date": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date"
+        }
+      }
+    },
+    "TaskProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "task_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_ids",
+        "title",
+        "status",
+        "priority",
+        "created_by",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "task_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/task_id"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+          },
+          "uniqueItems": true
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/TaskStatus"
+        },
+        "priority": {
+          "$ref": "#/$defs/TaskPriority"
+        },
+        "owner_actor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "due_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "TaskCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "priority": {
+          "$ref": "#/$defs/TaskPriority"
+        },
+        "due_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "ApprovalProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "approval_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_ids",
+        "subject_type",
+        "subject_id",
+        "requested_by",
+        "status",
+        "requested_at"
+      ],
+      "properties": {
+        "approval_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/approval_id"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+          },
+          "uniqueItems": true
+        },
+        "subject_type": {
+          "type": "string"
+        },
+        "subject_id": {
+          "type": "string"
+        },
+        "requested_by": {
+          "type": "string"
+        },
+        "approver_actor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "status": {
+          "$ref": "#/$defs/ApprovalStatus"
+        },
+        "decision": {
+          "oneOf": [
+            {
+              "$ref": "#/$defs/ApprovalDecision"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "requested_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "decided_at": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "format": "date-time"
+        }
+      }
+    },
+    "ApprovalRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "subject_type",
+        "subject_id"
+      ],
+      "properties": {
+        "subject_type": {
+          "type": "string",
+          "minLength": 1
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1
+        },
+        "reason": {
+          "type": [
+            "string",
+            "null"
+          ]
+        }
+      }
+    },
+    "DocumentProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "title",
+        "category",
+        "data_classification",
+        "status",
+        "owner_actor_id",
+        "created_at"
+      ],
+      "properties": {
+        "document_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "title": {
+          "type": "string"
+        },
+        "category": {
+          "type": "string"
+        },
+        "data_classification": {
+          "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json"
+        },
+        "status": {
+          "$ref": "#/$defs/DocumentStatus"
+        },
+        "owner_actor_id": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "DocumentCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "category",
+        "data_classification"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1
+        },
+        "data_classification": {
+          "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json"
+        }
+      }
+    },
+    "DocumentVersionProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "document_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "version",
+        "source_id",
+        "source_version",
+        "storage_uri",
+        "content_hash",
+        "created_by",
+        "created_at"
+      ],
+      "properties": {
+        "document_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "version": {
+          "type": "string"
+        },
+        "source_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id"
+        },
+        "source_version": {
+          "type": "string"
+        },
+        "storage_uri": {
+          "type": "string"
+        },
+        "content_hash": {
+          "type": "string"
+        },
+        "created_by": {
+          "type": "string"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ReportProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "report_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_ids",
+        "title",
+        "report_type",
+        "status",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "report_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/report_id"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+          },
+          "uniqueItems": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "report_type": {
+          "type": "string"
+        },
+        "status": {
+          "$ref": "#/$defs/ReportStatus"
+        },
+        "owner_actor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "ReportCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title",
+        "report_type"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "report_type": {
+          "type": "string",
+          "minLength": 1
+        }
+      }
+    },
+    "FindingProjection": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "finding_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_ids",
+        "title",
+        "severity",
+        "status",
+        "source_type",
+        "created_at",
+        "updated_at"
+      ],
+      "properties": {
+        "finding_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/finding_id"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_ids": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+          },
+          "uniqueItems": true
+        },
+        "title": {
+          "type": "string"
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "severity": {
+          "$ref": "#/$defs/FindingSeverity"
+        },
+        "status": {
+          "$ref": "#/$defs/FindingStatus"
+        },
+        "source_type": {
+          "type": "string"
+        },
+        "owner_actor_id": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      }
+    },
+    "FindingCreateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [
+        "title"
+      ],
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1
+        },
+        "description": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "severity": {
+          "$ref": "#/$defs/FindingSeverity"
+        }
+      }
+    }
+  }
+}
