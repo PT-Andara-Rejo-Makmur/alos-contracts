@@ -198,3 +198,9 @@ def test_document_metadata_and_version_reference_have_canonical_public_contracts
     assert versions["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "DocumentVersionCreateRequest"
     assert versions["post"]["responses"]["201"]["content"]["application/json"]["schema"]["$ref"] == base + "DocumentVersionProjection"
     assert "patch" not in versions
+    for action in ("review", "approve", "retire"):
+        lifecycle = paths[f"/api/v1/documents/{{document_id}}/{action}"]
+        assert "post" in lifecycle
+        assert lifecycle["post"]["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "DocumentProjection"
+        assert "requestBody" not in lifecycle["post"]
+        assert "patch" not in lifecycle

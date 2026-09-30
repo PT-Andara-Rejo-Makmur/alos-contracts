@@ -75,6 +75,45 @@ paths:
         "404": {$ref: "#/components/responses/ErrorResponse"}
         "409": {$ref: "#/components/responses/ErrorResponse"}
         "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/documents/{document_id}/review:
+    post:
+      operationId: reviewDocument
+      summary: Transition a draft document to review state
+      description: Requires document.review. Document must be in DRAFT state and have at least one authoritative version. Repeating the action is idempotent.
+      parameters:
+        - {name: document_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Document in review, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/documents/{document_id}/approve:
+    post:
+      operationId: approveDocument
+      summary: Approve a document in review as a different actor
+      description: Requires document.approve. Document must be in IN_REVIEW state, have at least one immutable version, and caller cannot be document owner. Repeating the identical action is idempotent.
+      parameters:
+        - {name: document_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Approved document, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/documents/{document_id}/retire:
+    post:
+      operationId: retireDocument
+      summary: Retire an approved document
+      description: Requires document.retire. Document must be in APPROVED state. Repeating the action is idempotent.
+      parameters:
+        - {name: document_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Retired document, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/DocumentProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/approvals:
     get:
       operationId: listApprovals
