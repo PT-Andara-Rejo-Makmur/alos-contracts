@@ -371,6 +371,54 @@ paths:
         "401": {$ref: "#/components/responses/ErrorResponse"}
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/reports/results/{report_id}/submit-review:
+    post:
+      operationId: submitReportReview
+      summary: Submit an owned draft report for review
+      description: Requires report.create and report ownership. Repeating the operation in IN_REVIEW is idempotent.
+      parameters: [{name: report_id, in: path, required: true, schema: {type: string}}]
+      responses:
+        "200": {description: Report in review, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/reports/results/{report_id}/review:
+    post:
+      operationId: reviewReportResult
+      summary: Approve a submitted report result
+      description: Requires report.review. The owner cannot approve their own report.
+      parameters: [{name: report_id, in: path, required: true, schema: {type: string}}]
+      responses:
+        "200": {description: Approved report, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/reports/results/{report_id}/publish:
+    post:
+      operationId: publishReportResult
+      summary: Publish an approved report result
+      description: Requires report.publish. Repeating publication is idempotent.
+      parameters: [{name: report_id, in: path, required: true, schema: {type: string}}]
+      responses:
+        "200": {description: Published report, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/reports/results/{report_id}/archive:
+    post:
+      operationId: archiveReportResult
+      summary: Archive a published report result
+      description: Requires report.archive. Repeating archival is idempotent.
+      parameters: [{name: report_id, in: path, required: true, schema: {type: string}}]
+      responses:
+        "200": {description: Archived report, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/work/findings:
     get:
       operationId: listFindings

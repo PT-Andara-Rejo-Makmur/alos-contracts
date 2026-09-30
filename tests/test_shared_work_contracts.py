@@ -237,6 +237,10 @@ def test_reports_and_findings_have_canonical_public_contracts(load_json, registr
     assert reports["post"]["responses"]["201"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportProjection"
     report_detail = paths["/api/v1/work/reports/results/{report_id}"]
     assert report_detail["get"]["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportProjection"
+    for action in ("submit-review", "review", "publish", "archive"):
+        operation = paths[f"/api/v1/work/reports/results/{{report_id}}/{action}"]["post"]
+        assert "requestBody" not in operation
+        assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportProjection"
     assert "/api/v1/work/reports/definitions" not in paths
 
     # Findings
