@@ -44,6 +44,29 @@ paths:
         "401": {$ref: "#/components/responses/ErrorResponse"}
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}
+    patch:
+      operationId: updateProject
+      summary: Update mutable project fields in the active workspace
+      description: Requires project.update or legacy work.write. Lifecycle and authority fields are rejected.
+      parameters: [{$ref: "#/components/parameters/ProjectId"}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ProjectUpdateRequest}}}}
+      responses:
+        "200": {description: Updated project, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ProjectProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/projects/{project_id}/archive:
+    post:
+      operationId: archiveProject
+      summary: Archive a project through its authorized lifecycle operation
+      description: Requires project.archive. Repeating the operation on an archived project returns its current projection.
+      parameters: [{$ref: "#/components/parameters/ProjectId"}]
+      responses:
+        "200": {description: Archived project, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ProjectProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/tasks:
     get:
       operationId: listTasks
@@ -75,6 +98,42 @@ paths:
       parameters: [{$ref: "#/components/parameters/TaskId"}]
       responses:
         "200": {description: Visible task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+    patch:
+      operationId: updateTask
+      summary: Update mutable task fields in the active workspace
+      description: Requires task.update or legacy work.write. Assignment and lifecycle fields are rejected.
+      parameters: [{$ref: "#/components/parameters/TaskId"}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskUpdateRequest}}}}
+      responses:
+        "200": {description: Updated task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/tasks/{task_id}/assign:
+    post:
+      operationId: assignTask
+      summary: Assign a task to an eligible actor in the active workspace
+      description: Requires task.assign. Backend validates active actor and membership authority.
+      parameters: [{$ref: "#/components/parameters/TaskId"}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskAssignRequest}}}}
+      responses:
+        "200": {description: Assigned task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/tasks/{task_id}/complete:
+    post:
+      operationId: completeTask
+      summary: Complete a task through its authorized lifecycle operation
+      description: Requires task.complete. Repeating the operation on a completed task returns its current projection.
+      parameters: [{$ref: "#/components/parameters/TaskId"}]
+      responses:
+        "200": {description: Completed task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
         "401": {$ref: "#/components/responses/ErrorResponse"}
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}

@@ -47,6 +47,12 @@ class SharedWorkProjectCreateRequest(TypedDict, total=False):
     start_date: str | None
     target_end_date: str | None
 
+class SharedWorkProjectUpdateRequest(TypedDict, total=False):
+    name: str
+    description: str | None
+    start_date: str | None
+    target_end_date: str | None
+
 class SharedWorkTaskProjection(TypedDict, total=False):
     task_id: Required[str]
     tenant_id: Required[str]
@@ -69,6 +75,16 @@ class SharedWorkTaskCreateRequest(TypedDict, total=False):
     description: str | None
     priority: SharedWorkTaskPriority
     due_at: str | None
+
+class SharedWorkTaskUpdateRequest(TypedDict, total=False):
+    project_id: str | None
+    title: str
+    description: str | None
+    priority: SharedWorkTaskPriority
+    due_at: str | None
+
+class SharedWorkTaskAssignRequest(TypedDict, total=False):
+    owner_actor_id: Required[str]
 
 class SharedWorkApprovalProjection(TypedDict, total=False):
     approval_id: Required[str]

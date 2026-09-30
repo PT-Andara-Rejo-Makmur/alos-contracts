@@ -37,6 +37,13 @@ export interface SharedWorkProjectCreateRequest {
   readonly target_end_date?: string | null;
 }
 
+export interface SharedWorkProjectUpdateRequest {
+  readonly name?: string;
+  readonly description?: string | null;
+  readonly start_date?: string | null;
+  readonly target_end_date?: string | null;
+}
+
 export interface SharedWorkTaskProjection {
   readonly task_id: string;
   readonly tenant_id: string;
@@ -60,6 +67,18 @@ export interface SharedWorkTaskCreateRequest {
   readonly description?: string | null;
   readonly priority?: SharedWorkTaskPriority;
   readonly due_at?: string | null;
+}
+
+export interface SharedWorkTaskUpdateRequest {
+  readonly project_id?: string | null;
+  readonly title?: string;
+  readonly description?: string | null;
+  readonly priority?: SharedWorkTaskPriority;
+  readonly due_at?: string | null;
+}
+
+export interface SharedWorkTaskAssignRequest {
+  readonly owner_actor_id: string;
 }
 
 export interface SharedWorkApprovalProjection {

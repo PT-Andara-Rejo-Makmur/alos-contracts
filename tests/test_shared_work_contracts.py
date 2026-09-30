@@ -101,3 +101,44 @@ def test_public_projects_and_tasks_use_canonical_definitions() -> None:
         )
         assert "security" not in paths[collection]["get"]
         assert "security" not in created
+
+
+@pytest.mark.parametrize(
+    ("definition", "valid", "forbidden"),
+    [
+        ("ProjectUpdateRequest", {"name": "Revised"}, {"status": "ARCHIVED"}),
+        ("TaskUpdateRequest", {"priority": "HIGH"}, {"owner_actor_id": "actor_1"}),
+        ("TaskAssignRequest", {"owner_actor_id": "actor_1"}, {"status": "COMPLETED"}),
+    ],
+)
+def test_lifecycle_requests_reject_authority_fields(
+    load_json, registry, definition: str, valid: dict, forbidden: dict
+) -> None:
+    schema = load_json("schemas/shared-work/shared-work.schema.json")
+    validator = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/" + definition}, registry=registry
+    )
+    assert validator.is_valid(valid)
+    assert not validator.is_valid({**valid, **forbidden})
+    assert not validator.is_valid({})
+
+
+def test_public_lifecycle_operations_use_canonical_requests() -> None:
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    paths = spec["paths"]
+    base = "../../schemas/shared-work/shared-work.schema.json#/$defs/"
+    for path, method, request, projection in (
+        ("/api/v1/projects/{project_id}", "patch", "ProjectUpdateRequest", "ProjectProjection"),
+        ("/api/v1/tasks/{task_id}", "patch", "TaskUpdateRequest", "TaskProjection"),
+        ("/api/v1/tasks/{task_id}/assign", "post", "TaskAssignRequest", "TaskProjection"),
+    ):
+        operation = paths[path][method]
+        assert operation["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + request
+        assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + projection
+    for path, projection in (
+        ("/api/v1/projects/{project_id}/archive", "ProjectProjection"),
+        ("/api/v1/tasks/{task_id}/complete", "TaskProjection"),
+    ):
+        operation = paths[path]["post"]
+        assert "requestBody" not in operation
+        assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + projection
