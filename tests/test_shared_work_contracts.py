@@ -1,6 +1,7 @@
 """Shared Work vocabulary is generated from persisted, Backend-owned shapes."""
 
 import pytest
+import yaml
 from jsonschema import Draft202012Validator
 
 from scripts.shared_work_codegen import ROOT, definitions, render_python, render_typescript
@@ -75,3 +76,28 @@ def test_create_request_rejects_authority_fields(load_json, registry) -> None:
     assert not validator.is_valid(
         {"subject_type": "TASK", "subject_id": "task_123", "status": "APPROVED"}
     )
+
+
+def test_public_projects_and_tasks_use_canonical_definitions() -> None:
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    paths = spec["paths"]
+    schema_file = "../../schemas/shared-work/shared-work.schema.json#/$defs/"
+    for entity, collection, identifier in (
+        ("Project", "/api/v1/projects", "project_id"),
+        ("Task", "/api/v1/tasks", "task_id"),
+    ):
+        listed = paths[collection]["get"]["responses"]["200"]["content"]["application/json"]["schema"]
+        created = paths[collection]["post"]
+        detail = paths[f"{collection}/{{{identifier}}}"]["get"]
+        assert listed["items"]["$ref"] == schema_file + entity + "Projection"
+        assert created["requestBody"]["content"]["application/json"]["schema"]["$ref"] == (
+            schema_file + entity + "CreateRequest"
+        )
+        assert created["responses"]["201"]["content"]["application/json"]["schema"]["$ref"] == (
+            schema_file + entity + "Projection"
+        )
+        assert detail["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == (
+            schema_file + entity + "Projection"
+        )
+        assert "security" not in paths[collection]["get"]
+        assert "security" not in created

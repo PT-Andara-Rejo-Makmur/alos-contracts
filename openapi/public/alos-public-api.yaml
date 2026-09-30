@@ -11,6 +11,73 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/projects:
+    get:
+      operationId: listProjects
+      summary: List projects visible in the authenticated active workspace
+      description: Requires project.read or legacy work.read within the same active workspace.
+      parameters:
+        - {name: status, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ProjectStatus}}
+        - {name: search, in: query, schema: {type: string}}
+      responses:
+        "200": {description: Visible projects, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ProjectProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createProject
+      summary: Create a project in the authenticated active workspace
+      description: Requires project.create or legacy work.write. Backend assigns identifiers, scope, and lifecycle state.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ProjectCreateRequest}}}}
+      responses:
+        "201": {description: Created project, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ProjectProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/projects/{project_id}:
+    get:
+      operationId: getProject
+      summary: Get a project visible in the authenticated active workspace
+      parameters: [{$ref: "#/components/parameters/ProjectId"}]
+      responses:
+        "200": {description: Visible project, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ProjectProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/tasks:
+    get:
+      operationId: listTasks
+      summary: List tasks visible in the authenticated active workspace
+      description: Requires task.read or legacy work.read within the same active workspace.
+      parameters:
+        - {name: status, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskStatus}}
+        - {name: priority, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskPriority}}
+        - {name: search, in: query, schema: {type: string}}
+      responses:
+        "200": {description: Visible tasks, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createTask
+      summary: Create a task in the authenticated active workspace
+      description: Requires task.create or legacy work.write. A supplied project must be visible in this workspace.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskCreateRequest}}}}
+      responses:
+        "201": {description: Created task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/tasks/{task_id}:
+    get:
+      operationId: getTask
+      summary: Get a task visible in the authenticated active workspace
+      parameters: [{$ref: "#/components/parameters/TaskId"}]
+      responses:
+        "200": {description: Visible task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/auth/login:
     post:
       operationId: login
@@ -744,6 +811,16 @@ components:
       scheme: bearer
       bearerFormat: opaque-session-token
   parameters:
+    ProjectId:
+      name: project_id
+      in: path
+      required: true
+      schema: {$ref: ../../schemas/common/identifiers.schema.json#/$defs/project_id}
+    TaskId:
+      name: task_id
+      in: path
+      required: true
+      schema: {$ref: ../../schemas/common/identifiers.schema.json#/$defs/task_id}
     RunId:
       name: run_id
       in: path
