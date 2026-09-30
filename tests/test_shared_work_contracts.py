@@ -247,3 +247,32 @@ def test_reports_and_findings_have_canonical_public_contracts(load_json, registr
     finding_detail = paths["/api/v1/work/findings/{finding_id}"]
     assert finding_detail["get"]["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "FindingProjection"
 
+
+def test_finding_lifecycle_requests_reject_authority_and_use_dedicated_routes(load_json, registry) -> None:
+    schema = load_json("schemas/shared-work/shared-work.schema.json")
+    update_request = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/FindingUpdateRequest"}, registry=registry,
+    )
+    assignment_request = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/FindingAssignmentRequest"}, registry=registry,
+    )
+    assert update_request.is_valid({"title": "Revised finding", "severity": "HIGH"})
+    assert not update_request.is_valid({})
+    assert not update_request.is_valid({"title": "x" * 501})
+    assert assignment_request.is_valid({"owner_actor_id": "actor_target"})
+    for field in ("status", "owner_actor_id", "source_type", "tenant_id", "organization_id", "workspace_ids"):
+        assert not update_request.is_valid({"title": "Revised finding", field: "injected"})
+    for field in ("status", "source_type", "tenant_id", "organization_id", "workspace_ids"):
+        assert not assignment_request.is_valid({"owner_actor_id": "actor_target", field: "injected"})
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    paths = spec["paths"]
+    base = "../../schemas/shared-work/shared-work.schema.json#/$defs/"
+    detail = paths["/api/v1/work/findings/{finding_id}"]
+    assert detail["patch"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "FindingUpdateRequest"
+    assignment = paths["/api/v1/work/findings/{finding_id}/assign"]["post"]
+    assert assignment["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "FindingAssignmentRequest"
+    for action in ("start", "submit-verification", "verify", "close"):
+        operation = paths[f"/api/v1/work/findings/{{finding_id}}/{action}"]["post"]
+        assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "FindingProjection"
+        assert "requestBody" not in operation
+

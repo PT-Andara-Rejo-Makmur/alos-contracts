@@ -409,6 +409,87 @@ paths:
         "401": {$ref: "#/components/responses/ErrorResponse"}
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}
+    patch:
+      operationId: updateFinding
+      summary: Update mutable finding metadata
+      description: Requires finding.update while OPEN, ASSIGNED, or IN_PROGRESS.
+      parameters:
+        - {name: finding_id, in: path, required: true, schema: {type: string}}
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingUpdateRequest}}}}
+      responses:
+        "200": {description: Updated finding, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/findings/{finding_id}/assign:
+    post:
+      operationId: assignFinding
+      summary: Assign a finding to an eligible workspace actor
+      description: Requires finding.assign while OPEN or ASSIGNED.
+      parameters:
+        - {name: finding_id, in: path, required: true, schema: {type: string}}
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingAssignmentRequest}}}}
+      responses:
+        "200": {description: Assigned finding, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/findings/{finding_id}/start:
+    post:
+      operationId: startFinding
+      summary: Start an owned finding
+      description: Requires finding.update and current ownership.
+      parameters:
+        - {name: finding_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Finding in progress, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/findings/{finding_id}/submit-verification:
+    post:
+      operationId: submitFindingVerification
+      summary: Submit an owned finding for verification
+      description: Requires finding.update and current ownership.
+      parameters:
+        - {name: finding_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Finding pending verification, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/findings/{finding_id}/verify:
+    post:
+      operationId: verifyFinding
+      summary: Verify a finding under separation of duties
+      description: Requires finding.verify; the owner cannot verify their finding.
+      parameters:
+        - {name: finding_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Verified finding, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/findings/{finding_id}/close:
+    post:
+      operationId: closeFinding
+      summary: Close a verified finding
+      description: Requires finding.close; CLOSED is final.
+      parameters:
+        - {name: finding_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Closed finding, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/auth/login:
     post:
       operationId: login

@@ -186,3 +186,13 @@ export interface SharedWorkFindingCreateRequest {
   readonly description?: string | null;
   readonly severity?: SharedWorkFindingSeverity;
 }
+
+export interface SharedWorkFindingUpdateRequest {
+  readonly title?: string;
+  readonly description?: string | null;
+  readonly severity?: SharedWorkFindingSeverity;
+}
+
+export interface SharedWorkFindingAssignmentRequest {
+  readonly owner_actor_id: string;
+}

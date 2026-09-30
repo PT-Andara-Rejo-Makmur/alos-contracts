@@ -181,3 +181,11 @@ class SharedWorkFindingCreateRequest(TypedDict, total=False):
     title: Required[str]
     description: str | None
     severity: SharedWorkFindingSeverity
+
+class SharedWorkFindingUpdateRequest(TypedDict, total=False):
+    title: str
+    description: str | None
+    severity: SharedWorkFindingSeverity
+
+class SharedWorkFindingAssignmentRequest(TypedDict, total=False):
+    owner_actor_id: Required[str]

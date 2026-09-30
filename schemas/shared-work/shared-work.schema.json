@@ -819,6 +819,27 @@
           "$ref": "#/$defs/FindingSeverity"
         }
       }
+    },
+    "FindingUpdateRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "minProperties": 1,
+      "properties": {
+        "title": {"type": "string", "minLength": 1, "maxLength": 500},
+        "description": {"type": ["string", "null"]},
+        "severity": {"$ref": "#/$defs/FindingSeverity"}
+      }
+    },
+    "FindingAssignmentRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["owner_actor_id"],
+      "properties": {
+        "owner_actor_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"
+        }
+      }
     }
   }
 }
