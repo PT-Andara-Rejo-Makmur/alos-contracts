@@ -54,6 +54,10 @@
         "HOLD"
       ]
     },
+    "ApprovalSubjectType": {
+      "type": "string",
+      "enum": ["PROJECT", "TASK"]
+    },
     "DocumentStatus": {
       "type": "string",
       "enum": [
@@ -438,7 +442,7 @@
           "uniqueItems": true
         },
         "subject_type": {
-          "type": "string"
+          "$ref": "#/$defs/ApprovalSubjectType"
         },
         "subject_id": {
           "type": "string"
@@ -471,6 +475,9 @@
             "null"
           ]
         },
+        "decision_reason": {
+          "type": ["string", "null"]
+        },
         "requested_at": {
           "type": "string",
           "format": "date-time"
@@ -493,8 +500,7 @@
       ],
       "properties": {
         "subject_type": {
-          "type": "string",
-          "minLength": 1
+          "$ref": "#/$defs/ApprovalSubjectType"
         },
         "subject_id": {
           "type": "string",
@@ -506,6 +512,14 @@
             "null"
           ]
         }
+      }
+    },
+    "ApprovalDecisionRequest": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": [],
+      "properties": {
+        "decision_reason": {"type": "string", "minLength": 1}
       }
     },
     "DocumentProjection": {

@@ -11,6 +11,103 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/approvals:
+    get:
+      operationId: listApprovals
+      summary: List approvals visible in the authenticated active workspace
+      description: Requires approval.read or legacy work.read.
+      parameters:
+        - {name: status, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalStatus}}
+        - {name: subject_type, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalSubjectType}}
+        - {name: search, in: query, schema: {type: string}}
+      responses:
+        "200": {description: Visible approvals, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: requestApproval
+      summary: Request approval for a visible Project or Task
+      description: Requires approval.request or legacy work.write. Backend establishes scope and requester.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalRequest}}}}
+      responses:
+        "201": {description: Pending approval, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/approvals/{approval_id}:
+    get:
+      operationId: getApproval
+      summary: Get a workspace-visible approval
+      description: Requires approval.read or legacy work.read.
+      parameters:
+        - {name: approval_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Visible approval, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/approvals/{approval_id}/approve:
+    post:
+      operationId: approveApproval
+      summary: Approve a pending approval as a different actor
+      description: Requires approval.approve. Repeating the identical decision is idempotent.
+      parameters:
+        - {name: approval_id, in: path, required: true, schema: {type: string}}
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalDecisionRequest}}}}
+      responses:
+        "200": {description: Approved approval, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/approvals/{approval_id}/return:
+    post:
+      operationId: returnApproval
+      summary: Return a pending approval as a different actor
+      description: Requires approval.return and a non-empty decision reason.
+      parameters:
+        - {name: approval_id, in: path, required: true, schema: {type: string}}
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalDecisionRequest}}}}
+      responses:
+        "200": {description: Returned approval, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/approvals/{approval_id}/reject:
+    post:
+      operationId: rejectApproval
+      summary: Reject a pending approval as a different actor
+      description: Requires approval.reject and a non-empty decision reason.
+      parameters:
+        - {name: approval_id, in: path, required: true, schema: {type: string}}
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalDecisionRequest}}}}
+      responses:
+        "200": {description: Rejected approval, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/approvals/{approval_id}/hold:
+    post:
+      operationId: holdApproval
+      summary: Hold a pending approval as a different actor
+      description: Requires approval.hold and a non-empty decision reason.
+      parameters:
+        - {name: approval_id, in: path, required: true, schema: {type: string}}
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalDecisionRequest}}}}
+      responses:
+        "200": {description: Held approval, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ApprovalProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/projects:
     get:
       operationId: listProjects

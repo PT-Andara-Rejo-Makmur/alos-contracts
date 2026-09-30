@@ -142,3 +142,34 @@ def test_public_lifecycle_operations_use_canonical_requests() -> None:
         operation = paths[path]["post"]
         assert "requestBody" not in operation
         assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + projection
+
+
+def test_approval_workflow_is_typed_and_authority_fields_are_server_owned(
+    load_json, registry
+) -> None:
+    schema = load_json("schemas/shared-work/shared-work.schema.json")
+    definitions = schema["$defs"]
+    assert definitions["ApprovalSubjectType"]["enum"] == ["PROJECT", "TASK"]
+    for name, valid, forbidden in (
+        ("ApprovalRequest", {"subject_type": "PROJECT", "subject_id": "project_1"}, {"status": "APPROVED"}),
+        ("ApprovalDecisionRequest", {"decision_reason": "Reviewed"}, {"approver_actor_id": "actor_1"}),
+    ):
+        validator = Draft202012Validator(
+            {"$ref": schema["$id"] + "#/$defs/" + name}, registry=registry
+        )
+        assert validator.is_valid(valid)
+        assert not validator.is_valid({**valid, **forbidden})
+    request = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/ApprovalRequest"}, registry=registry
+    )
+    assert not request.is_valid({"subject_type": "BUDGET", "subject_id": "budget_1"})
+    assert "decision_reason" in definitions["ApprovalProjection"]["properties"]
+
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    paths = spec["paths"]
+    base = "../../schemas/shared-work/shared-work.schema.json#/$defs/"
+    assert paths["/api/v1/approvals"]["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "ApprovalRequest"
+    for action in ("approve", "return", "reject", "hold"):
+        operation = paths[f"/api/v1/approvals/{{approval_id}}/{action}"]["post"]
+        assert operation["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "ApprovalDecisionRequest"
+        assert operation["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "ApprovalProjection"

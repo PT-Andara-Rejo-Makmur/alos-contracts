@@ -7,6 +7,7 @@ export type SharedWorkTaskStatus = "OPEN" | "IN_PROGRESS" | "BLOCKED" | "UNDER_R
 export type SharedWorkTaskPriority = "LOW" | "NORMAL" | "HIGH" | "CRITICAL";
 export type SharedWorkApprovalStatus = "PENDING" | "APPROVED" | "RETURNED" | "REJECTED" | "HELD";
 export type SharedWorkApprovalDecision = "APPROVED" | "RETURNED" | "REJECTED" | "HOLD";
+export type SharedWorkApprovalSubjectType = "PROJECT" | "TASK";
 export type SharedWorkDocumentStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "REJECTED" | "RETIRED";
 export type SharedWorkReportStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "PUBLISHED" | "ARCHIVED";
 export type SharedWorkFindingStatus = "OPEN" | "ASSIGNED" | "IN_PROGRESS" | "PENDING_VERIFICATION" | "VERIFIED" | "CLOSED";
@@ -86,21 +87,26 @@ export interface SharedWorkApprovalProjection {
   readonly tenant_id: string;
   readonly organization_id: string;
   readonly workspace_ids: readonly string[];
-  readonly subject_type: string;
+  readonly subject_type: SharedWorkApprovalSubjectType;
   readonly subject_id: string;
   readonly requested_by: string;
   readonly approver_actor_id?: string | null;
   readonly status: SharedWorkApprovalStatus;
   readonly decision?: SharedWorkApprovalDecision | null;
   readonly reason?: string | null;
+  readonly decision_reason?: string | null;
   readonly requested_at: string;
   readonly decided_at?: string | null;
 }
 
 export interface SharedWorkApprovalRequest {
-  readonly subject_type: string;
+  readonly subject_type: SharedWorkApprovalSubjectType;
   readonly subject_id: string;
   readonly reason?: string | null;
+}
+
+export interface SharedWorkApprovalDecisionRequest {
+  readonly decision_reason?: string;
 }
 
 export interface SharedWorkDocumentProjection {

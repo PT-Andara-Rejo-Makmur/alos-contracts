@@ -15,6 +15,8 @@ SharedWorkApprovalStatus = Literal['PENDING', 'APPROVED', 'RETURNED', 'REJECTED'
 
 SharedWorkApprovalDecision = Literal['APPROVED', 'RETURNED', 'REJECTED', 'HOLD']
 
+SharedWorkApprovalSubjectType = Literal['PROJECT', 'TASK']
+
 SharedWorkDocumentStatus = Literal['DRAFT', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'RETIRED']
 
 SharedWorkReportStatus = Literal['DRAFT', 'IN_REVIEW', 'APPROVED', 'PUBLISHED', 'ARCHIVED']
@@ -91,20 +93,24 @@ class SharedWorkApprovalProjection(TypedDict, total=False):
     tenant_id: Required[str]
     organization_id: Required[str]
     workspace_ids: Required[list[str]]
-    subject_type: Required[str]
+    subject_type: Required[SharedWorkApprovalSubjectType]
     subject_id: Required[str]
     requested_by: Required[str]
     approver_actor_id: str | None
     status: Required[SharedWorkApprovalStatus]
     decision: SharedWorkApprovalDecision | None
     reason: str | None
+    decision_reason: str | None
     requested_at: Required[str]
     decided_at: str | None
 
 class SharedWorkApprovalRequest(TypedDict, total=False):
-    subject_type: Required[str]
+    subject_type: Required[SharedWorkApprovalSubjectType]
     subject_id: Required[str]
     reason: str | None
+
+class SharedWorkApprovalDecisionRequest(TypedDict, total=False):
+    decision_reason: str
 
 class SharedWorkDocumentProjection(TypedDict, total=False):
     document_id: Required[str]
