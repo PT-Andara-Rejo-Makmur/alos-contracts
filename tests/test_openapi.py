@@ -19,6 +19,27 @@ def test_openapi_files_are_valid():
         validate_file(path)
 
 
+def test_activation_uses_one_time_credential_and_minimal_response():
+    path = ROOT / "openapi/public/alos-public-api.yaml"
+    document = yaml.safe_load(path.read_text(encoding="utf-8"))
+    operation = document["paths"]["/api/v1/identity/activate"]["post"]
+    assert operation["security"] == []
+    assert operation["responses"]["200"]["content"]["application/json"]["schema"] == {
+        "$ref": "../../schemas/identity/activate-account-response.schema.json"
+    }
+
+    bundled = resolve_file_refs(document, path, load_schemas())
+    response_schema = bundled["paths"]["/api/v1/identity/activate"]["post"]["responses"][
+        "200"
+    ]["content"]["application/json"]["schema"]
+    validator = Draft202012Validator(response_schema)
+    response = {"actor_id": "actor_01", "activation_state": "ACTIVATED"}
+    validator.validate(response)
+    for field in ("tenant_id", "organization_id", "workspace_id"):
+        with pytest.raises(ValidationError):
+            validator.validate({**response, field: "internal_value"})
+
+
 def test_internal_routes_name_the_actual_service_owner():
     document = yaml.safe_load(
         (ROOT / "openapi/internal/genesis-internal-api.yaml").read_text(encoding="utf-8")

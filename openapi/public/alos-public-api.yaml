@@ -313,6 +313,7 @@ paths:
     post:
       operationId: activateEmployeeAccount
       summary: Activate a pending employee account using a one-time challenge
+      security: []
       requestBody:
         required: true
         content:

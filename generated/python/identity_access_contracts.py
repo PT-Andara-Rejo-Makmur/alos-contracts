@@ -74,9 +74,6 @@ class ActivateAccountRequest(TypedDict):
 class ActivateAccountResponse(TypedDict):
     actor_id: str
     activation_state: Literal["ACTIVATED"]
-    tenant_id: str
-    organization_id: str
-    workspace_id: str
 
 class AdminSessionProjection(TypedDict):
     session_id: str

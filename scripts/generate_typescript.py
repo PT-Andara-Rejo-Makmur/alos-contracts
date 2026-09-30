@@ -569,7 +569,6 @@ export interface ActivateAccountRequest {{
 }}
 export interface ActivateAccountResponse {{
   readonly actor_id: string; readonly activation_state: "ACTIVATED";
-  readonly tenant_id: string; readonly organization_id: string; readonly workspace_id: string;
 }}
 export interface AdminSessionProjection {{
   readonly session_id: string; readonly issued_at: string; readonly expires_at: string;

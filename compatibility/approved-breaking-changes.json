@@ -39,6 +39,12 @@
       "migration": "Project one authoritative role per workspace membership after the append-only identity data migration."
     },
     {
+      "schema": "schemas/identity/activate-account-response.schema.json",
+      "violation": "$: properties removed: ['organization_id', 'tenant_id', 'workspace_id']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Identity activation consumers use the public actor_id and activation_state response; Backend retains tenant, organization, and workspace authority internally for audit."
+    },
+    {
       "schema": "schemas/identity/active-workspace-projection.schema.json",
       "violation": "$.membership.role_refs: maxItems became more restrictive",
       "decision": "INTENTIONALLY_CHANGED",
