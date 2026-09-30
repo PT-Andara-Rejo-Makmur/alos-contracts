@@ -69,6 +69,28 @@ def test_generated_artifacts_match_schema() -> None:
     assert "SharedWorkApprovalProjection" in render_python()
 
 
+def test_task_dependency_and_materiality_are_canonical(load_json, registry) -> None:
+    schema = load_json("schemas/shared-work/shared-work.schema.json")
+    base = schema["$id"] + "#/$defs/"
+    dependency = Draft202012Validator({"$ref": base + "TaskDependencyRequest"}, registry=registry)
+    assert dependency.is_valid({"blocked_by_task_id": "task_1"})
+    assert not dependency.is_valid({"blocked_by_task_id": "task_1", "tenant_id": "other"})
+    assert "blocked_by" in schema["$defs"]["TaskProjection"]["properties"]
+    approval = Draft202012Validator({"$ref": base + "ApprovalRequest"}, registry=registry)
+    request = {"subject_type": "PROJECT", "subject_id": "project_1"}
+    assert approval.is_valid({**request, "materiality_value": 1250000.50})
+    assert not approval.is_valid({**request, "materiality_value": -1})
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    paths = spec["paths"]
+    added = paths["/api/v1/tasks/{task_id}/dependencies"]["post"]
+    assert added["requestBody"]["content"]["application/json"]["schema"]["$ref"] == (
+        "../../schemas/shared-work/shared-work.schema.json#/$defs/TaskDependencyRequest"
+    )
+    assert "/api/v1/tasks/{task_id}/dependencies/{blocked_by_task_id}" in paths
+    assert "SharedWorkTaskDependencyProjection" in render_typescript()
+    assert "materiality_value" in render_python()
+
+
 def test_document_links_and_checklist_are_scoped_requests(load_json, registry) -> None:
     schema = load_json("schemas/shared-work/shared-work.schema.json")
     definitions = schema["$defs"]

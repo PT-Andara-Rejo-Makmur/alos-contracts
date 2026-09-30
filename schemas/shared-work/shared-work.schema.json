@@ -379,6 +379,7 @@
         "findings_count": {"type": "integer", "minimum": 0},
         "evidence_count": {"type": "integer", "minimum": 0},
         "comments_count": {"type": "integer", "minimum": 0},
+        "blocked_by": {"type": "array", "items": {"$ref": "#/$defs/TaskDependencyProjection"}},
         "created_at": {
           "type": "string",
           "format": "date-time"
@@ -456,6 +457,27 @@
         }
       }
     },
+    "TaskDependencyRequest": {
+      "type": "object", "additionalProperties": false,
+      "required": ["blocked_by_task_id"],
+      "properties": {
+        "blocked_by_task_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/task_id"
+        }
+      }
+    },
+    "TaskDependencyProjection": {
+      "type": "object", "additionalProperties": false,
+      "required": ["blocked_by_task_id", "title", "status", "linked_at"],
+      "properties": {
+        "blocked_by_task_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/task_id"
+        },
+        "title": {"type": "string"},
+        "status": {"$ref": "#/$defs/TaskStatus"},
+        "linked_at": {"type": "string", "format": "date-time"}
+      }
+    },
     "ApprovalProjection": {
       "type": "object",
       "additionalProperties": false,
@@ -524,6 +546,7 @@
         "decision_reason": {
           "type": ["string", "null"]
         },
+        "materiality_value": {"type": ["number", "null"], "minimum": 0},
         "requested_at": {
           "type": "string",
           "format": "date-time"
@@ -564,7 +587,8 @@
             "string",
             "null"
           ]
-        }
+        },
+        "materiality_value": {"type": ["number", "null"], "minimum": 0}
       }
     },
     "ApprovalDecisionRequest": {

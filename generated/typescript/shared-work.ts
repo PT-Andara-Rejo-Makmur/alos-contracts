@@ -94,6 +94,7 @@ export interface SharedWorkTaskProjection {
   readonly findings_count?: number;
   readonly evidence_count?: number;
   readonly comments_count?: number;
+  readonly blocked_by?: readonly SharedWorkTaskDependencyProjection[];
   readonly created_at: string;
   readonly updated_at: string;
 }
@@ -120,6 +121,17 @@ export interface SharedWorkTaskAssignRequest {
   readonly owner_actor_id: string;
 }
 
+export interface SharedWorkTaskDependencyRequest {
+  readonly blocked_by_task_id: string;
+}
+
+export interface SharedWorkTaskDependencyProjection {
+  readonly blocked_by_task_id: string;
+  readonly title: string;
+  readonly status: SharedWorkTaskStatus;
+  readonly linked_at: string;
+}
+
 export interface SharedWorkApprovalProjection {
   readonly approval_id: string;
   readonly tenant_id: string;
@@ -133,6 +145,7 @@ export interface SharedWorkApprovalProjection {
   readonly decision?: SharedWorkApprovalDecision | null;
   readonly reason?: string | null;
   readonly decision_reason?: string | null;
+  readonly materiality_value?: number | null;
   readonly requested_at: string;
   readonly decided_at?: string | null;
   readonly subject_title?: string | null;
@@ -148,6 +161,7 @@ export interface SharedWorkApprovalRequest {
   readonly subject_type: SharedWorkApprovalSubjectType;
   readonly subject_id: string;
   readonly reason?: string | null;
+  readonly materiality_value?: number | null;
 }
 
 export interface SharedWorkApprovalDecisionRequest {

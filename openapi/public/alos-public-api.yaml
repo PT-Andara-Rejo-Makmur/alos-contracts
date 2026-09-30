@@ -363,6 +363,29 @@ paths:
       parameters: [{$ref: "#/components/parameters/TaskId"}]
       responses:
         "200": {description: Completed task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+  /api/v1/tasks/{task_id}/dependencies:
+    post:
+      operationId: addTaskDependency
+      description: Requires task.update. Both tasks must be visible in the active workspace; cycles are rejected.
+      parameters: [{$ref: "#/components/parameters/TaskId"}]
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskDependencyRequest}}}}
+      responses:
+        "200": {description: Task with authoritative dependencies, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/tasks/{task_id}/dependencies/{blocked_by_task_id}:
+    delete:
+      operationId: removeTaskDependency
+      description: Requires task.update; removing an absent link is idempotent.
+      parameters:
+        - {$ref: "#/components/parameters/TaskId"}
+        - {name: blocked_by_task_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Task with authoritative dependencies, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/work/reports/definitions:
     get:
       operationId: listReportDefinitions

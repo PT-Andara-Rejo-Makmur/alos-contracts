@@ -104,6 +104,7 @@ class SharedWorkTaskProjection(TypedDict, total=False):
     findings_count: int
     evidence_count: int
     comments_count: int
+    blocked_by: list[SharedWorkTaskDependencyProjection]
     created_at: Required[str]
     updated_at: Required[str]
 
@@ -126,6 +127,15 @@ class SharedWorkTaskUpdateRequest(TypedDict, total=False):
 class SharedWorkTaskAssignRequest(TypedDict, total=False):
     owner_actor_id: Required[str]
 
+class SharedWorkTaskDependencyRequest(TypedDict, total=False):
+    blocked_by_task_id: Required[str]
+
+class SharedWorkTaskDependencyProjection(TypedDict, total=False):
+    blocked_by_task_id: Required[str]
+    title: Required[str]
+    status: Required[SharedWorkTaskStatus]
+    linked_at: Required[str]
+
 class SharedWorkApprovalProjection(TypedDict, total=False):
     approval_id: Required[str]
     tenant_id: Required[str]
@@ -139,6 +149,7 @@ class SharedWorkApprovalProjection(TypedDict, total=False):
     decision: SharedWorkApprovalDecision | None
     reason: str | None
     decision_reason: str | None
+    materiality_value: float | None
     requested_at: Required[str]
     decided_at: str | None
     subject_title: str | None
@@ -153,6 +164,7 @@ class SharedWorkApprovalRequest(TypedDict, total=False):
     subject_type: Required[SharedWorkApprovalSubjectType]
     subject_id: Required[str]
     reason: str | None
+    materiality_value: float | None
 
 class SharedWorkApprovalDecisionRequest(TypedDict, total=False):
     decision_reason: str
