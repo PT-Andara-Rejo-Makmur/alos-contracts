@@ -204,3 +204,46 @@ def test_document_metadata_and_version_reference_have_canonical_public_contracts
         assert lifecycle["post"]["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "DocumentProjection"
         assert "requestBody" not in lifecycle["post"]
         assert "patch" not in lifecycle
+
+
+def test_reports_and_findings_have_canonical_public_contracts(load_json, registry) -> None:
+    schema = load_json("schemas/shared-work/shared-work.schema.json")
+    report_req = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/ReportCreateRequest"},
+        registry=registry,
+    )
+    valid_report = {"title": "Laporan Keuangan", "report_type": "FINANCIAL"}
+    assert report_req.is_valid(valid_report)
+    for field in ("status", "owner_actor_id", "tenant_id", "workspace_ids"):
+        assert not report_req.is_valid({**valid_report, field: "injected"})
+
+    finding_req = Draft202012Validator(
+        {"$ref": schema["$id"] + "#/$defs/FindingCreateRequest"},
+        registry=registry,
+    )
+    valid_finding = {"title": "Temuan Audit", "description": "Detail temuan", "severity": "HIGH"}
+    assert finding_req.is_valid(valid_finding)
+    for field in ("status", "source_type", "owner_actor_id", "tenant_id", "workspace_ids"):
+        assert not finding_req.is_valid({**valid_finding, field: "injected"})
+
+    spec = yaml.safe_load((ROOT / "openapi/public/alos-public-api.yaml").read_text(encoding="utf-8"))
+    paths = spec["paths"]
+    base = "../../schemas/shared-work/shared-work.schema.json#/$defs/"
+
+    # Reports
+    reports = paths["/api/v1/work/reports/results"]
+    assert reports["get"]["responses"]["200"]["content"]["application/json"]["schema"]["items"]["$ref"] == base + "ReportProjection"
+    assert reports["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportCreateRequest"
+    assert reports["post"]["responses"]["201"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportProjection"
+    report_detail = paths["/api/v1/work/reports/results/{report_id}"]
+    assert report_detail["get"]["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "ReportProjection"
+    assert "/api/v1/work/reports/definitions" not in paths
+
+    # Findings
+    findings = paths["/api/v1/work/findings"]
+    assert findings["get"]["responses"]["200"]["content"]["application/json"]["schema"]["items"]["$ref"] == base + "FindingProjection"
+    assert findings["post"]["requestBody"]["content"]["application/json"]["schema"]["$ref"] == base + "FindingCreateRequest"
+    assert findings["post"]["responses"]["201"]["content"]["application/json"]["schema"]["$ref"] == base + "FindingProjection"
+    finding_detail = paths["/api/v1/work/findings/{finding_id}"]
+    assert finding_detail["get"]["responses"]["200"]["content"]["application/json"]["schema"]["$ref"] == base + "FindingProjection"
+

@@ -334,6 +334,78 @@ paths:
       parameters: [{$ref: "#/components/parameters/TaskId"}]
       responses:
         "200": {description: Completed task, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection}}}}
+  /api/v1/work/reports/results:
+    get:
+      operationId: listReportResults
+      summary: List report results in the authenticated active workspace
+      description: Requires report.read or legacy work.read.
+      parameters:
+        - {name: status, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportStatus}}
+        - {name: report_type, in: query, schema: {type: string}}
+        - {name: search, in: query, schema: {type: string}}
+      responses:
+        "200": {description: Visible report results, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createReportResult
+      summary: Create a report result in the authenticated active workspace
+      description: Requires report.create or legacy work.write. Backend assigns scope, owner and DRAFT status.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportCreateRequest}}}}
+      responses:
+        "201": {description: Created report result, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/reports/results/{report_id}:
+    get:
+      operationId: getReportResult
+      summary: Get a report result in the authenticated active workspace
+      description: Requires report.read or legacy work.read.
+      parameters:
+        - {name: report_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Visible report result, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/ReportProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/findings:
+    get:
+      operationId: listFindings
+      summary: List findings in the authenticated active workspace
+      description: Requires finding.read or legacy work.read.
+      parameters:
+        - {name: status, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingStatus}}
+        - {name: severity, in: query, schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingSeverity}}
+        - {name: source_type, in: query, schema: {type: string}}
+        - {name: search, in: query, schema: {type: string}}
+      responses:
+        "200": {description: Visible findings, content: {application/json: {schema: {type: array, items: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createFinding
+      summary: Create a finding in the authenticated active workspace
+      description: Requires finding.create or legacy work.write. Backend assigns scope, owner, OPEN status, and MANUAL source type.
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingCreateRequest}}}}
+      responses:
+        "201": {description: Created finding, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/work/findings/{finding_id}:
+    get:
+      operationId: getFinding
+      summary: Get a finding in the authenticated active workspace
+      description: Requires finding.read or legacy work.read.
+      parameters:
+        - {name: finding_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {description: Visible finding, content: {application/json: {schema: {$ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/FindingProjection}}}}
         "401": {$ref: "#/components/responses/ErrorResponse"}
         "403": {$ref: "#/components/responses/ErrorResponse"}
         "404": {$ref: "#/components/responses/ErrorResponse"}
