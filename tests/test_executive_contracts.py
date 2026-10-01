@@ -3,6 +3,7 @@
 import copy
 import importlib
 import json
+from typing import get_type_hints
 
 import pytest
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
@@ -104,9 +105,39 @@ def test_generated_python_preserves_required_nullable_fields(monkeypatch):
     assert "last_updated_at" in contracts.ExecutiveSourceStatus.__annotations__
     assert "last_updated_at" in contracts.ExecutiveSourceStatus.__required_keys__
     assert "period" in contracts.ExecutiveOverviewProjection.__optional_keys__
+    shared_work = importlib.import_module("shared_work_contracts")
+    assert "task_id" in shared_work.SharedWorkTaskProjection.__required_keys__
+    assert "blocked_by" in get_type_hints(shared_work.SharedWorkTaskProjection)
     strategy = importlib.import_module("strategy_contracts")
     assert set(strategy.StrategyPlanCreateRequest.__annotations__) == set(
         json.loads(
             (ROOT / "schemas/strategy/strategy-plan-create-request.schema.json").read_text()
         )["properties"]
     )
+
+
+def test_shared_work_summary_references_canonical_entities_and_exact_counts(schemas, registry):
+    schema = schemas[BASE + "executive-shared-work-summary.schema.json"]
+    for collection, entity in (
+        ("projects", "Project"), ("tasks", "Task"), ("approvals", "Approval"),
+        ("findings", "Finding"), ("reports", "Report"), ("documents", "Document"),
+    ):
+        assert schema["properties"][collection]["items"] == {
+            "$ref": f"https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/{entity}Projection"
+        }
+    data = {key: [] for key in ("projects", "tasks", "approvals", "findings", "reports", "documents")}
+    data.update({"counts": {key: 0 for key in schema["properties"]["counts"]["required"]},
+                 "last_updated_at": None})
+    payload = overview()
+    payload["shared_work"] = {"source": "shared_work", "status": "CONNECTED_EMPTY",
+                              "authoritative": True, "last_updated_at": None}
+    payload["shared_work_data"] = data
+    validator(schemas, registry).validate(payload)
+    for field in ("counts", "last_updated_at"):
+        invalid = copy.deepcopy(payload)
+        del invalid["shared_work_data"][field]
+        with pytest.raises(ValidationError):
+            validator(schemas, registry).validate(invalid)
+    data["counts"]["pending_approvals"] = -1
+    with pytest.raises(ValidationError):
+        validator(schemas, registry).validate(payload)

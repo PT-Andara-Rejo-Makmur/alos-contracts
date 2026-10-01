@@ -104,7 +104,7 @@ class SharedWorkTaskProjection(TypedDict, total=False):
     findings_count: int
     evidence_count: int
     comments_count: int
-    blocked_by: list[SharedWorkTaskDependencyProjection]
+    blocked_by: 'list[SharedWorkTaskDependencyProjection]'
     created_at: Required[str]
     updated_at: Required[str]
 

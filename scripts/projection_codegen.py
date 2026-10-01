@@ -12,7 +12,7 @@ class Renderer:
     def __init__(self, domain: str, python: bool) -> None:
         self.python = python
         self.domain = domain
-        self.imports: set[str] = set()
+        self.imports: dict[str, set[str]] = {}
         self.documents = {
             doc["$id"]: doc
             for path in sorted((ROOT / "schemas").glob("**/*.schema.json"))
@@ -34,9 +34,13 @@ class Renderer:
             if "/common/identifiers.schema.json" in ref:
                 return "str" if self.python else "string"
             target, source = self.reference(ref, document)
+            if "/shared-work/" in ref:
+                identifier = "SharedWork" + ref.rsplit("/", 1)[-1]
+                self.imports.setdefault("shared_work", set()).add(identifier)
+                return identifier
             if "#" not in ref:
                 if f"/{self.domain}/" not in ref:
-                    self.imports.add(source["title"])
+                    self.imports.setdefault("strategy", set()).add(source["title"])
                     return source["title"]
                 return self.declare(source["title"], target, source)
             return self.value(target, name, source)
@@ -129,12 +133,12 @@ class Renderer:
         ]
         if self.python:
             lines += ["from typing import Literal, Required, TypedDict", ""]
-        if self.imports:
-            names = ", ".join(sorted(self.imports))
+        for module, imports in sorted(self.imports.items()):
+            names = ", ".join(sorted(imports))
             lines.append(
-                f"from strategy_contracts import {names}"
+                f"from {module}_contracts import {names}"
                 if self.python
-                else f'import type {{ {names} }} from "./strategy";'
+                else f'import type {{ {names} }} from "./{module.replace("_", "-")}";'
             )
         lines.extend(self.declarations.values())
         if domain == "strategy":

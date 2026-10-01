@@ -1,0 +1,44 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/executive/executive-shared-work-summary.schema.json",
+  "title": "ExecutiveSharedWorkSummary",
+  "description": "Read-only aggregation within canonical tenant, organization and active workspace visibility. Counts cover all visible records; previews contain at most 50 canonical entities per collection. Findings active excludes VERIFIED and CLOSED. No business-domain performance is inferred.",
+  "type": "object",
+  "additionalProperties": false,
+  "required": ["counts", "projects", "tasks", "approvals", "findings", "reports", "documents", "last_updated_at"],
+  "properties": {
+    "counts": {
+      "type": "object",
+      "additionalProperties": false,
+      "required": ["projects", "active_projects", "on_hold_projects", "completed_projects", "tasks", "overdue_tasks", "blocked_tasks", "critical_tasks", "pending_review_tasks", "approvals", "pending_approvals", "findings", "open_findings", "active_findings", "critical_findings", "high_findings", "pending_verification_findings", "reports", "documents"],
+      "properties": {
+        "projects": {"type": "integer", "minimum": 0},
+        "active_projects": {"type": "integer", "minimum": 0},
+        "on_hold_projects": {"type": "integer", "minimum": 0},
+        "completed_projects": {"type": "integer", "minimum": 0},
+        "tasks": {"type": "integer", "minimum": 0},
+        "overdue_tasks": {"type": "integer", "minimum": 0},
+        "blocked_tasks": {"type": "integer", "minimum": 0},
+        "critical_tasks": {"type": "integer", "minimum": 0},
+        "pending_review_tasks": {"type": "integer", "minimum": 0},
+        "approvals": {"type": "integer", "minimum": 0},
+        "pending_approvals": {"type": "integer", "minimum": 0},
+        "findings": {"type": "integer", "minimum": 0},
+        "open_findings": {"type": "integer", "minimum": 0},
+        "active_findings": {"type": "integer", "minimum": 0},
+        "critical_findings": {"type": "integer", "minimum": 0},
+        "high_findings": {"type": "integer", "minimum": 0},
+        "pending_verification_findings": {"type": "integer", "minimum": 0},
+        "reports": {"type": "integer", "minimum": 0},
+        "documents": {"type": "integer", "minimum": 0}
+      }
+    },
+    "projects": {"type": "array", "maxItems": 50, "items": {"$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/ProjectProjection"}},
+    "tasks": {"type": "array", "maxItems": 50, "items": {"$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/TaskProjection"}},
+    "approvals": {"type": "array", "maxItems": 50, "items": {"$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/ApprovalProjection"}},
+    "findings": {"type": "array", "maxItems": 50, "items": {"$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/FindingProjection"}},
+    "reports": {"type": "array", "maxItems": 50, "items": {"$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/ReportProjection"}},
+    "documents": {"type": "array", "maxItems": 50, "items": {"$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/DocumentProjection"}},
+    "last_updated_at": {"type": ["string", "null"], "format": "date-time"}
+  }
+}

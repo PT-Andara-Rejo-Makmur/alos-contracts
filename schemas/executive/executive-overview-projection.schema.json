@@ -42,6 +42,12 @@
       ],
       "format": "date-time"
     },
+    "shared_work_data": {
+      "oneOf": [
+        {"$ref": "https://schemas.alos.dev/v1/executive/executive-shared-work-summary.schema.json"},
+        {"type": "null"}
+      ]
+    },
     "strategy_data": {
       "oneOf": [
         {
@@ -63,5 +69,5 @@
     "last_updated_at"
   ],
   "additionalProperties": false,
-  "description": "Governed read projection of canonical sources returned by GET /api/v1/executive/overview, never an authoritative operational entity. Unknown timestamps and periods remain null. Source authority is independent of integration availability; Shared Work remains authoritative while its aggregation is unavailable."
+  "description": "Governed read projection of Strategy and Shared Work returned by GET /api/v1/executive/overview, never an authoritative operational entity. Unknown timestamps and periods remain null. Failed or unavailable sources have null data; independent successful sources remain readable."
 }

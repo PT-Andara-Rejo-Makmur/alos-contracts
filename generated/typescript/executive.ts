@@ -4,6 +4,8 @@
 
 
 
+import type { SharedWorkApprovalProjection, SharedWorkDocumentProjection, SharedWorkFindingProjection, SharedWorkProjectProjection, SharedWorkReportProjection, SharedWorkTaskProjection } from "./shared-work";
+
 import type { BusinessPeriod, StrategyOverviewProjection } from "./strategy";
 
 export type ExecutiveConnectionStatus = "CONNECTED" | "CONNECTED_EMPTY" | "UNAVAILABLE" | "ERROR";
@@ -32,5 +34,39 @@ export interface ExecutiveOverviewProjection {
   readonly shared_work: ExecutiveSourceStatus;
   readonly domains: readonly (ExecutiveDomainStatus)[];
   readonly last_updated_at: string | null;
+  readonly shared_work_data?: ExecutiveSharedWorkSummary | null;
   readonly strategy_data?: StrategyOverviewProjection | null;
+}
+
+export interface ExecutiveSharedWorkSummary {
+  readonly counts: ExecutiveSharedWorkSummaryCounts;
+  readonly projects: readonly (SharedWorkProjectProjection)[];
+  readonly tasks: readonly (SharedWorkTaskProjection)[];
+  readonly approvals: readonly (SharedWorkApprovalProjection)[];
+  readonly findings: readonly (SharedWorkFindingProjection)[];
+  readonly reports: readonly (SharedWorkReportProjection)[];
+  readonly documents: readonly (SharedWorkDocumentProjection)[];
+  readonly last_updated_at: string | null;
+}
+
+export interface ExecutiveSharedWorkSummaryCounts {
+  readonly projects: number;
+  readonly active_projects: number;
+  readonly on_hold_projects: number;
+  readonly completed_projects: number;
+  readonly tasks: number;
+  readonly overdue_tasks: number;
+  readonly blocked_tasks: number;
+  readonly critical_tasks: number;
+  readonly pending_review_tasks: number;
+  readonly approvals: number;
+  readonly pending_approvals: number;
+  readonly findings: number;
+  readonly open_findings: number;
+  readonly active_findings: number;
+  readonly critical_findings: number;
+  readonly high_findings: number;
+  readonly pending_verification_findings: number;
+  readonly reports: number;
+  readonly documents: number;
 }

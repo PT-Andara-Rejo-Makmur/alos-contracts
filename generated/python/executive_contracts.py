@@ -8,6 +8,8 @@ from typing import Literal, Required, TypedDict
 
 
 
+from shared_work_contracts import SharedWorkApprovalProjection, SharedWorkDocumentProjection, SharedWorkFindingProjection, SharedWorkProjectProjection, SharedWorkReportProjection, SharedWorkTaskProjection
+
 from strategy_contracts import BusinessPeriod, StrategyOverviewProjection
 
 ExecutiveConnectionStatus = Literal['CONNECTED', 'CONNECTED_EMPTY', 'UNAVAILABLE', 'ERROR']
@@ -34,4 +36,36 @@ class ExecutiveOverviewProjection(TypedDict, total=False):
     shared_work: Required['ExecutiveSourceStatus']
     domains: Required['list[ExecutiveDomainStatus]']
     last_updated_at: Required['str | None']
+    shared_work_data: 'ExecutiveSharedWorkSummary | None'
     strategy_data: 'StrategyOverviewProjection | None'
+
+class ExecutiveSharedWorkSummary(TypedDict, total=False):
+    counts: Required['ExecutiveSharedWorkSummaryCounts']
+    projects: Required['list[SharedWorkProjectProjection]']
+    tasks: Required['list[SharedWorkTaskProjection]']
+    approvals: Required['list[SharedWorkApprovalProjection]']
+    findings: Required['list[SharedWorkFindingProjection]']
+    reports: Required['list[SharedWorkReportProjection]']
+    documents: Required['list[SharedWorkDocumentProjection]']
+    last_updated_at: Required['str | None']
+
+class ExecutiveSharedWorkSummaryCounts(TypedDict, total=False):
+    projects: Required['int']
+    active_projects: Required['int']
+    on_hold_projects: Required['int']
+    completed_projects: Required['int']
+    tasks: Required['int']
+    overdue_tasks: Required['int']
+    blocked_tasks: Required['int']
+    critical_tasks: Required['int']
+    pending_review_tasks: Required['int']
+    approvals: Required['int']
+    pending_approvals: Required['int']
+    findings: Required['int']
+    open_findings: Required['int']
+    active_findings: Required['int']
+    critical_findings: Required['int']
+    high_findings: Required['int']
+    pending_verification_findings: Required['int']
+    reports: Required['int']
+    documents: Required['int']

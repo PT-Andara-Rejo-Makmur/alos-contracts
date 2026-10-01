@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import json
+import re
 from pathlib import Path
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -99,6 +100,7 @@ def render_python() -> str:
         + ", ".join(repr(item) for item in classification)
         + "]"
     )
+    declared = {"SharedWorkDataClassification"}
     for name, schema in defs.items():
         exported = "SharedWork" + name
         lines.append("")
@@ -108,12 +110,18 @@ def render_python() -> str:
                 + ", ".join(repr(item) for item in schema["enum"])
                 + "]"
             )
+            declared.add(exported)
             continue
         lines.append(f"class {exported}(TypedDict, total=False):")
         required = set(schema["required"])
         for field, field_schema in schema["properties"].items():
             value = _type(field_schema, python=True)
+            if any(identifier not in declared
+                   for identifier in re.findall(r"\bSharedWork\w+", value)):
+                # Retain Required metadata while deferring canonical forward references.
+                value = repr(value)
             if field in required:
                 value = f"Required[{value}]"
             lines.append(f"    {field}: {value}")
+        declared.add(exported)
     return "\n".join(lines) + "\n"
