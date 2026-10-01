@@ -1,0 +1,2421 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json",
+  "title": "SalesOverview",
+  "$defs": {
+    "SalesCustomerStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE"
+      ]
+    },
+    "SalesCustomerTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesCustomerStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesCustomerCreateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_type": {
+          "type": "string",
+          "enum": [
+            "INDIVIDUAL",
+            "COMPANY"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "customer_code",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "SalesCustomerUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_type": {
+          "type": "string",
+          "enum": [
+            "INDIVIDUAL",
+            "COMPANY"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesCustomerProjection": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_type": {
+          "type": "string",
+          "enum": [
+            "INDIVIDUAL",
+            "COMPANY"
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesCustomerStatus"
+          }
+        }
+      },
+      "required": [
+        "customer_id",
+        "customer_code",
+        "customer_type",
+        "name",
+        "email",
+        "phone",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesCustomerListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesCustomerProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesLeadStatus": {
+      "type": "string",
+      "enum": [
+        "FOLLOW_UP",
+        "INACTIVE",
+        "NEW",
+        "QUALIFIED"
+      ]
+    },
+    "SalesLeadTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesLeadStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesLeadCreateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interest": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "SalesLeadUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interest": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesLeadProjection": {
+      "type": "object",
+      "properties": {
+        "lead_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "interest": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 500
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "owner_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesLeadStatus"
+          }
+        }
+      },
+      "required": [
+        "lead_id",
+        "customer_id",
+        "source",
+        "interest",
+        "status",
+        "owner_actor_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesLeadListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesLeadProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesOpportunityStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "LOST",
+        "OPEN",
+        "WON"
+      ]
+    },
+    "SalesOpportunityTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesOpportunityStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesOpportunityCreateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "lead_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "stage": {
+          "type": "string",
+          "const": "Lead"
+        },
+        "estimated_value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "probability": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "customer_id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "SalesOpportunityUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "estimated_value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "probability": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesOpportunityPipelineRequest": {
+      "type": "object",
+      "properties": {
+        "stage": {
+          "type": "string",
+          "enum": [
+            "Lead",
+            "Qualified",
+            "Survey",
+            "Booking",
+            "SPK",
+            "KPR",
+            "SP3K",
+            "Akad",
+            "Closing"
+          ]
+        }
+      },
+      "required": [
+        "stage"
+      ],
+      "additionalProperties": false
+    },
+    "SalesOpportunityProjection": {
+      "type": "object",
+      "properties": {
+        "opportunity_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "lead_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "stage": {
+          "type": "string",
+          "enum": [
+            "Lead",
+            "Qualified",
+            "Survey",
+            "Booking",
+            "SPK",
+            "KPR",
+            "SP3K",
+            "Akad",
+            "Closing"
+          ]
+        },
+        "estimated_value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "probability": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesOpportunityStatus"
+          }
+        },
+        "allowed_pipeline_stages": {
+          "type": "array",
+          "items": {
+            "enum": [
+              "Qualified",
+              "Survey",
+              "Booking"
+            ]
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "opportunity_id",
+        "customer_id",
+        "lead_id",
+        "name",
+        "stage",
+        "estimated_value",
+        "probability",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions",
+        "allowed_pipeline_stages"
+      ],
+      "additionalProperties": false
+    },
+    "SalesOpportunityListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesOpportunityProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesSiteVisitStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "COMPLETED",
+        "SCHEDULED"
+      ]
+    },
+    "SalesSiteVisitTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesSiteVisitCreateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_unit_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scheduled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "customer_id",
+        "scheduled_at"
+      ],
+      "additionalProperties": false
+    },
+    "SalesSiteVisitUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "scheduled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesSiteVisitProjection": {
+      "type": "object",
+      "properties": {
+        "site_visit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_unit_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scheduled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitStatus"
+          }
+        }
+      },
+      "required": [
+        "site_visit_id",
+        "customer_id",
+        "property_unit_id",
+        "scheduled_at",
+        "status",
+        "notes",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesSiteVisitListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesBookingStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "CONFIRMED",
+        "PENDING"
+      ]
+    },
+    "SalesBookingTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesBookingStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesBookingCreateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "booking_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "customer_id",
+        "property_unit_id",
+        "booking_date"
+      ],
+      "additionalProperties": false
+    },
+    "SalesBookingUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "booking_date": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesBookingProjection": {
+      "type": "object",
+      "properties": {
+        "booking_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "booking_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesBookingStatus"
+          }
+        }
+      },
+      "required": [
+        "booking_id",
+        "customer_id",
+        "property_unit_id",
+        "booking_date",
+        "amount",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesBookingListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesBookingProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesClosingStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "COMPLETED",
+        "OPEN"
+      ]
+    },
+    "SalesClosingTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesClosingStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesClosingCreateRequest": {
+      "type": "object",
+      "properties": {
+        "booking_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "closing_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "customer_id",
+        "property_unit_id"
+      ],
+      "additionalProperties": false
+    },
+    "SalesClosingUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "closing_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesClosingProjection": {
+      "type": "object",
+      "properties": {
+        "closing_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "booking_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "closing_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesClosingStatus"
+          }
+        }
+      },
+      "required": [
+        "closing_id",
+        "booking_id",
+        "customer_id",
+        "property_unit_id",
+        "closing_date",
+        "amount",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesClosingListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesClosingProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesFollowupStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "COMPLETED",
+        "OPEN"
+      ]
+    },
+    "SalesFollowupTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesFollowupStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesFollowupCreateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "opportunity_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "followup_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "scheduled_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "customer_id",
+        "followup_type"
+      ],
+      "additionalProperties": false
+    },
+    "SalesFollowupUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "followup_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "scheduled_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesFollowupProjection": {
+      "type": "object",
+      "properties": {
+        "followup_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "opportunity_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "followup_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "scheduled_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completed_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesFollowupStatus"
+          }
+        }
+      },
+      "required": [
+        "followup_id",
+        "customer_id",
+        "opportunity_id",
+        "followup_type",
+        "scheduled_at",
+        "completed_at",
+        "status",
+        "notes",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesFollowupListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesFollowupProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesComplaintStatus": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "IN_PROGRESS",
+        "OPEN"
+      ]
+    },
+    "SalesComplaintTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesComplaintStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesComplaintCreateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        }
+      },
+      "required": [
+        "customer_id",
+        "category",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "SalesComplaintUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesComplaintProjection": {
+      "type": "object",
+      "properties": {
+        "complaint_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "assigned_to": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesComplaintStatus"
+          }
+        }
+      },
+      "required": [
+        "complaint_id",
+        "customer_id",
+        "category",
+        "description",
+        "status",
+        "assigned_to",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesComplaintListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesComplaintProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesPricingStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "DRAFT",
+        "INACTIVE"
+      ]
+    },
+    "SalesPricingTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesPricingStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesPricingCreateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "effective_from": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "effective_to": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "SalesPricingUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "effective_from": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "effective_to": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesPricingProjection": {
+      "type": "object",
+      "properties": {
+        "pricing_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "effective_from": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "effective_to": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesPricingStatus"
+          }
+        }
+      },
+      "required": [
+        "pricing_id",
+        "name",
+        "effective_from",
+        "effective_to",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesPricingListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesPricingProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesPricingItemCreateRequest": {
+      "type": "object",
+      "properties": {
+        "pricing_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "price": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      },
+      "required": [
+        "pricing_id",
+        "property_unit_id",
+        "price"
+      ],
+      "additionalProperties": false
+    },
+    "SalesPricingItemUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "price": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesPricingItemProjection": {
+      "type": "object",
+      "properties": {
+        "pricing_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "pricing_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "price": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "pricing_item_id",
+        "pricing_id",
+        "property_unit_id",
+        "price",
+        "currency",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesPricingItemListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesPricingItemProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesCollateralStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE"
+      ]
+    },
+    "SalesCollateralTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesCollateralStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesCollateralCreateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "collateral_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "campaign_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name",
+        "collateral_type"
+      ],
+      "additionalProperties": false
+    },
+    "SalesCollateralUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "collateral_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesCollateralProjection": {
+      "type": "object",
+      "properties": {
+        "collateral_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "collateral_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "campaign_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesCollateralStatus"
+          }
+        }
+      },
+      "required": [
+        "collateral_id",
+        "name",
+        "collateral_type",
+        "campaign_id",
+        "document_id",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesCollateralListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesCollateralProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "SalesUnitReferenceProjection": {
+      "type": "object",
+      "properties": {
+        "property_unit_id": {
+          "type": "string"
+        },
+        "unit_code": {
+          "type": "string"
+        },
+        "status": {
+          "type": "string"
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "property_unit_id",
+        "unit_code",
+        "status",
+        "project_id"
+      ],
+      "additionalProperties": false
+    },
+    "SalesUnitReferenceListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesUnitReferenceProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "customers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "leads": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "opportunities": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "site_visits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bookings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "closings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "customer_followups": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "customer_complaints": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pricings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "pricing_items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "collaterals": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "customers",
+        "leads",
+        "opportunities",
+        "site_visits",
+        "bookings",
+        "closings",
+        "customer_followups",
+        "customer_complaints",
+        "pricings",
+        "pricing_items",
+        "collaterals"
+      ],
+      "additionalProperties": false
+    },
+    "last_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "source",
+    "counts",
+    "last_updated_at"
+  ],
+  "additionalProperties": false
+}

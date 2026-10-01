@@ -1,0 +1,2367 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/property/property-contracts.schema.json",
+  "title": "PropertyOverview",
+  "$defs": {
+    "PropertyUnitStatus": {
+      "type": "string",
+      "enum": [
+        "AVAILABLE",
+        "ON_HOLD",
+        "RESERVED",
+        "SOLD"
+      ]
+    },
+    "PropertyUnitTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyUnitStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyUnitCreateRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "unit_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit_type": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "area_land": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "area_building": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "unit_code"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyUnitUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "unit_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "unit_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit_type": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "area_land": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "area_building": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyUnitProjection": {
+      "type": "object",
+      "properties": {
+        "property_unit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "unit_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "unit_type": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "area_land": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "area_building": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyUnitStatus"
+          }
+        }
+      },
+      "required": [
+        "property_unit_id",
+        "project_id",
+        "unit_code",
+        "unit_name",
+        "unit_type",
+        "area_land",
+        "area_building",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyUnitListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyUnitProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyMilestoneStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "COMPLETED",
+        "OPEN"
+      ]
+    },
+    "PropertyMilestoneTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyMilestoneStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyMilestoneCreateRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "planned_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "project_id",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyMilestoneUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "planned_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyMilestoneProjection": {
+      "type": "object",
+      "properties": {
+        "milestone_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "planned_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyMilestoneStatus"
+          }
+        }
+      },
+      "required": [
+        "milestone_id",
+        "project_id",
+        "name",
+        "planned_date",
+        "actual_date",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyMilestoneListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyMilestoneProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyConstructionPackageStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "COMPLETED",
+        "IN_PROGRESS",
+        "ON_HOLD",
+        "PLANNED"
+      ]
+    },
+    "PropertyConstructionPackageTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyConstructionPackageCreateRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "package_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "contractor_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "project_id",
+        "package_code",
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyConstructionPackageUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "package_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "contractor_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyConstructionPackageProjection": {
+      "type": "object",
+      "properties": {
+        "construction_package_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "package_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "contractor_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageStatus"
+          }
+        }
+      },
+      "required": [
+        "construction_package_id",
+        "project_id",
+        "package_code",
+        "name",
+        "contractor_name",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyConstructionPackageListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyConstructionUpdateStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED"
+      ]
+    },
+    "PropertyConstructionUpdateTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyConstructionUpdateStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyConstructionUpdateCreateRequest": {
+      "type": "object",
+      "properties": {
+        "construction_package_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "update_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "progress_percent": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "construction_package_id",
+        "update_date"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyConstructionUpdateUpdateRequest": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyConstructionUpdateProjection": {
+      "type": "object",
+      "properties": {
+        "construction_update_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "construction_package_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "update_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "progress_percent": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,5})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyConstructionUpdateStatus"
+          }
+        }
+      },
+      "required": [
+        "construction_update_id",
+        "construction_package_id",
+        "update_date",
+        "progress_percent",
+        "summary",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyConstructionUpdateListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyConstructionUpdateProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyInspectionCreateRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inspection_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "inspection_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NEEDS_REVIEW"
+          ]
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "inspection_type",
+        "inspection_date",
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyInspectionUpdateRequest": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyInspectionProjection": {
+      "type": "object",
+      "properties": {
+        "inspection_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "inspection_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "inspection_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "inspector_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "PASS",
+            "FAIL",
+            "NEEDS_REVIEW"
+          ]
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "inspection_id",
+        "project_id",
+        "inspection_type",
+        "inspection_date",
+        "inspector_actor_id",
+        "result",
+        "notes",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyInspectionListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyInspectionProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyNcrStatus": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "IN_PROGRESS",
+        "OPEN"
+      ]
+    },
+    "PropertyNcrTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyNcrStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyNcrCreateRequest": {
+      "type": "object",
+      "properties": {
+        "inspection_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "severity": {
+          "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/FindingSeverity"
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "title",
+        "severity"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyNcrUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyNcrProjection": {
+      "type": "object",
+      "properties": {
+        "ncr_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "inspection_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "severity": {
+          "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/FindingSeverity"
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyNcrStatus"
+          }
+        }
+      },
+      "required": [
+        "ncr_id",
+        "inspection_id",
+        "project_id",
+        "title",
+        "severity",
+        "description",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyNcrListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyNcrProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertySafetyIncidentStatus": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "IN_PROGRESS",
+        "OPEN"
+      ]
+    },
+    "PropertySafetyIncidentTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertySafetyIncidentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "incident_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "severity": {
+          "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/FindingSeverity"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        }
+      },
+      "required": [
+        "incident_date",
+        "severity",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "PropertySafetyIncidentUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "incident_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertySafetyIncidentProjection": {
+      "type": "object",
+      "properties": {
+        "safety_incident_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "project_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "incident_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "severity": {
+          "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/FindingSeverity"
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentStatus"
+          }
+        }
+      },
+      "required": [
+        "safety_incident_id",
+        "project_id",
+        "incident_date",
+        "severity",
+        "description",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertySafetyIncidentListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyChangeOrderStatus": {
+      "type": "string",
+      "enum": [
+        "APPROVED",
+        "CANCELLED",
+        "DRAFT",
+        "SUBMITTED"
+      ]
+    },
+    "PropertyChangeOrderTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyChangeOrderStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyChangeOrderCreateRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "change_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "amount_delta": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "project_id",
+        "change_number",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyChangeOrderUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "change_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "amount_delta": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyChangeOrderProjection": {
+      "type": "object",
+      "properties": {
+        "change_order_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "change_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 10000
+        },
+        "amount_delta": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^-?(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyChangeOrderStatus"
+          }
+        }
+      },
+      "required": [
+        "change_order_id",
+        "project_id",
+        "change_number",
+        "description",
+        "amount_delta",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyChangeOrderListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyChangeOrderProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyPaymentCertificateStatus": {
+      "type": "string",
+      "enum": [
+        "APPROVED",
+        "CANCELLED",
+        "DRAFT",
+        "SUBMITTED"
+      ]
+    },
+    "PropertyPaymentCertificateTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyPaymentCertificateCreateRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "certificate_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "project_id",
+        "certificate_number"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyPaymentCertificateUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "certificate_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyPaymentCertificateProjection": {
+      "type": "object",
+      "properties": {
+        "payment_certificate_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "certificate_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateStatus"
+          }
+        }
+      },
+      "required": [
+        "payment_certificate_id",
+        "project_id",
+        "certificate_number",
+        "period",
+        "amount",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyPaymentCertificateListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyHandoverStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "COMPLETED",
+        "PLANNED"
+      ]
+    },
+    "PropertyHandoverTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyHandoverStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyHandoverCreateRequest": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "handover_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "handover_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "project_id",
+        "handover_type"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyHandoverUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "handover_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "handover_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyHandoverProjection": {
+      "type": "object",
+      "properties": {
+        "handover_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "project_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+        },
+        "handover_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "handover_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyHandoverStatus"
+          }
+        }
+      },
+      "required": [
+        "handover_id",
+        "project_id",
+        "handover_type",
+        "handover_date",
+        "status",
+        "notes",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyHandoverListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyHandoverProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyLandRecordStatus": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "ON_HOLD",
+        "OPEN"
+      ]
+    },
+    "PropertyLandRecordTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyLandRecordStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyLandRecordCreateRequest": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "area": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "owner_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "estimated_value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "location"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyLandRecordUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "location": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "area": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "owner_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "estimated_value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "PropertyLandRecordProjection": {
+      "type": "object",
+      "properties": {
+        "land_pipeline_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "location": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "area": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,13})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "owner_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "stage": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "estimated_value": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyLandRecordStatus"
+          }
+        }
+      },
+      "required": [
+        "land_pipeline_id",
+        "location",
+        "area",
+        "owner_name",
+        "stage",
+        "estimated_value",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyLandRecordListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyLandRecordProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "property_units": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "project_milestones": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "construction_packages": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "construction_updates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "quality_inspections": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "quality_ncrs": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "safety_incidents": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "change_orders": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "payment_certificates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "project_handovers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "land_pipeline": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "property_units",
+        "project_milestones",
+        "construction_packages",
+        "construction_updates",
+        "quality_inspections",
+        "quality_ncrs",
+        "safety_incidents",
+        "change_orders",
+        "payment_certificates",
+        "project_handovers",
+        "land_pipeline"
+      ],
+      "additionalProperties": false
+    },
+    "last_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "source",
+    "counts",
+    "last_updated_at"
+  ],
+  "additionalProperties": false
+}

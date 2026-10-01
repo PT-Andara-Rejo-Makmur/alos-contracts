@@ -1,0 +1,2723 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json",
+  "title": "FinanceOverview",
+  "$defs": {
+    "FinanceBankAccountStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE"
+      ]
+    },
+    "FinanceBankAccountTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBankAccountCreateRequest": {
+      "type": "object",
+      "properties": {
+        "account_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "bank_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "account_number_masked": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      },
+      "required": [
+        "account_name",
+        "bank_name"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBankAccountUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "account_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "bank_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "account_number_masked": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceBankAccountProjection": {
+      "type": "object",
+      "properties": {
+        "bank_account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "account_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "bank_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "account_number_masked": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 100
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountStatus"
+          }
+        }
+      },
+      "required": [
+        "bank_account_id",
+        "account_name",
+        "bank_name",
+        "account_number_masked",
+        "currency",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBankAccountListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBankTransactionStatus": {
+      "type": "string",
+      "enum": [
+        "POSTED"
+      ]
+    },
+    "FinanceBankTransactionTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBankTransactionStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBankTransactionCreateRequest": {
+      "type": "object",
+      "properties": {
+        "bank_account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "transaction_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reference": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "IN",
+            "OUT"
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        }
+      },
+      "required": [
+        "bank_account_id",
+        "transaction_date",
+        "direction",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBankTransactionUpdateRequest": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceBankTransactionProjection": {
+      "type": "object",
+      "properties": {
+        "transaction_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "bank_account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "transaction_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reference": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "direction": {
+          "type": "string",
+          "enum": [
+            "IN",
+            "OUT"
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "currency": {
+          "type": "string",
+          "pattern": "^[A-Z]{3}$"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBankTransactionStatus"
+          }
+        }
+      },
+      "required": [
+        "transaction_id",
+        "bank_account_id",
+        "transaction_date",
+        "reference",
+        "description",
+        "direction",
+        "amount",
+        "currency",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBankTransactionListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBankTransactionProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReceivableStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "OPEN",
+        "PAID"
+      ]
+    },
+    "FinanceReceivableTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReceivableStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReceivableCreateRequest": {
+      "type": "object",
+      "properties": {
+        "customer_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        }
+      },
+      "required": [
+        "reference",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReceivableUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceReceivableProjection": {
+      "type": "object",
+      "properties": {
+        "receivable_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "customer_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "outstanding_amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReceivableStatus"
+          }
+        }
+      },
+      "required": [
+        "receivable_id",
+        "customer_ref",
+        "reference",
+        "description",
+        "due_date",
+        "amount",
+        "outstanding_amount",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReceivableListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReceivableProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReceivablePaymentStatus": {
+      "type": "string",
+      "enum": [
+        "POSTED"
+      ]
+    },
+    "FinanceReceivablePaymentTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReceivablePaymentStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReceivablePaymentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "receivable_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payment_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "receivable_id",
+        "payment_date",
+        "amount",
+        "reference"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReceivablePaymentUpdateRequest": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceReceivablePaymentProjection": {
+      "type": "object",
+      "properties": {
+        "payment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "receivable_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payment_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "reference": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReceivablePaymentStatus"
+          }
+        }
+      },
+      "required": [
+        "payment_id",
+        "receivable_id",
+        "payment_date",
+        "amount",
+        "reference",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReceivablePaymentListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReceivablePaymentProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayableStatus": {
+      "type": "string",
+      "enum": [
+        "CANCELLED",
+        "OPEN",
+        "PAID"
+      ]
+    },
+    "FinancePayableTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinancePayableStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayableCreateRequest": {
+      "type": "object",
+      "properties": {
+        "vendor_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        }
+      },
+      "required": [
+        "reference",
+        "amount"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayableUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinancePayableProjection": {
+      "type": "object",
+      "properties": {
+        "payable_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "vendor_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "outstanding_amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinancePayableStatus"
+          }
+        }
+      },
+      "required": [
+        "payable_id",
+        "vendor_ref",
+        "reference",
+        "description",
+        "due_date",
+        "amount",
+        "outstanding_amount",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayableListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinancePayableProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayablePaymentStatus": {
+      "type": "string",
+      "enum": [
+        "POSTED"
+      ]
+    },
+    "FinancePayablePaymentTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinancePayablePaymentStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayablePaymentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "payable_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payment_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "reference": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "payable_id",
+        "payment_date",
+        "amount",
+        "reference"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayablePaymentUpdateRequest": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinancePayablePaymentProjection": {
+      "type": "object",
+      "properties": {
+        "payment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payable_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payment_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "reference": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinancePayablePaymentStatus"
+          }
+        }
+      },
+      "required": [
+        "payment_id",
+        "payable_id",
+        "payment_date",
+        "amount",
+        "reference",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayablePaymentListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinancePayablePaymentProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBudgetStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "APPROVED",
+        "CLOSED",
+        "DRAFT",
+        "UNDER_REVIEW"
+      ]
+    },
+    "FinanceBudgetTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBudgetStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBudgetCreateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "fiscal_year": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 9999
+        }
+      },
+      "required": [
+        "name",
+        "fiscal_year"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBudgetUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "fiscal_year": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 9999
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceBudgetProjection": {
+      "type": "object",
+      "properties": {
+        "budget_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "fiscal_year": {
+          "type": "integer",
+          "minimum": 1900,
+          "maximum": 9999
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBudgetStatus"
+          }
+        }
+      },
+      "required": [
+        "budget_id",
+        "name",
+        "fiscal_year",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBudgetListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBudgetProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBudgetLineCreateRequest": {
+      "type": "object",
+      "properties": {
+        "budget_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "cost_center": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "account_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+        },
+        "planned_amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "revised_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "budget_id",
+        "account_code",
+        "period",
+        "planned_amount"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBudgetLineUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "cost_center": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "account_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "planned_amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "revised_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceBudgetLineProjection": {
+      "type": "object",
+      "properties": {
+        "budget_line_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "budget_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "cost_center": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "account_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+        },
+        "planned_amount": {
+          "type": "string",
+          "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+          "description": "Exact decimal string; no binary floating-point amount."
+        },
+        "revised_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          }
+        }
+      },
+      "required": [
+        "budget_line_id",
+        "budget_id",
+        "cost_center",
+        "account_code",
+        "period",
+        "planned_amount",
+        "revised_amount",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceBudgetLineListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBudgetLineProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReconciliationStatus": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "OPEN"
+      ]
+    },
+    "FinanceReconciliationTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReconciliationCreateRequest": {
+      "type": "object",
+      "properties": {
+        "bank_account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period_start": {
+          "type": "string",
+          "format": "date"
+        },
+        "period_end": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "bank_account_id",
+        "period_start",
+        "period_end"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReconciliationUpdateRequest": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceReconciliationProjection": {
+      "type": "object",
+      "properties": {
+        "reconciliation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "bank_account_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period_start": {
+          "type": "string",
+          "format": "date"
+        },
+        "period_end": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "reconciled_by": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reconciled_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationStatus"
+          }
+        }
+      },
+      "required": [
+        "reconciliation_id",
+        "bank_account_id",
+        "period_start",
+        "period_end",
+        "status",
+        "reconciled_by",
+        "reconciled_at",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReconciliationListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReconciliationItemStatus": {
+      "type": "string",
+      "enum": [
+        "MATCHED",
+        "UNMATCHED"
+      ]
+    },
+    "FinanceReconciliationItemTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReconciliationItemCreateRequest": {
+      "type": "object",
+      "properties": {
+        "reconciliation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "transaction_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expected_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "reconciliation_id"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReconciliationItemUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "expected_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceReconciliationItemProjection": {
+      "type": "object",
+      "properties": {
+        "reconciliation_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reconciliation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "transaction_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expected_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemStatus"
+          }
+        }
+      },
+      "required": [
+        "reconciliation_item_id",
+        "reconciliation_id",
+        "transaction_id",
+        "expected_amount",
+        "actual_amount",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceReconciliationItemListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceTaxObligationStatus": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "OPEN"
+      ]
+    },
+    "FinanceTaxObligationTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceTaxObligationCreateRequest": {
+      "type": "object",
+      "properties": {
+        "tax_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "tax_type",
+        "period"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceTaxObligationUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "tax_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceTaxObligationProjection": {
+      "type": "object",
+      "properties": {
+        "tax_obligation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tax_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+        },
+        "due_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
+              "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationStatus"
+          }
+        }
+      },
+      "required": [
+        "tax_obligation_id",
+        "tax_type",
+        "period",
+        "due_date",
+        "amount",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceTaxObligationListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceTaxDocumentStatus": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "RECORDED"
+      ]
+    },
+    "FinanceTaxDocumentTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceTaxDocumentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "tax_obligation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "tax_obligation_id",
+        "document_type"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceTaxDocumentUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "document_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceTaxDocumentProjection": {
+      "type": "object",
+      "properties": {
+        "tax_document_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tax_obligation_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentStatus"
+          }
+        }
+      },
+      "required": [
+        "tax_document_id",
+        "tax_obligation_id",
+        "document_id",
+        "document_type",
+        "status",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceTaxDocumentListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonthCloseStatus": {
+      "type": "string",
+      "enum": [
+        "CLOSED",
+        "OPEN"
+      ]
+    },
+    "FinanceMonthCloseTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonthCloseCreateRequest": {
+      "type": "object",
+      "properties": {
+        "period": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+        }
+      },
+      "required": [
+        "period"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonthCloseUpdateRequest": {
+      "type": "object",
+      "properties": {},
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceMonthCloseProjection": {
+      "type": "object",
+      "properties": {
+        "month_close_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "period": {
+          "type": "string",
+          "pattern": "^\\d{4}-(0[1-9]|1[0-2])$"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "opened_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "closed_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "closed_by": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseStatus"
+          }
+        }
+      },
+      "required": [
+        "month_close_id",
+        "period",
+        "status",
+        "opened_at",
+        "closed_at",
+        "closed_by",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonthCloseListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonthCloseItemStatus": {
+      "type": "string",
+      "enum": [
+        "COMPLETED",
+        "OPEN"
+      ]
+    },
+    "FinanceMonthCloseItemTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonthCloseItemCreateRequest": {
+      "type": "object",
+      "properties": {
+        "month_close_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "item_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "month_close_id",
+        "item_type"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonthCloseItemUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "item_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "FinanceMonthCloseItemProjection": {
+      "type": "object",
+      "properties": {
+        "month_close_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "month_close_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "item_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 10000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemStatus"
+          }
+        }
+      },
+      "required": [
+        "month_close_item_id",
+        "month_close_id",
+        "item_type",
+        "status",
+        "notes",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "FinanceMonthCloseItemListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "maxItems": 200,
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "bank_accounts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "bank_transactions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "receivables": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "receivable_payments": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "payables": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "payable_payments": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "budgets": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "budget_lines": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reconciliations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "reconciliation_items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tax_obligations": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "tax_documents": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "month_closes": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "month_close_items": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "bank_accounts",
+        "bank_transactions",
+        "receivables",
+        "receivable_payments",
+        "payables",
+        "payable_payments",
+        "budgets",
+        "budget_lines",
+        "reconciliations",
+        "reconciliation_items",
+        "tax_obligations",
+        "tax_documents",
+        "month_closes",
+        "month_close_items"
+      ],
+      "additionalProperties": false
+    },
+    "last_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "source",
+    "counts",
+    "last_updated_at"
+  ],
+  "additionalProperties": false
+}

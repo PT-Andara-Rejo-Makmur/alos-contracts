@@ -40,9 +40,12 @@ class Renderer:
                 return identifier
             if "#" not in ref:
                 if f"/{self.domain}/" not in ref:
-                    self.imports.setdefault("strategy", set()).add(source["title"])
+                    module = source["$id"].split("/v1/", 1)[1].split("/", 1)[0]
+                    self.imports.setdefault(module, set()).add(source["title"])
                     return source["title"]
                 return self.declare(source["title"], target, source)
+            if self.domain in {"sales", "marketing", "property", "finance"}:
+                return self.declare(ref.rsplit("/", 1)[-1], target, source)
             return self.value(target, name, source)
         if "const" in schema or "enum" in schema:
             values = schema.get("enum", [schema.get("const")])
@@ -118,12 +121,17 @@ class Renderer:
                 lines.append(f"  readonly {field}{optional}: {value};")
         if not self.python:
             lines.append("}")
+        elif not schema["properties"]:
+            lines.append("    pass")
         self.declarations[name] = "\n".join(lines)
         return name
 
     def render(self, domain: str) -> str:
         for uri, document in self.documents.items():
             if f"/{domain}/" in uri:
+                if domain in {"sales", "marketing", "property", "finance"}:
+                    for name, value in document.get("$defs", {}).items():
+                        self.declare(name, value, document)
                 self.declare(document["title"], document, document)
         prefix = "#" if self.python else "//"
         lines = [

@@ -1529,6 +1529,6263 @@ paths:
     post: {operationId: approveTargetRevision, parameters: [{$ref: "#/components/parameters/TargetId"}], responses: {"200": {description: Governed target lifecycle transition, content: {application/json: {schema: {$ref: ../../schemas/strategy/business-target.schema.json}}}}, "403": {$ref: "#/components/responses/ErrorResponse"}, "409": {$ref: "#/components/responses/ErrorResponse"}}}
   /api/v1/strategy/targets/{target_id}/activate:
     post: {operationId: activateTargetRevision, parameters: [{$ref: "#/components/parameters/TargetId"}], responses: {"200": {description: Governed target lifecycle transition, content: {application/json: {schema: {$ref: ../../schemas/strategy/business-target.schema.json}}}}, "403": {$ref: "#/components/responses/ErrorResponse"}, "409": {$ref: "#/components/responses/ErrorResponse"}}}
+  /api/v1/sales/overview:
+    get:
+      operationId: sales_overview
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+  /api/v1/sales/customers:
+    get:
+      operationId: sales_customers_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCustomerListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_customers_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCustomerProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCustomerCreateRequest
+  /api/v1/sales/customers/{identity}:
+    get:
+      operationId: sales_customers_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCustomerProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_customers_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCustomerProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCustomerUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/customers/{identity}/transition:
+    post:
+      operationId: sales_customers_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCustomerProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCustomerTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/leads:
+    get:
+      operationId: sales_leads_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesLeadListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_leads_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesLeadProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesLeadCreateRequest
+  /api/v1/sales/leads/{identity}:
+    get:
+      operationId: sales_leads_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesLeadProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_leads_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesLeadProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesLeadUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/leads/{identity}/transition:
+    post:
+      operationId: sales_leads_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesLeadProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesLeadTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/opportunities:
+    get:
+      operationId: sales_opportunities_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_opportunities_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityCreateRequest
+  /api/v1/sales/opportunities/{identity}:
+    get:
+      operationId: sales_opportunities_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_opportunities_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/opportunities/{identity}/transition:
+    post:
+      operationId: sales_opportunities_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/site-visits:
+    get:
+      operationId: sales_site_visits_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_site_visits_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitCreateRequest
+  /api/v1/sales/site-visits/{identity}:
+    get:
+      operationId: sales_site_visits_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_site_visits_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/site-visits/{identity}/transition:
+    post:
+      operationId: sales_site_visits_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesSiteVisitTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/bookings:
+    get:
+      operationId: sales_bookings_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesBookingListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_bookings_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesBookingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesBookingCreateRequest
+  /api/v1/sales/bookings/{identity}:
+    get:
+      operationId: sales_bookings_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesBookingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_bookings_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesBookingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesBookingUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/bookings/{identity}/transition:
+    post:
+      operationId: sales_bookings_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesBookingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesBookingTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/closings:
+    get:
+      operationId: sales_closings_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesClosingListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_closings_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesClosingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesClosingCreateRequest
+  /api/v1/sales/closings/{identity}:
+    get:
+      operationId: sales_closings_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesClosingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_closings_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesClosingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesClosingUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/closings/{identity}/transition:
+    post:
+      operationId: sales_closings_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesClosingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesClosingTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/customer-followups:
+    get:
+      operationId: sales_customer_followups_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFollowupListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_customer_followups_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFollowupProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFollowupCreateRequest
+  /api/v1/sales/customer-followups/{identity}:
+    get:
+      operationId: sales_customer_followups_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFollowupProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_customer_followups_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFollowupProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFollowupUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/customer-followups/{identity}/transition:
+    post:
+      operationId: sales_customer_followups_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFollowupProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFollowupTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/customer-complaints:
+    get:
+      operationId: sales_customer_complaints_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesComplaintListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_customer_complaints_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesComplaintProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesComplaintCreateRequest
+  /api/v1/sales/customer-complaints/{identity}:
+    get:
+      operationId: sales_customer_complaints_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesComplaintProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_customer_complaints_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesComplaintProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesComplaintUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/customer-complaints/{identity}/transition:
+    post:
+      operationId: sales_customer_complaints_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesComplaintProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesComplaintTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/pricings:
+    get:
+      operationId: sales_pricings_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_pricings_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingCreateRequest
+  /api/v1/sales/pricings/{identity}:
+    get:
+      operationId: sales_pricings_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_pricings_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/pricings/{identity}/transition:
+    post:
+      operationId: sales_pricings_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/pricing-items:
+    get:
+      operationId: sales_pricing_items_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingItemListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_pricing_items_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingItemCreateRequest
+  /api/v1/sales/pricing-items/{identity}:
+    get:
+      operationId: sales_pricing_items_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_pricing_items_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesPricingItemUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/collaterals:
+    get:
+      operationId: sales_collaterals_list
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCollateralListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: sales_collaterals_create
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCollateralProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCollateralCreateRequest
+  /api/v1/sales/collaterals/{identity}:
+    get:
+      operationId: sales_collaterals_detail
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCollateralProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: sales_collaterals_update
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCollateralProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCollateralUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/collaterals/{identity}/transition:
+    post:
+      operationId: sales_collaterals_transition
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCollateralProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesCollateralTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/sales/property-units:
+    get:
+      operationId: sales_visible_units
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesUnitReferenceListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+  /api/v1/sales/opportunities/{identity}/pipeline:
+    post:
+      operationId: sales_opportunity_pipeline
+      tags:
+      - sales
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesOpportunityPipelineRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/marketing/overview:
+    get:
+      operationId: marketing_overview
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+  /api/v1/marketing/campaigns:
+    get:
+      operationId: marketing_campaigns_list
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingCampaignListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: marketing_campaigns_create
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingCampaignProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingCampaignCreateRequest
+  /api/v1/marketing/campaigns/{identity}:
+    get:
+      operationId: marketing_campaigns_detail
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingCampaignProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: marketing_campaigns_update
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingCampaignProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingCampaignUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/marketing/campaigns/{identity}/transition:
+    post:
+      operationId: marketing_campaigns_transition
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingCampaignProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingCampaignTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/marketing/channels:
+    get:
+      operationId: marketing_channels_list
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingChannelListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: marketing_channels_create
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingChannelProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingChannelCreateRequest
+  /api/v1/marketing/channels/{identity}:
+    get:
+      operationId: marketing_channels_detail
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingChannelProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: marketing_channels_update
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingChannelProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingChannelUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/marketing/channels/{identity}/transition:
+    post:
+      operationId: marketing_channels_transition
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingChannelProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingChannelTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/marketing/attributions:
+    get:
+      operationId: marketing_attributions_list
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingAttributionListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: marketing_attributions_create
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingAttributionProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingAttributionCreateRequest
+  /api/v1/marketing/attributions/{identity}:
+    get:
+      operationId: marketing_attributions_detail
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingAttributionProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/marketing/contents:
+    get:
+      operationId: marketing_contents_list
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingContentListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: marketing_contents_create
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingContentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingContentCreateRequest
+  /api/v1/marketing/contents/{identity}:
+    get:
+      operationId: marketing_contents_detail
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingContentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: marketing_contents_update
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingContentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingContentUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/marketing/contents/{identity}/transition:
+    post:
+      operationId: marketing_contents_transition
+      tags:
+      - marketing
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingContentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/marketing/marketing-contracts.schema.json#/$defs/MarketingContentTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/overview:
+    get:
+      operationId: property_overview
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+  /api/v1/property/property-units:
+    get:
+      operationId: property_property_units_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyUnitListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_property_units_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyUnitProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyUnitCreateRequest
+  /api/v1/property/property-units/{identity}:
+    get:
+      operationId: property_property_units_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyUnitProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_property_units_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyUnitProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyUnitUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/property-units/{identity}/transition:
+    post:
+      operationId: property_property_units_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyUnitProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyUnitTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/project-milestones:
+    get:
+      operationId: property_project_milestones_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyMilestoneListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_project_milestones_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyMilestoneProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyMilestoneCreateRequest
+  /api/v1/property/project-milestones/{identity}:
+    get:
+      operationId: property_project_milestones_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyMilestoneProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_project_milestones_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyMilestoneProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyMilestoneUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/project-milestones/{identity}/transition:
+    post:
+      operationId: property_project_milestones_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyMilestoneProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyMilestoneTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/construction-packages:
+    get:
+      operationId: property_construction_packages_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_construction_packages_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageCreateRequest
+  /api/v1/property/construction-packages/{identity}:
+    get:
+      operationId: property_construction_packages_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_construction_packages_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/construction-packages/{identity}/transition:
+    post:
+      operationId: property_construction_packages_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionPackageTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/construction-updates:
+    get:
+      operationId: property_construction_updates_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionUpdateListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_construction_updates_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionUpdateProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionUpdateCreateRequest
+  /api/v1/property/construction-updates/{identity}:
+    get:
+      operationId: property_construction_updates_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyConstructionUpdateProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/quality-inspections:
+    get:
+      operationId: property_quality_inspections_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyInspectionListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_quality_inspections_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyInspectionProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyInspectionCreateRequest
+  /api/v1/property/quality-inspections/{identity}:
+    get:
+      operationId: property_quality_inspections_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyInspectionProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/quality-ncrs:
+    get:
+      operationId: property_quality_ncrs_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyNcrListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_quality_ncrs_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyNcrProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyNcrCreateRequest
+  /api/v1/property/quality-ncrs/{identity}:
+    get:
+      operationId: property_quality_ncrs_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyNcrProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_quality_ncrs_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyNcrProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyNcrUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/quality-ncrs/{identity}/transition:
+    post:
+      operationId: property_quality_ncrs_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyNcrProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyNcrTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/safety-incidents:
+    get:
+      operationId: property_safety_incidents_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_safety_incidents_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentCreateRequest
+  /api/v1/property/safety-incidents/{identity}:
+    get:
+      operationId: property_safety_incidents_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_safety_incidents_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/safety-incidents/{identity}/transition:
+    post:
+      operationId: property_safety_incidents_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertySafetyIncidentTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/change-orders:
+    get:
+      operationId: property_change_orders_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_change_orders_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderCreateRequest
+  /api/v1/property/change-orders/{identity}:
+    get:
+      operationId: property_change_orders_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_change_orders_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/change-orders/{identity}/transition:
+    post:
+      operationId: property_change_orders_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/payment-certificates:
+    get:
+      operationId: property_payment_certificates_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_payment_certificates_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateCreateRequest
+  /api/v1/property/payment-certificates/{identity}:
+    get:
+      operationId: property_payment_certificates_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_payment_certificates_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/payment-certificates/{identity}/transition:
+    post:
+      operationId: property_payment_certificates_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/project-handovers:
+    get:
+      operationId: property_project_handovers_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyHandoverListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_project_handovers_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyHandoverProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyHandoverCreateRequest
+  /api/v1/property/project-handovers/{identity}:
+    get:
+      operationId: property_project_handovers_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyHandoverProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_project_handovers_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyHandoverProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyHandoverUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/project-handovers/{identity}/transition:
+    post:
+      operationId: property_project_handovers_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyHandoverProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyHandoverTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/land-pipeline:
+    get:
+      operationId: property_land_pipeline_list
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyLandRecordListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: property_land_pipeline_create
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyLandRecordProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyLandRecordCreateRequest
+  /api/v1/property/land-pipeline/{identity}:
+    get:
+      operationId: property_land_pipeline_detail
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyLandRecordProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: property_land_pipeline_update
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyLandRecordProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyLandRecordUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/property/land-pipeline/{identity}/transition:
+    post:
+      operationId: property_land_pipeline_transition
+      tags:
+      - property
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyLandRecordProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyLandRecordTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/overview:
+    get:
+      operationId: finance_overview
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+  /api/v1/finance/bank-accounts:
+    get:
+      operationId: finance_bank_accounts_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_bank_accounts_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountCreateRequest
+  /api/v1/finance/bank-accounts/{identity}:
+    get:
+      operationId: finance_bank_accounts_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_bank_accounts_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/bank-accounts/{identity}/transition:
+    post:
+      operationId: finance_bank_accounts_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankAccountTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/bank-transactions:
+    get:
+      operationId: finance_bank_transactions_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankTransactionListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_bank_transactions_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankTransactionProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankTransactionCreateRequest
+  /api/v1/finance/bank-transactions/{identity}:
+    get:
+      operationId: finance_bank_transactions_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBankTransactionProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/receivables:
+    get:
+      operationId: finance_receivables_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivableListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_receivables_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivableProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivableCreateRequest
+  /api/v1/finance/receivables/{identity}:
+    get:
+      operationId: finance_receivables_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivableProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_receivables_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivableProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivableUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/receivables/{identity}/transition:
+    post:
+      operationId: finance_receivables_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivableProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivableTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/receivable-payments:
+    get:
+      operationId: finance_receivable_payments_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivablePaymentListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_receivable_payments_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivablePaymentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivablePaymentCreateRequest
+  /api/v1/finance/receivable-payments/{identity}:
+    get:
+      operationId: finance_receivable_payments_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReceivablePaymentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/payables:
+    get:
+      operationId: finance_payables_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_payables_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableCreateRequest
+  /api/v1/finance/payables/{identity}:
+    get:
+      operationId: finance_payables_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_payables_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/payables/{identity}/transition:
+    post:
+      operationId: finance_payables_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/payable-payments:
+    get:
+      operationId: finance_payable_payments_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayablePaymentListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_payable_payments_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayablePaymentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayablePaymentCreateRequest
+  /api/v1/finance/payable-payments/{identity}:
+    get:
+      operationId: finance_payable_payments_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayablePaymentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/budgets:
+    get:
+      operationId: finance_budgets_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_budgets_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetCreateRequest
+  /api/v1/finance/budgets/{identity}:
+    get:
+      operationId: finance_budgets_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_budgets_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/budgets/{identity}/transition:
+    post:
+      operationId: finance_budgets_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/budget-lines:
+    get:
+      operationId: finance_budget_lines_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetLineListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_budget_lines_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetLineProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetLineCreateRequest
+  /api/v1/finance/budget-lines/{identity}:
+    get:
+      operationId: finance_budget_lines_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetLineProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_budget_lines_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetLineProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceBudgetLineUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/reconciliations:
+    get:
+      operationId: finance_reconciliations_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_reconciliations_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationCreateRequest
+  /api/v1/finance/reconciliations/{identity}:
+    get:
+      operationId: finance_reconciliations_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/reconciliations/{identity}/transition:
+    post:
+      operationId: finance_reconciliations_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/reconciliation-items:
+    get:
+      operationId: finance_reconciliation_items_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_reconciliation_items_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemCreateRequest
+  /api/v1/finance/reconciliation-items/{identity}:
+    get:
+      operationId: finance_reconciliation_items_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_reconciliation_items_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/reconciliation-items/{identity}/transition:
+    post:
+      operationId: finance_reconciliation_items_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceReconciliationItemTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/tax-obligations:
+    get:
+      operationId: finance_tax_obligations_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_tax_obligations_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationCreateRequest
+  /api/v1/finance/tax-obligations/{identity}:
+    get:
+      operationId: finance_tax_obligations_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_tax_obligations_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/tax-obligations/{identity}/transition:
+    post:
+      operationId: finance_tax_obligations_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxObligationTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/tax-documents:
+    get:
+      operationId: finance_tax_documents_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_tax_documents_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentCreateRequest
+  /api/v1/finance/tax-documents/{identity}:
+    get:
+      operationId: finance_tax_documents_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_tax_documents_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/tax-documents/{identity}/transition:
+    post:
+      operationId: finance_tax_documents_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceTaxDocumentTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/month-closes:
+    get:
+      operationId: finance_month_closes_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_month_closes_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseCreateRequest
+  /api/v1/finance/month-closes/{identity}:
+    get:
+      operationId: finance_month_closes_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/month-closes/{identity}/transition:
+    post:
+      operationId: finance_month_closes_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/month-close-items:
+    get:
+      operationId: finance_month_close_items_list
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemListProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: limit
+        in: query
+        schema:
+          type: integer
+          minimum: 1
+          maximum: 200
+          default: 100
+      - name: offset
+        in: query
+        schema:
+          type: integer
+          minimum: 0
+          default: 0
+    post:
+      operationId: finance_month_close_items_create
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemCreateRequest
+  /api/v1/finance/month-close-items/{identity}:
+    get:
+      operationId: finance_month_close_items_detail
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: finance_month_close_items_update
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/finance/month-close-items/{identity}/transition:
+    post:
+      operationId: finance_month_close_items_transition
+      tags:
+      - finance
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical authoritative projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemProjection
+        '401':
+          description: Authentication required
+        '403':
+          description: Authority denied
+        '422':
+          description: Invalid canonical request
+        '503':
+          description: Source or contract unavailable
+        '409':
+          description: Reference or lifecycle conflict
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinanceMonthCloseItemTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
 components:
   securitySchemes:
     bearerAuth:
