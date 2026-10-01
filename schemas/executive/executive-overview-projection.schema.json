@@ -63,5 +63,5 @@
     "last_updated_at"
   ],
   "additionalProperties": false,
-  "description": "Governed read projection of canonical sources, never an authoritative operational entity. Unknown timestamps and periods remain null. No Executive endpoint is implemented by this foundation."
+  "description": "Governed read projection of canonical sources returned by GET /api/v1/executive/overview, never an authoritative operational entity. Unknown timestamps and periods remain null. Source authority is independent of integration availability; Shared Work remains authoritative while its aggregation is unavailable."
 }
