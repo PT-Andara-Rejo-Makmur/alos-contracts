@@ -5,7 +5,7 @@
   "description": "Employee account request and an existing workspace target. Tenant, organization, actor, and authority facts are derived by Backend.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["employee_id", "email", "workspace_id", "role_refs", "effective_at"],
+  "required": ["employee_id", "workspace_id", "role_refs", "effective_at"],
   "properties": {
     "employee_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"},
     "email": {"type": "string", "format": "email", "maxLength": 255},

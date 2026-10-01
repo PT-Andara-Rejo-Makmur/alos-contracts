@@ -38,7 +38,7 @@ export interface ProvisioningCandidateProjection {
   readonly employment_status: "ACTIVE"; readonly linkage_state: "AVAILABLE";
 }
 export interface ProvisionAccountRequest {
-  readonly employee_id: string; readonly email: string; readonly workspace_id: string;
+  readonly employee_id: string; readonly email?: string; readonly workspace_id: string;
   readonly role_refs: readonly [AuthorizationRole]; readonly effective_at: string;
   readonly expires_at?: string | null; readonly note?: string | null;
 }

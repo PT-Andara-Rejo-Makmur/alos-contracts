@@ -292,6 +292,8 @@ def test_provision_account_request_uses_one_role_and_backend_owned_authority(sch
         "effective_at": "2026-09-30T00:00:00Z",
     }
     validate.validate(payload)
+    canonical_payload = {k: v for k, v in payload.items() if k != "email"}
+    validate.validate(canonical_payload)
 
     with pytest.raises(ValidationError):
         validate.validate({**payload, "tenant_id": "tenant_browser_selected"})

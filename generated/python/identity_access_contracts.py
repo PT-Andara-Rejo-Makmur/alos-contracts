@@ -59,7 +59,7 @@ class ProvisioningCandidateProjection(TypedDict):
 
 class ProvisionAccountRequest(TypedDict, total=False):
     employee_id: Required[str]
-    email: Required[str]
+    email: NotRequired[str]
     workspace_id: Required[str]
     role_refs: Required[list[AuthorizationRole]]
     effective_at: Required[str]
