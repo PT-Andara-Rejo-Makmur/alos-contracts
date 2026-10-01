@@ -4,7 +4,7 @@
 
 
 
-import type { BusinessPeriod } from "./strategy";
+import type { BusinessPeriod, StrategyOverviewProjection } from "./strategy";
 
 export type ExecutiveConnectionStatus = "CONNECTED" | "CONNECTED_EMPTY" | "UNAVAILABLE" | "ERROR";
 
@@ -32,4 +32,5 @@ export interface ExecutiveOverviewProjection {
   readonly shared_work: ExecutiveSourceStatus;
   readonly domains: readonly (ExecutiveDomainStatus)[];
   readonly last_updated_at: string | null;
+  readonly strategy_data?: StrategyOverviewProjection | null;
 }

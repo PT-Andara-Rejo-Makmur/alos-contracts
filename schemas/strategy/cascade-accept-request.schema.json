@@ -10,6 +10,14 @@
       "items": {
         "$ref": "https://schemas.alos.dev/v1/strategy/business-target-create-request.schema.json"
       }
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
     }
   },
   "required": [

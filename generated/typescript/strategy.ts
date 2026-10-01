@@ -53,6 +53,10 @@ export interface BusinessTargetDetail {
   readonly observations: readonly (MetricObservation)[];
   readonly relationships: readonly (TargetRelationship)[];
   readonly revisions: readonly (TargetRevision)[];
+  readonly selected_observations?: BusinessTargetDetailSelectedObservations;
+  readonly performance_state?: "NOT_EVALUATED" | "ON_TRACK" | "AT_RISK" | "OFF_TRACK" | "ACHIEVED" | null;
+  readonly authorized_actions?: readonly ("EDIT" | "SUBMIT" | "APPROVE" | "ACTIVATE" | "REVISE" | "RECORD_TARGET" | "RECORD_ACTUAL" | "RECORD_FORECAST" | "VERIFY_PLANNING" | "VERIFY_MONITORING")[];
+  readonly last_updated_at?: string | null;
 }
 
 export interface BusinessTarget {
@@ -111,6 +115,10 @@ export interface MetricObservation {
   readonly verified_at?: string | null;
   readonly verification_state: "UNVERIFIED" | "PENDING_VERIFICATION" | "VERIFIED" | "CONFLICT" | "REJECTED";
   readonly evidence_refs: readonly (string)[];
+  readonly supersedes_observation_id?: string | null;
+  readonly recorded_at?: string | null;
+  readonly verification_reason?: string | null;
+  readonly record_sequence?: number | null;
 }
 
 export interface TargetRelationship {
@@ -138,8 +146,49 @@ export interface TargetRevision {
   readonly evidence_refs: readonly (string)[];
 }
 
+export interface BusinessTargetDetailSelectedObservations {
+  readonly target: MetricObservation | null;
+  readonly actual: MetricObservation | null;
+  readonly forecast: MetricObservation | null;
+}
+
+export interface BusinessTargetUpdateRequest {
+  readonly version: number;
+  readonly code?: string;
+  readonly name?: string;
+  readonly description?: string | null;
+  readonly metric_code?: string;
+  readonly measurement_type?: "HIGHER_IS_BETTER" | "LOWER_IS_BETTER" | "RANGE" | "EXACT" | "PERCENTAGE" | "RATIO" | "BINARY" | "MILESTONE" | "CUMULATIVE";
+  readonly unit?: "IDR" | "COUNT" | "PERCENT" | "RATIO" | "MINUTE" | "HOUR" | "DAY" | "SCORE" | "UNIT" | "BOOLEAN";
+  readonly period?: BusinessPeriod;
+  readonly materiality?: "MATERIAL" | "NON_MATERIAL";
+  readonly evidence_refs?: readonly (string)[];
+  readonly source_refs?: readonly (string)[];
+}
+
 export interface CascadeAcceptRequest {
   readonly derived_targets: readonly (BusinessTargetCreateRequest)[];
+  readonly input_hash?: string;
+  readonly result_hash?: string;
+}
+
+export interface CascadeCalculationTrace {
+  readonly rule_id: string;
+  readonly rule_type: "DIRECT" | "SPLIT_FIXED" | "SPLIT_PERCENT" | "SUM_ROLLUP" | "RATIO_MULTIPLY" | "RATIO_DIVIDE_CEIL" | "LIMIT_CHECK";
+  readonly output_target_id: string;
+  readonly inputs: Readonly<Record<string, string | null>>;
+  readonly rounding_mode: "CEILING" | null;
+  readonly output: string | null;
+  readonly status: "VALID" | "INVALID" | "INCOMPLETE";
+  readonly message: string | null;
+}
+
+export interface CascadeDerivedTargetCandidate {
+  readonly target_id: string;
+  readonly version: number;
+  readonly calculated_value: string | null;
+  readonly request: BusinessTargetCreateRequest | null;
+  readonly required_metadata: readonly ("target_id" | "version" | "code" | "name" | "plan_ref" | "objective_ref" | "metric_code" | "scope" | "period" | "measurement_type" | "unit" | "owner_workspace_id" | "owner_role_ref" | "materiality" | "evidence_refs" | "source_refs")[];
 }
 
 export interface CascadePreviewRequest {
@@ -148,6 +197,7 @@ export interface CascadePreviewRequest {
   readonly rule_inputs: Readonly<Record<string, Readonly<Record<string, number | null>>>>;
   readonly assumption_refs: readonly (string)[];
   readonly constraints: readonly (CascadePreviewRequestConstraintsItem)[];
+  readonly derived_targets?: readonly (BusinessTargetCreateRequest)[];
 }
 
 export interface CascadePreviewRequestRootTargetRef {
@@ -201,14 +251,42 @@ export interface CascadePreviewRequestConstraintsItem {
 export interface CascadePreviewResponse {
   readonly cascade_run_id: string;
   readonly status: "PREVIEW" | "VALID" | "INVALID" | "INCOMPLETE";
-  readonly root_target_ref: Readonly<Record<string, unknown>>;
-  readonly derived_targets: readonly (Readonly<Record<string, unknown>>)[];
-  readonly calculation_trace: readonly (Readonly<Record<string, unknown>>)[];
-  readonly assumptions_used: readonly (Readonly<Record<string, unknown>>)[];
+  readonly root_target_ref: CascadePreviewResponseRootTargetRef;
+  readonly derived_targets: readonly (CascadeDerivedTargetCandidate)[];
+  readonly calculation_trace: readonly (CascadeCalculationTrace)[];
+  readonly assumptions_used: readonly (PlanningAssumption)[];
   readonly constraint_results: readonly (ConstraintResult)[];
   readonly blocking_conditions: readonly (string)[];
   readonly input_hash: string;
   readonly result_hash: string;
+}
+
+export interface CascadePreviewResponseRootTargetRef {
+  readonly id: string;
+  readonly version: number;
+}
+
+export interface PlanningAssumption {
+  readonly assumption_id: string;
+  readonly version: number;
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly owner_workspace_id: string;
+  readonly category: "AVERAGE_SELLING_PRICE" | "CONVERSION_RATIO" | "EXPECTED_CPL" | "AVAILABLE_INVENTORY" | "MARKETING_BUDGET" | "TEAM_CAPACITY" | "CUSTOM";
+  readonly name: string;
+  readonly description?: string | null;
+  readonly value: number;
+  readonly unit: "IDR" | "COUNT" | "PERCENT" | "RATIO" | "MINUTE" | "HOUR" | "DAY" | "SCORE" | "UNIT" | "BOOLEAN";
+  readonly period: BusinessPeriod;
+  readonly scope: BusinessScope;
+  readonly source_ref?: string | null;
+  readonly source_mode: "MANUAL_EVIDENCED" | "SOURCE_LINKED";
+  readonly evidence_refs: readonly (string)[];
+  readonly verification_state: "UNVERIFIED" | "PENDING_VERIFICATION" | "VERIFIED" | "CONFLICT" | "REJECTED";
+  readonly owner_role_ref: string;
+  readonly lifecycle_state: "DRAFT" | "UNDER_REVIEW" | "APPROVED" | "ACTIVE" | "SUPERSEDED" | "ARCHIVED";
+  readonly updated_at?: string | null;
+  readonly verification_reason?: string | null;
 }
 
 export interface ConstraintResult {
@@ -237,6 +315,8 @@ export interface CascadeRun {
   readonly created_by: string;
   readonly created_at: string;
   readonly status: "PREVIEW" | "VALID" | "INVALID" | "INCOMPLETE" | "ACCEPTED" | "SUPERSEDED";
+  readonly candidate_snapshot?: readonly (BusinessTargetCreateRequest)[];
+  readonly context_snapshot?: Readonly<Record<string, unknown>>;
 }
 
 export interface CascadeRunRootTargetRef {
@@ -313,7 +393,7 @@ export interface OperatingPlan {
   readonly created_at: string;
   readonly updated_at: string;
   readonly correlation_id: string;
-  readonly authorized_actions?: readonly ("EDIT" | "SUBMIT" | "APPROVE" | "ACTIVATE")[];
+  readonly authorized_actions?: readonly ("EDIT" | "SUBMIT" | "APPROVE" | "ACTIVATE" | "ARCHIVE")[];
 }
 
 export interface PlanningAssumptionCreateRequest {
@@ -332,27 +412,6 @@ export interface PlanningAssumptionCreateRequest {
   readonly verification_state: "UNVERIFIED" | "PENDING_VERIFICATION" | "VERIFIED" | "CONFLICT" | "REJECTED";
   readonly owner_role_ref: string;
   readonly owner_workspace_id: string;
-}
-
-export interface PlanningAssumption {
-  readonly assumption_id: string;
-  readonly version: number;
-  readonly tenant_id: string;
-  readonly organization_id: string;
-  readonly owner_workspace_id: string;
-  readonly category: "AVERAGE_SELLING_PRICE" | "CONVERSION_RATIO" | "EXPECTED_CPL" | "AVAILABLE_INVENTORY" | "MARKETING_BUDGET" | "TEAM_CAPACITY" | "CUSTOM";
-  readonly name: string;
-  readonly description?: string | null;
-  readonly value: number;
-  readonly unit: "IDR" | "COUNT" | "PERCENT" | "RATIO" | "MINUTE" | "HOUR" | "DAY" | "SCORE" | "UNIT" | "BOOLEAN";
-  readonly period: BusinessPeriod;
-  readonly scope: BusinessScope;
-  readonly source_ref?: string | null;
-  readonly source_mode: "MANUAL_EVIDENCED" | "SOURCE_LINKED";
-  readonly evidence_refs: readonly (string)[];
-  readonly verification_state: "UNVERIFIED" | "PENDING_VERIFICATION" | "VERIFIED" | "CONFLICT" | "REJECTED";
-  readonly owner_role_ref: string;
-  readonly lifecycle_state: "DRAFT" | "UNDER_REVIEW" | "APPROVED" | "ACTIVE" | "SUPERSEDED" | "ARCHIVED";
 }
 
 export interface PlanningConstraint {
@@ -416,11 +475,22 @@ export interface StrategicPlan {
   readonly created_at: string;
   readonly updated_at: string;
   readonly correlation_id: string;
-  readonly authorized_actions?: readonly ("EDIT" | "SUBMIT" | "APPROVE" | "ACTIVATE")[];
+  readonly authorized_actions?: readonly ("EDIT" | "SUBMIT" | "APPROVE" | "ACTIVATE" | "ARCHIVE")[];
 }
 
 export interface StrategyAuthorityProjection {
   readonly authorized_actions: readonly ("CREATE_COMPANY_PLAN" | "CREATE_DIVISION_PLAN")[];
+  readonly verification_actions?: readonly ("VERIFY_PLANNING" | "VERIFY_MONITORING")[];
+}
+
+export interface StrategyOverviewProjection {
+  readonly active_strategic_plans: readonly (StrategicPlan)[];
+  readonly active_operating_plans: readonly (OperatingPlan)[];
+  readonly plans: readonly (StrategicPlan | OperatingPlan)[];
+  readonly objectives: readonly (StrategicObjective)[];
+  readonly targets: readonly (BusinessTargetDetail)[];
+  readonly assumptions: readonly (PlanningAssumption)[];
+  readonly last_updated_at: string | null;
 }
 
 export interface StrategyPlanCreateRequest {
@@ -450,6 +520,11 @@ export interface StrategyPlanUpdateRequest {
   readonly evidence_refs?: readonly (string)[];
 }
 
+export interface StrategyVerificationRequest {
+  readonly verification_state: "VERIFIED" | "CONFLICT" | "REJECTED";
+  readonly reason: string;
+}
+
 export interface TargetRelationshipCreateRequest {
   readonly relationship_id: string;
   readonly relationship_type: "CASCADE" | "CONTRIBUTES_TO" | "DEPENDS_ON";
@@ -461,6 +536,11 @@ export interface TargetRelationshipCreateRequest {
 
 export interface TargetRevisionCreateRequest {
   readonly reason: string;
+}
+
+export interface TargetRevisionResponse {
+  readonly revision: TargetRevision;
+  readonly target: BusinessTarget;
 }
 
 export type StrategyPlan = StrategicPlan | OperatingPlan;

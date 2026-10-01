@@ -1,1 +1,74 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://schemas.alos.dev/v1/strategy/cascade-preview-response.schema.json","title":"CascadePreviewResponse","type":"object","required":["cascade_run_id","status","root_target_ref","derived_targets","calculation_trace","assumptions_used","constraint_results","blocking_conditions","input_hash","result_hash"],"properties":{"cascade_run_id":{"$ref":"https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/cascade_run_id"},"status":{"type":"string","enum":["PREVIEW","VALID","INVALID","INCOMPLETE"]},"root_target_ref":{"type":"object"},"derived_targets":{"type":"array","items":{"type":"object"}},"calculation_trace":{"type":"array","items":{"type":"object"}},"assumptions_used":{"type":"array","items":{"type":"object"}},"constraint_results":{"type":"array","items":{"$ref":"https://schemas.alos.dev/v1/strategy/constraint-result.schema.json"}},"blocking_conditions":{"type":"array","items":{"type":"string"}},"input_hash":{"type":"string","pattern":"^sha256:[a-f0-9]{64}$"},"result_hash":{"type":"string","pattern":"^sha256:[a-f0-9]{64}$"}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/cascade-preview-response.schema.json",
+  "title": "CascadePreviewResponse",
+  "type": "object",
+  "required": [
+    "cascade_run_id",
+    "status",
+    "root_target_ref",
+    "derived_targets",
+    "calculation_trace",
+    "assumptions_used",
+    "constraint_results",
+    "blocking_conditions",
+    "input_hash",
+    "result_hash"
+  ],
+  "properties": {
+    "cascade_run_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/cascade_run_id"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PREVIEW",
+        "VALID",
+        "INVALID",
+        "INCOMPLETE"
+      ]
+    },
+    "root_target_ref": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/business-target.schema.json#/$defs/version_ref"
+    },
+    "derived_targets": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/cascade-derived-target-candidate.schema.json"
+      }
+    },
+    "calculation_trace": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/cascade-calculation-trace.schema.json"
+      }
+    },
+    "assumptions_used": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/planning-assumption.schema.json"
+      }
+    },
+    "constraint_results": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/constraint-result.schema.json"
+      }
+    },
+    "blocking_conditions": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      }
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    }
+  },
+  "additionalProperties": false
+}

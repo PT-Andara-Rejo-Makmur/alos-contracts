@@ -1,0 +1,26 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/strategy-verification-request.schema.json",
+  "title": "StrategyVerificationRequest",
+  "type": "object",
+  "properties": {
+    "verification_state": {
+      "type": "string",
+      "enum": [
+        "VERIFIED",
+        "CONFLICT",
+        "REJECTED"
+      ]
+    },
+    "reason": {
+      "type": "string",
+      "minLength": 1,
+      "pattern": "\\S"
+    }
+  },
+  "required": [
+    "verification_state",
+    "reason"
+  ],
+  "additionalProperties": false
+}

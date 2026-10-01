@@ -121,6 +121,24 @@
       "violation": "$: properties removed: ['email']",
       "decision": "INTENTIONALLY_CHANGED",
       "migration": "Identity authority cutover: clients must omit email. Backend derives email from the locked HR Employee record; old client email fields are rejected. Deploy Contracts, Backend, and Web together."
+    },
+    {
+      "schema": "schemas/strategy/cascade-preview-response.schema.json",
+      "violation": "$.calculation_trace.items: required properties added: ['inputs', 'message', 'output', 'output_target_id', 'rounding_mode', 'rule_id', 'rule_type', 'status']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Use generated typed trace, canonical assumptions and explicit candidate metadata. Backend and Web migrate together; incomplete metadata prevents acceptance. No GENESIS consumer uses this public Strategy response."
+    },
+    {
+      "schema": "schemas/strategy/cascade-preview-response.schema.json",
+      "violation": "$.assumptions_used.items: required properties added: ['assumption_id', 'category', 'evidence_refs', 'lifecycle_state', 'name', 'organization_id', 'owner_role_ref', 'owner_workspace_id', 'period', 'scope', 'source_mode', 'tenant_id', 'unit', 'value', 'verification_state', 'version']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Use generated typed trace, canonical assumptions and explicit candidate metadata. Backend and Web migrate together; incomplete metadata prevents acceptance. No GENESIS consumer uses this public Strategy response."
+    },
+    {
+      "schema": "schemas/strategy/cascade-preview-response.schema.json",
+      "violation": "$.derived_targets.items: required properties added: ['calculated_value', 'request', 'required_metadata', 'target_id', 'version']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Use generated typed trace, canonical assumptions and explicit candidate metadata. Backend and Web migrate together; incomplete metadata prevents acceptance. No GENESIS consumer uses this public Strategy response."
     }
   ]
 }

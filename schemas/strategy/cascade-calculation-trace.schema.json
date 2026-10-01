@@ -1,0 +1,67 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/cascade-calculation-trace.schema.json",
+  "title": "CascadeCalculationTrace",
+  "type": "object",
+  "properties": {
+    "rule_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/cascade_rule_id"
+    },
+    "rule_type": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/cascade-rule.schema.json#/properties/rule_type"
+    },
+    "output_target_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"
+    },
+    "inputs": {
+      "type": "object",
+      "additionalProperties": {
+        "type": [
+          "string",
+          "null"
+        ]
+      }
+    },
+    "rounding_mode": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "enum": [
+        "CEILING",
+        null
+      ]
+    },
+    "output": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "VALID",
+        "INVALID",
+        "INCOMPLETE"
+      ]
+    },
+    "message": {
+      "type": [
+        "string",
+        "null"
+      ]
+    }
+  },
+  "required": [
+    "rule_id",
+    "rule_type",
+    "output_target_id",
+    "inputs",
+    "rounding_mode",
+    "output",
+    "status",
+    "message"
+  ],
+  "additionalProperties": false
+}

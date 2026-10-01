@@ -1,0 +1,63 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/cascade-derived-target-candidate.schema.json",
+  "title": "CascadeDerivedTargetCandidate",
+  "type": "object",
+  "properties": {
+    "target_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"
+    },
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "calculated_value": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "request": {
+      "oneOf": [
+        {
+          "$ref": "https://schemas.alos.dev/v1/strategy/business-target-create-request.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "required_metadata": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "target_id",
+          "version",
+          "code",
+          "name",
+          "plan_ref",
+          "objective_ref",
+          "metric_code",
+          "scope",
+          "period",
+          "measurement_type",
+          "unit",
+          "owner_workspace_id",
+          "owner_role_ref",
+          "materiality",
+          "evidence_refs",
+          "source_refs"
+        ]
+      }
+    }
+  },
+  "required": [
+    "target_id",
+    "version",
+    "calculated_value",
+    "request",
+    "required_metadata"
+  ],
+  "additionalProperties": false
+}

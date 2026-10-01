@@ -1,1 +1,114 @@
-{"$schema":"https://json-schema.org/draft/2020-12/schema","$id":"https://schemas.alos.dev/v1/strategy/cascade-run.schema.json","title":"CascadeRun","type":"object","required":["cascade_run_id","tenant_id","organization_id","correlation_id","root_target_ref","input_snapshot","assumption_snapshot","rule_snapshot","constraint_snapshot","result_snapshot","input_hash","result_hash","created_by","created_at","status"],"properties":{"cascade_run_id":{"$ref":"https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/cascade_run_id"},"tenant_id":{"$ref":"https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"},"organization_id":{"$ref":"https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"},"correlation_id":{"$ref":"https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"},"root_target_ref":{"type":"object","required":["id","version"],"properties":{"id":{"$ref":"https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"},"version":{"type":"integer","minimum":1}},"additionalProperties":false},"input_snapshot":{"type":"object"},"assumption_snapshot":{"type":"object"},"rule_snapshot":{"type":"array","items":{"type":"object"}},"constraint_snapshot":{"type":"array","items":{"type":"object"}},"result_snapshot":{"type":"array","items":{"type":"object"}},"input_hash":{"type":"string","pattern":"^sha256:[a-f0-9]{64}$"},"result_hash":{"type":"string","pattern":"^sha256:[a-f0-9]{64}$"},"created_by":{"$ref":"https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"},"created_at":{"type":"string","format":"date-time"},"status":{"type":"string","enum":["PREVIEW","VALID","INVALID","INCOMPLETE","ACCEPTED","SUPERSEDED"]}},"additionalProperties":false}
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/cascade-run.schema.json",
+  "title": "CascadeRun",
+  "type": "object",
+  "required": [
+    "cascade_run_id",
+    "tenant_id",
+    "organization_id",
+    "correlation_id",
+    "root_target_ref",
+    "input_snapshot",
+    "assumption_snapshot",
+    "rule_snapshot",
+    "constraint_snapshot",
+    "result_snapshot",
+    "input_hash",
+    "result_hash",
+    "created_by",
+    "created_at",
+    "status"
+  ],
+  "properties": {
+    "cascade_run_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/cascade_run_id"
+    },
+    "tenant_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+    },
+    "organization_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+    },
+    "correlation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+    },
+    "root_target_ref": {
+      "type": "object",
+      "required": [
+        "id",
+        "version"
+      ],
+      "properties": {
+        "id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "additionalProperties": false
+    },
+    "input_snapshot": {
+      "type": "object"
+    },
+    "assumption_snapshot": {
+      "type": "object"
+    },
+    "rule_snapshot": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "constraint_snapshot": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "result_snapshot": {
+      "type": "array",
+      "items": {
+        "type": "object"
+      }
+    },
+    "input_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "result_hash": {
+      "type": "string",
+      "pattern": "^sha256:[a-f0-9]{64}$"
+    },
+    "created_by": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"
+    },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "PREVIEW",
+        "VALID",
+        "INVALID",
+        "INCOMPLETE",
+        "ACCEPTED",
+        "SUPERSEDED"
+      ]
+    },
+    "candidate_snapshot": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/business-target-create-request.schema.json"
+      }
+    },
+    "context_snapshot": {
+      "type": "object"
+    }
+  },
+  "additionalProperties": false
+}

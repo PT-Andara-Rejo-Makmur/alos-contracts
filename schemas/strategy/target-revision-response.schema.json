@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/target-revision-response.schema.json",
+  "title": "TargetRevisionResponse",
+  "type": "object",
+  "properties": {
+    "revision": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/target-revision.schema.json"
+    },
+    "target": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/business-target.schema.json"
+    }
+  },
+  "required": [
+    "revision",
+    "target"
+  ],
+  "additionalProperties": false
+}

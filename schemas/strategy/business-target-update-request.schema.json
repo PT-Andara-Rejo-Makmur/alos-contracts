@@ -1,0 +1,88 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/business-target-update-request.schema.json",
+  "title": "BusinessTargetUpdateRequest",
+  "type": "object",
+  "properties": {
+    "version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "name": {
+      "type": "string",
+      "minLength": 1
+    },
+    "description": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "metric_code": {
+      "type": "string",
+      "minLength": 1
+    },
+    "measurement_type": {
+      "type": "string",
+      "enum": [
+        "HIGHER_IS_BETTER",
+        "LOWER_IS_BETTER",
+        "RANGE",
+        "EXACT",
+        "PERCENTAGE",
+        "RATIO",
+        "BINARY",
+        "MILESTONE",
+        "CUMULATIVE"
+      ]
+    },
+    "unit": {
+      "type": "string",
+      "enum": [
+        "IDR",
+        "COUNT",
+        "PERCENT",
+        "RATIO",
+        "MINUTE",
+        "HOUR",
+        "DAY",
+        "SCORE",
+        "UNIT",
+        "BOOLEAN"
+      ]
+    },
+    "period": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/business-period.schema.json"
+    },
+    "materiality": {
+      "type": "string",
+      "enum": [
+        "MATERIAL",
+        "NON_MATERIAL"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id"
+      },
+      "uniqueItems": true
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "uniqueItems": true
+    }
+  },
+  "required": [
+    "version"
+  ],
+  "additionalProperties": false,
+  "minProperties": 2
+}

@@ -3,26 +3,155 @@
   "$id": "https://schemas.alos.dev/v1/strategy/metric-observation-create-request.schema.json",
   "title": "MetricObservationCreateRequest",
   "type": "object",
-  "required": ["observation_id", "target_id", "target_version", "kind", "value", "unit", "period", "source_mode", "observed_at", "verification_state", "evidence_refs"],
+  "required": [
+    "observation_id",
+    "target_id",
+    "target_version",
+    "kind",
+    "value",
+    "unit",
+    "period",
+    "source_mode",
+    "observed_at",
+    "verification_state",
+    "evidence_refs"
+  ],
   "properties": {
-    "observation_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/observation_id"},
-    "target_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"},
-    "target_version": {"type": "integer", "minimum": 1},
-    "kind": {"type": "string", "enum": ["TARGET", "ACTUAL", "FORECAST", "ASSUMPTION"]},
-    "value": {"oneOf": [{"type": "number"}, {"type": "boolean"}, {"type": "null"}]},
-    "unit": {"type": "string", "enum": ["IDR", "COUNT", "PERCENT", "RATIO", "MINUTE", "HOUR", "DAY", "SCORE", "UNIT", "BOOLEAN"]},
-    "period": {"$ref": "https://schemas.alos.dev/v1/strategy/business-period.schema.json"},
-    "source_ref": {"type": ["string", "null"]},
-    "source_mode": {"type": "string", "enum": ["MANUAL_EVIDENCED", "SOURCE_LINKED"]},
-    "observed_at": {"type": "string", "format": "date-time"},
-    "verified_at": {"type": ["string", "null"], "format": "date-time"},
-    "verification_state": {"type": "string", "enum": ["UNVERIFIED", "PENDING_VERIFICATION", "VERIFIED", "CONFLICT", "REJECTED"]},
-    "evidence_refs": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id"}, "uniqueItems": true}
+    "observation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/observation_id"
+    },
+    "target_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"
+    },
+    "target_version": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "TARGET",
+        "ACTUAL",
+        "FORECAST",
+        "ASSUMPTION"
+      ]
+    },
+    "value": {
+      "oneOf": [
+        {
+          "type": "number"
+        },
+        {
+          "type": "boolean"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "unit": {
+      "type": "string",
+      "enum": [
+        "IDR",
+        "COUNT",
+        "PERCENT",
+        "RATIO",
+        "MINUTE",
+        "HOUR",
+        "DAY",
+        "SCORE",
+        "UNIT",
+        "BOOLEAN"
+      ]
+    },
+    "period": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/business-period.schema.json"
+    },
+    "source_ref": {
+      "type": [
+        "string",
+        "null"
+      ]
+    },
+    "source_mode": {
+      "type": "string",
+      "enum": [
+        "MANUAL_EVIDENCED",
+        "SOURCE_LINKED"
+      ]
+    },
+    "observed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "verified_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "verification_state": {
+      "type": "string",
+      "enum": [
+        "UNVERIFIED",
+        "PENDING_VERIFICATION",
+        "VERIFIED",
+        "CONFLICT",
+        "REJECTED"
+      ]
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id"
+      },
+      "uniqueItems": true
+    }
   },
   "allOf": [
     {
-      "if": {"properties": {"source_mode": {"const": "MANUAL_EVIDENCED"}}, "required": ["source_mode"]},
-      "then": {"properties": {"evidence_refs": {"minItems": 1}}}
+      "if": {
+        "properties": {
+          "source_mode": {
+            "const": "MANUAL_EVIDENCED"
+          }
+        },
+        "required": [
+          "source_mode"
+        ]
+      },
+      "then": {
+        "properties": {
+          "evidence_refs": {
+            "minItems": 1
+          }
+        }
+      }
+    },
+    {
+      "if": {
+        "properties": {
+          "source_mode": {
+            "const": "SOURCE_LINKED"
+          }
+        },
+        "required": [
+          "source_mode"
+        ]
+      },
+      "then": {
+        "required": [
+          "source_ref"
+        ],
+        "properties": {
+          "source_ref": {
+            "type": "string",
+            "minLength": 1,
+            "pattern": "\\S"
+          }
+        }
+      }
     }
   ],
   "additionalProperties": false

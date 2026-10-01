@@ -41,6 +41,16 @@
         "null"
       ],
       "format": "date-time"
+    },
+    "strategy_data": {
+      "oneOf": [
+        {
+          "$ref": "https://schemas.alos.dev/v1/strategy/strategy-overview-projection.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
     }
   },
   "required": [

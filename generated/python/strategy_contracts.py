@@ -52,6 +52,10 @@ class BusinessTargetDetail(TypedDict, total=False):
     observations: Required['list[MetricObservation]']
     relationships: Required['list[TargetRelationship]']
     revisions: Required['list[TargetRevision]']
+    selected_observations: 'BusinessTargetDetailSelectedObservations'
+    performance_state: "Literal['NOT_EVALUATED', 'ON_TRACK', 'AT_RISK', 'OFF_TRACK', 'ACHIEVED', None]"
+    authorized_actions: "list[Literal['EDIT', 'SUBMIT', 'APPROVE', 'ACTIVATE', 'REVISE', 'RECORD_TARGET', 'RECORD_ACTUAL', 'RECORD_FORECAST', 'VERIFY_PLANNING', 'VERIFY_MONITORING']]"
+    last_updated_at: 'str | None'
 
 class BusinessTarget(TypedDict, total=False):
     target_id: Required['str']
@@ -106,6 +110,10 @@ class MetricObservation(TypedDict, total=False):
     verified_at: 'str | None'
     verification_state: Required["Literal['UNVERIFIED', 'PENDING_VERIFICATION', 'VERIFIED', 'CONFLICT', 'REJECTED']"]
     evidence_refs: Required['list[str]']
+    supersedes_observation_id: 'str | None'
+    recorded_at: 'str | None'
+    verification_reason: 'str | None'
+    record_sequence: 'int | None'
 
 class TargetRelationship(TypedDict, total=False):
     relationship_id: Required['str']
@@ -130,8 +138,45 @@ class TargetRevision(TypedDict, total=False):
     created_at: Required['str']
     evidence_refs: Required['list[str]']
 
+class BusinessTargetDetailSelectedObservations(TypedDict, total=False):
+    target: Required['MetricObservation | None']
+    actual: Required['MetricObservation | None']
+    forecast: Required['MetricObservation | None']
+
+class BusinessTargetUpdateRequest(TypedDict, total=False):
+    version: Required['int']
+    code: 'str'
+    name: 'str'
+    description: 'str | None'
+    metric_code: 'str'
+    measurement_type: "Literal['HIGHER_IS_BETTER', 'LOWER_IS_BETTER', 'RANGE', 'EXACT', 'PERCENTAGE', 'RATIO', 'BINARY', 'MILESTONE', 'CUMULATIVE']"
+    unit: "Literal['IDR', 'COUNT', 'PERCENT', 'RATIO', 'MINUTE', 'HOUR', 'DAY', 'SCORE', 'UNIT', 'BOOLEAN']"
+    period: 'BusinessPeriod'
+    materiality: "Literal['MATERIAL', 'NON_MATERIAL']"
+    evidence_refs: 'list[str]'
+    source_refs: 'list[str]'
+
 class CascadeAcceptRequest(TypedDict, total=False):
     derived_targets: Required['list[BusinessTargetCreateRequest]']
+    input_hash: 'str'
+    result_hash: 'str'
+
+class CascadeCalculationTrace(TypedDict, total=False):
+    rule_id: Required['str']
+    rule_type: Required["Literal['DIRECT', 'SPLIT_FIXED', 'SPLIT_PERCENT', 'SUM_ROLLUP', 'RATIO_MULTIPLY', 'RATIO_DIVIDE_CEIL', 'LIMIT_CHECK']"]
+    output_target_id: Required['str']
+    inputs: Required['dict[str, str | None]']
+    rounding_mode: Required["Literal['CEILING', None]"]
+    output: Required['str | None']
+    status: Required["Literal['VALID', 'INVALID', 'INCOMPLETE']"]
+    message: Required['str | None']
+
+class CascadeDerivedTargetCandidate(TypedDict, total=False):
+    target_id: Required['str']
+    version: Required['int']
+    calculated_value: Required['str | None']
+    request: Required['BusinessTargetCreateRequest | None']
+    required_metadata: Required["list[Literal['target_id', 'version', 'code', 'name', 'plan_ref', 'objective_ref', 'metric_code', 'scope', 'period', 'measurement_type', 'unit', 'owner_workspace_id', 'owner_role_ref', 'materiality', 'evidence_refs', 'source_refs']]"]
 
 class CascadePreviewRequest(TypedDict, total=False):
     root_target_ref: Required['CascadePreviewRequestRootTargetRef']
@@ -139,6 +184,7 @@ class CascadePreviewRequest(TypedDict, total=False):
     rule_inputs: Required['dict[str, dict[str, float | None]]']
     assumption_refs: Required['list[str]']
     constraints: Required['list[CascadePreviewRequestConstraintsItem]']
+    derived_targets: 'list[BusinessTargetCreateRequest]'
 
 class CascadePreviewRequestRootTargetRef(TypedDict, total=False):
     target_id: Required['str']
@@ -184,14 +230,40 @@ class CascadePreviewRequestConstraintsItem(TypedDict, total=False):
 class CascadePreviewResponse(TypedDict, total=False):
     cascade_run_id: Required['str']
     status: Required["Literal['PREVIEW', 'VALID', 'INVALID', 'INCOMPLETE']"]
-    root_target_ref: Required['dict[str, object]']
-    derived_targets: Required['list[dict[str, object]]']
-    calculation_trace: Required['list[dict[str, object]]']
-    assumptions_used: Required['list[dict[str, object]]']
+    root_target_ref: Required['CascadePreviewResponseRootTargetRef']
+    derived_targets: Required['list[CascadeDerivedTargetCandidate]']
+    calculation_trace: Required['list[CascadeCalculationTrace]']
+    assumptions_used: Required['list[PlanningAssumption]']
     constraint_results: Required['list[ConstraintResult]']
     blocking_conditions: Required['list[str]']
     input_hash: Required['str']
     result_hash: Required['str']
+
+class CascadePreviewResponseRootTargetRef(TypedDict, total=False):
+    id: Required['str']
+    version: Required['int']
+
+class PlanningAssumption(TypedDict, total=False):
+    assumption_id: Required['str']
+    version: Required['int']
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    owner_workspace_id: Required['str']
+    category: Required["Literal['AVERAGE_SELLING_PRICE', 'CONVERSION_RATIO', 'EXPECTED_CPL', 'AVAILABLE_INVENTORY', 'MARKETING_BUDGET', 'TEAM_CAPACITY', 'CUSTOM']"]
+    name: Required['str']
+    description: 'str | None'
+    value: Required['float']
+    unit: Required["Literal['IDR', 'COUNT', 'PERCENT', 'RATIO', 'MINUTE', 'HOUR', 'DAY', 'SCORE', 'UNIT', 'BOOLEAN']"]
+    period: Required['BusinessPeriod']
+    scope: Required['BusinessScope']
+    source_ref: 'str | None'
+    source_mode: Required["Literal['MANUAL_EVIDENCED', 'SOURCE_LINKED']"]
+    evidence_refs: Required['list[str]']
+    verification_state: Required["Literal['UNVERIFIED', 'PENDING_VERIFICATION', 'VERIFIED', 'CONFLICT', 'REJECTED']"]
+    owner_role_ref: Required['str']
+    lifecycle_state: Required["Literal['DRAFT', 'UNDER_REVIEW', 'APPROVED', 'ACTIVE', 'SUPERSEDED', 'ARCHIVED']"]
+    updated_at: 'str | None'
+    verification_reason: 'str | None'
 
 class ConstraintResult(TypedDict, total=False):
     constraint_id: Required['str']
@@ -218,6 +290,8 @@ class CascadeRun(TypedDict, total=False):
     created_by: Required['str']
     created_at: Required['str']
     status: Required["Literal['PREVIEW', 'VALID', 'INVALID', 'INCOMPLETE', 'ACCEPTED', 'SUPERSEDED']"]
+    candidate_snapshot: 'list[BusinessTargetCreateRequest]'
+    context_snapshot: 'dict[str, object]'
 
 class CascadeRunRootTargetRef(TypedDict, total=False):
     id: Required['str']
@@ -288,7 +362,7 @@ class OperatingPlan(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     correlation_id: Required['str']
-    authorized_actions: "list[Literal['EDIT', 'SUBMIT', 'APPROVE', 'ACTIVATE']]"
+    authorized_actions: "list[Literal['EDIT', 'SUBMIT', 'APPROVE', 'ACTIVATE', 'ARCHIVE']]"
 
 class PlanningAssumptionCreateRequest(TypedDict, total=False):
     assumption_id: Required['str']
@@ -306,26 +380,6 @@ class PlanningAssumptionCreateRequest(TypedDict, total=False):
     verification_state: Required["Literal['UNVERIFIED', 'PENDING_VERIFICATION', 'VERIFIED', 'CONFLICT', 'REJECTED']"]
     owner_role_ref: Required['str']
     owner_workspace_id: Required['str']
-
-class PlanningAssumption(TypedDict, total=False):
-    assumption_id: Required['str']
-    version: Required['int']
-    tenant_id: Required['str']
-    organization_id: Required['str']
-    owner_workspace_id: Required['str']
-    category: Required["Literal['AVERAGE_SELLING_PRICE', 'CONVERSION_RATIO', 'EXPECTED_CPL', 'AVAILABLE_INVENTORY', 'MARKETING_BUDGET', 'TEAM_CAPACITY', 'CUSTOM']"]
-    name: Required['str']
-    description: 'str | None'
-    value: Required['float']
-    unit: Required["Literal['IDR', 'COUNT', 'PERCENT', 'RATIO', 'MINUTE', 'HOUR', 'DAY', 'SCORE', 'UNIT', 'BOOLEAN']"]
-    period: Required['BusinessPeriod']
-    scope: Required['BusinessScope']
-    source_ref: 'str | None'
-    source_mode: Required["Literal['MANUAL_EVIDENCED', 'SOURCE_LINKED']"]
-    evidence_refs: Required['list[str]']
-    verification_state: Required["Literal['UNVERIFIED', 'PENDING_VERIFICATION', 'VERIFIED', 'CONFLICT', 'REJECTED']"]
-    owner_role_ref: Required['str']
-    lifecycle_state: Required["Literal['DRAFT', 'UNDER_REVIEW', 'APPROVED', 'ACTIVE', 'SUPERSEDED', 'ARCHIVED']"]
 
 class PlanningConstraint(TypedDict, total=False):
     constraint_id: Required['str']
@@ -385,10 +439,20 @@ class StrategicPlan(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     correlation_id: Required['str']
-    authorized_actions: "list[Literal['EDIT', 'SUBMIT', 'APPROVE', 'ACTIVATE']]"
+    authorized_actions: "list[Literal['EDIT', 'SUBMIT', 'APPROVE', 'ACTIVATE', 'ARCHIVE']]"
 
 class StrategyAuthorityProjection(TypedDict, total=False):
     authorized_actions: Required["list[Literal['CREATE_COMPANY_PLAN', 'CREATE_DIVISION_PLAN']]"]
+    verification_actions: "list[Literal['VERIFY_PLANNING', 'VERIFY_MONITORING']]"
+
+class StrategyOverviewProjection(TypedDict, total=False):
+    active_strategic_plans: Required['list[StrategicPlan]']
+    active_operating_plans: Required['list[OperatingPlan]']
+    plans: Required['list[StrategicPlan | OperatingPlan]']
+    objectives: Required['list[StrategicObjective]']
+    targets: Required['list[BusinessTargetDetail]']
+    assumptions: Required['list[PlanningAssumption]']
+    last_updated_at: Required['str | None']
 
 class StrategyPlanCreateRequest(TypedDict, total=False):
     plan_id: Required['str']
@@ -415,6 +479,10 @@ class StrategyPlanUpdateRequest(TypedDict, total=False):
     source_refs: 'list[str]'
     evidence_refs: 'list[str]'
 
+class StrategyVerificationRequest(TypedDict, total=False):
+    verification_state: Required["Literal['VERIFIED', 'CONFLICT', 'REJECTED']"]
+    reason: Required['str']
+
 class TargetRelationshipCreateRequest(TypedDict, total=False):
     relationship_id: Required['str']
     relationship_type: Required["Literal['CASCADE', 'CONTRIBUTES_TO', 'DEPENDS_ON']"]
@@ -425,3 +493,7 @@ class TargetRelationshipCreateRequest(TypedDict, total=False):
 
 class TargetRevisionCreateRequest(TypedDict, total=False):
     reason: Required['str']
+
+class TargetRevisionResponse(TypedDict, total=False):
+    revision: Required['TargetRevision']
+    target: Required['BusinessTarget']

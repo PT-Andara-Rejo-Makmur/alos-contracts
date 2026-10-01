@@ -3,20 +3,102 @@
   "$id": "https://schemas.alos.dev/v1/strategy/business-target-detail.schema.json",
   "title": "BusinessTargetDetail",
   "type": "object",
-  "required": ["target", "observations", "relationships", "revisions"],
+  "required": [
+    "target",
+    "observations",
+    "relationships",
+    "revisions"
+  ],
   "properties": {
-    "target": { "$ref": "https://schemas.alos.dev/v1/strategy/business-target.schema.json" },
+    "target": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/business-target.schema.json"
+    },
     "observations": {
       "type": "array",
-      "items": { "$ref": "https://schemas.alos.dev/v1/strategy/metric-observation.schema.json" }
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/metric-observation.schema.json"
+      }
     },
     "relationships": {
       "type": "array",
-      "items": { "$ref": "https://schemas.alos.dev/v1/strategy/target-relationship.schema.json" }
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/target-relationship.schema.json"
+      }
     },
     "revisions": {
       "type": "array",
-      "items": { "$ref": "https://schemas.alos.dev/v1/strategy/target-revision.schema.json" }
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/target-revision.schema.json"
+      }
+    },
+    "selected_observations": {
+      "type": "object",
+      "properties": {
+        "target": {
+          "oneOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/strategy/metric-observation.schema.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actual": {
+          "oneOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/strategy/metric-observation.schema.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "forecast": {
+          "oneOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/strategy/metric-observation.schema.json"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "target",
+        "actual",
+        "forecast"
+      ],
+      "additionalProperties": false
+    },
+    "performance_state": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/business-target.schema.json#/properties/performance_state"
+    },
+    "authorized_actions": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "enum": [
+          "EDIT",
+          "SUBMIT",
+          "APPROVE",
+          "ACTIVATE",
+          "REVISE",
+          "RECORD_TARGET",
+          "RECORD_ACTUAL",
+          "RECORD_FORECAST",
+          "VERIFY_PLANNING",
+          "VERIFY_MONITORING"
+        ]
+      }
+    },
+    "last_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
     }
   },
   "additionalProperties": false

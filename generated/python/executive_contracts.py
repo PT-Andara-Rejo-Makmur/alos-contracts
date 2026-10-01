@@ -8,7 +8,7 @@ from typing import Literal, Required, TypedDict
 
 
 
-from strategy_contracts import BusinessPeriod
+from strategy_contracts import BusinessPeriod, StrategyOverviewProjection
 
 ExecutiveConnectionStatus = Literal['CONNECTED', 'CONNECTED_EMPTY', 'UNAVAILABLE', 'ERROR']
 
@@ -34,3 +34,4 @@ class ExecutiveOverviewProjection(TypedDict, total=False):
     shared_work: Required['ExecutiveSourceStatus']
     domains: Required['list[ExecutiveDomainStatus]']
     last_updated_at: Required['str | None']
+    strategy_data: 'StrategyOverviewProjection | None'

@@ -6,11 +6,24 @@ Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/
 
 ### Ditambahkan
 
+- StrategyOverviewProjection untuk Executive; pemilihan observasi dan performance berasal dari Backend.
+- Command canonical untuk target draft, keputusan verifikasi, dan response revision dengan lineage.
+- Cascade candidate metadata serta calculation trace bertipe; acceptance membawa hash preview.
 - Executive read projections untuk availability Strategy, Shared Work, dan sumber domain,
   dengan status connected, connected-empty, unavailable, dan error serta timestamp nullable.
 - Schema canonical untuk update Strategy plan dan accept cascade, diekstrak dari OpenAPI publik.
 - Generator dan consistency checks untuk seluruh schema Strategy serta Executive pada Python
   dan TypeScript; contract fields dan enum berasal langsung dari JSON Schema.
+
+### Diubah
+
+- Cascade preview memperketat tiga collection response; keputusan compatibility dicatat pada
+  approved-breaking-changes.json dan dimigrasikan bersama Backend/Web.
+- SOURCE_LINKED mewajibkan source_ref nonblank. Adapter sumber eksternal belum tersedia;
+  Backend hanya menerima sumber cascade Strategy yang dapat diverifikasi.
+- History observasi menyediakan recorded_at, record_sequence, dan supersedes_observation_id
+  nullable untuk record legacy.
+- Lifecycle plan menyediakan archive; query version membaca history secara eksplisit.
 
 ## [2.0.0] - 2026-09-30
 
