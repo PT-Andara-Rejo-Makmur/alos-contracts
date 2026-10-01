@@ -2,8 +2,9 @@
 
 ExecutiveOverviewProjection is a governed read projection of Strategy, Shared Work,
 and business sources once those sources are canonical. It owns no operational
-entity, database, KPI, or business mutation. This foundation declares public
-OpenAPI components without advertising an Executive endpoint.
+entity, database, KPI, or business mutation. GET /api/v1/executive/overview returns
+this public projection with authoritative Strategy data. Shared Work remains an
+authoritative ALOS source with UNAVAILABLE status until its aggregation is implemented.
 
 ExecutiveConnectionStatus distinguishes a connected source with data (CONNECTED),
 a connected source with no matching data (CONNECTED_EMPTY), an inaccessible or
