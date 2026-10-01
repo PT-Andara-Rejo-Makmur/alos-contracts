@@ -4,7 +4,7 @@ import pytest
 from jsonschema import Draft202012Validator, FormatChecker, ValidationError
 
 BASE = "https://schemas.alos.dev/v1/"
-DOMAINS = ("sales", "marketing", "property", "finance")
+DOMAINS = ("sales", "marketing", "property", "finance", "legal", "hr", "it")
 
 
 def validator(registry, domain, definition):

@@ -1,0 +1,3125 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json",
+  "title": "HrOverview",
+  "$defs": {
+    "HrEmployeeStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE"
+      ]
+    },
+    "HrEmployeeTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrEmployeeStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrEmployeeCreateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "full_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "join_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "position_title": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "employee_number",
+        "full_name"
+      ],
+      "additionalProperties": false
+    },
+    "HrEmployeeUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "full_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "join_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "position_title": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrEmployeeProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "actor_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employee_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "full_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employment_status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "join_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "position_title": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrEmployeeStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "employee_id",
+        "actor_id",
+        "employee_number",
+        "full_name",
+        "email",
+        "employment_status",
+        "join_date",
+        "end_date",
+        "department_code",
+        "position_title",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrEmployeeListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrEmployeeProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrAttendanceCreateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "attendance_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "check_in_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "check_out_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "recorded_status": {
+          "type": "string",
+          "enum": [
+            "PRESENT",
+            "ABSENT",
+            "LATE",
+            "EXCUSED"
+          ]
+        }
+      },
+      "required": [
+        "employee_id",
+        "attendance_date",
+        "recorded_status"
+      ],
+      "additionalProperties": false
+    },
+    "HrAttendanceProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "attendance_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "attendance_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "check_in_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "check_out_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "attendance_id",
+        "employee_id",
+        "attendance_date",
+        "check_in_at",
+        "check_out_at",
+        "status",
+        "source",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrAttendanceListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrAttendanceProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrLeaveRequestStatus": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "WITHDRAWN"
+      ]
+    },
+    "HrLeaveRequestTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrLeaveRequestCreateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "leave_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reason": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "employee_id",
+        "leave_type",
+        "start_date",
+        "end_date"
+      ],
+      "additionalProperties": false
+    },
+    "HrLeaveRequestUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "leave_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reason": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrLeaveRequestProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "leave_request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "leave_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reason": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "approved_by": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "approved_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "leave_request_id",
+        "employee_id",
+        "leave_type",
+        "start_date",
+        "end_date",
+        "reason",
+        "status",
+        "approved_by",
+        "approved_at",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrLeaveRequestListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrRecruitmentStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "ON_HOLD",
+        "CLOSED"
+      ]
+    },
+    "HrRecruitmentTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrRecruitmentStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrRecruitmentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "position_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employment_type": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "opened_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "position_title",
+        "opened_at"
+      ],
+      "additionalProperties": false
+    },
+    "HrRecruitmentUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "position_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employment_type": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrRecruitmentProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "recruitment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "position_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "employment_type": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "opened_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "closed_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrRecruitmentStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "recruitment_id",
+        "position_title",
+        "department_code",
+        "employment_type",
+        "status",
+        "opened_at",
+        "closed_at",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrRecruitmentListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrRecruitmentProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrCandidateStatus": {
+      "type": "string",
+      "enum": [
+        "APPLIED",
+        "SCREENING",
+        "INTERVIEW"
+      ]
+    },
+    "HrCandidateTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrCandidateStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrCandidateCreateRequest": {
+      "type": "object",
+      "properties": {
+        "recruitment_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "full_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "full_name"
+      ],
+      "additionalProperties": false
+    },
+    "HrCandidateUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "full_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrCandidateProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "recruitment_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "full_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "email": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 255
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "phone": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "source": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrCandidateStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "candidate_id",
+        "recruitment_id",
+        "full_name",
+        "email",
+        "phone",
+        "source",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrCandidateListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrCandidateProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrInterviewStatus": {
+      "type": "string",
+      "enum": [
+        "SCHEDULED",
+        "COMPLETED",
+        "CANCELLED"
+      ]
+    },
+    "HrInterviewTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrInterviewStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrInterviewCreateRequest": {
+      "type": "object",
+      "properties": {
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "scheduled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "candidate_id",
+        "scheduled_at"
+      ],
+      "additionalProperties": false
+    },
+    "HrInterviewUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "scheduled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrInterviewProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "interview_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "candidate_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "interviewer_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "scheduled_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrInterviewStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "interview_id",
+        "candidate_id",
+        "interviewer_actor_id",
+        "scheduled_at",
+        "status",
+        "notes",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrInterviewListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrInterviewProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrOnboardingStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_PROGRESS",
+        "COMPLETED"
+      ]
+    },
+    "HrOnboardingTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrOnboardingStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrOnboardingCreateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "target_completion_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "employee_id",
+        "start_date"
+      ],
+      "additionalProperties": false
+    },
+    "HrOnboardingUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "target_completion_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrOnboardingProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "onboarding_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "target_completion_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "owner_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrOnboardingStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "onboarding_id",
+        "employee_id",
+        "start_date",
+        "target_completion_date",
+        "status",
+        "owner_actor_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrOnboardingListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrOnboardingProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrPerformanceReviewStatus": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "IN_REVIEW",
+        "REVIEWED"
+      ]
+    },
+    "HrPerformanceReviewTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrPerformanceReviewCreateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "review_period": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "rating": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{1,6}(?:\\.\\d{1,2})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "employee_id",
+        "review_period"
+      ],
+      "additionalProperties": false
+    },
+    "HrPerformanceReviewUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "review_period": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "rating": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{1,6}(?:\\.\\d{1,2})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrPerformanceReviewProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "performance_review_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "review_period": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "reviewer_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "rating": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{1,6}(?:\\.\\d{1,2})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "summary": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "performance_review_id",
+        "employee_id",
+        "review_period",
+        "reviewer_actor_id",
+        "rating",
+        "summary",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrPerformanceReviewListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrTrainingStatus": {
+      "type": "string",
+      "enum": [
+        "PLANNED",
+        "IN_PROGRESS",
+        "COMPLETED",
+        "CANCELLED"
+      ]
+    },
+    "HrTrainingTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrTrainingStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrTrainingCreateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "provider": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "start_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "name"
+      ],
+      "additionalProperties": false
+    },
+    "HrTrainingUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "provider": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "start_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrTrainingProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "training_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "provider": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "start_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrTrainingStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "training_id",
+        "name",
+        "provider",
+        "start_date",
+        "end_date",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrTrainingListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrTrainingProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrTrainingEnrollmentStatus": {
+      "type": "string",
+      "enum": [
+        "ENROLLED",
+        "COMPLETED",
+        "CANCELLED"
+      ]
+    },
+    "HrTrainingEnrollmentTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrTrainingEnrollmentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "training_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        }
+      },
+      "required": [
+        "training_id",
+        "employee_id"
+      ],
+      "additionalProperties": false
+    },
+    "HrTrainingEnrollmentProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "training_enrollment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "training_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "completed_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "training_enrollment_id",
+        "training_id",
+        "employee_id",
+        "status",
+        "completed_at",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrTrainingEnrollmentListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrSuccessionStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_REVIEW"
+      ]
+    },
+    "HrSuccessionTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrSuccessionStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrSuccessionCreateRequest": {
+      "type": "object",
+      "properties": {
+        "position_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "position_title"
+      ],
+      "additionalProperties": false
+    },
+    "HrSuccessionUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "position_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrSuccessionProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "succession_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "position_title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "department_code": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrSuccessionStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "succession_id",
+        "position_title",
+        "department_code",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrSuccessionListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrSuccessionProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrSuccessionCandidateCreateRequest": {
+      "type": "object",
+      "properties": {
+        "succession_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "readiness": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "succession_id",
+        "employee_id",
+        "readiness"
+      ],
+      "additionalProperties": false
+    },
+    "HrSuccessionCandidateUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "readiness": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrSuccessionCandidateProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "succession_candidate_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "succession_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "readiness": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 32
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "succession_candidate_id",
+        "succession_id",
+        "employee_id",
+        "readiness",
+        "notes",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrSuccessionCandidateListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrSuccessionCandidateProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrGrievanceStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_REVIEW"
+      ]
+    },
+    "HrGrievanceTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrGrievanceStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrGrievanceCreateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "required": [
+        "employee_id",
+        "category",
+        "description"
+      ],
+      "additionalProperties": false
+    },
+    "HrGrievanceUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "category": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrGrievanceProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "grievance_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "category": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "type": "string",
+          "minLength": 1
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "assigned_to": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrGrievanceStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "grievance_id",
+        "employee_id",
+        "category",
+        "description",
+        "status",
+        "assigned_to",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrGrievanceListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrGrievanceProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrEmploymentContractStatus": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "IN_REVIEW"
+      ]
+    },
+    "HrEmploymentContractTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrEmploymentContractCreateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "contract_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "contract_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "employee_id",
+        "contract_number",
+        "contract_type",
+        "start_date"
+      ],
+      "additionalProperties": false
+    },
+    "HrEmploymentContractUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "contract_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "contract_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrEmploymentContractProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "employment_contract_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "contract_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "contract_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 64
+        },
+        "start_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "employment_contract_id",
+        "employee_id",
+        "contract_number",
+        "contract_type",
+        "start_date",
+        "end_date",
+        "status",
+        "document_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrEmploymentContractListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrPersonnelFileStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED",
+        "ARCHIVED"
+      ]
+    },
+    "HrPersonnelFileTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrPersonnelFileCreateRequest": {
+      "type": "object",
+      "properties": {
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "file_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "employee_id",
+        "file_type"
+      ],
+      "additionalProperties": false
+    },
+    "HrPersonnelFileUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "file_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrPersonnelFileProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "personnel_file_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "file_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "personnel_file_id",
+        "employee_id",
+        "document_id",
+        "file_type",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrPersonnelFileListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "employees": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "attendances": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "leave_requests": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "recruitments": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "candidates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "interviews": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "onboardings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "performance_reviews": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "trainings": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "training_enrollments": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "successions": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "succession_candidates": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "grievances": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "employment_contracts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "personnel_files": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "employees",
+        "attendances",
+        "leave_requests",
+        "recruitments",
+        "candidates",
+        "interviews",
+        "onboardings",
+        "performance_reviews",
+        "trainings",
+        "training_enrollments",
+        "successions",
+        "succession_candidates",
+        "grievances",
+        "employment_contracts",
+        "personnel_files"
+      ],
+      "additionalProperties": false
+    },
+    "last_updated_at": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "source",
+    "counts",
+    "last_updated_at"
+  ],
+  "additionalProperties": false
+}

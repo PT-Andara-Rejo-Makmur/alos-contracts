@@ -9,3 +9,6 @@ export * from "./sales";
 export * from "./marketing";
 export * from "./property";
 export * from "./finance";
+export * from "./legal";
+export * from "./hr";
+export * from "./it";

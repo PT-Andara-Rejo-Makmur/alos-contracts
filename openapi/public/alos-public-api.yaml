@@ -7786,6 +7786,4626 @@ paths:
         schema:
           type: string
           minLength: 1
+  /api/v1/legal/permits:
+    get:
+      operationId: legal_permits_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPermitListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_permits_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPermitProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPermitCreateRequest
+  /api/v1/legal/permits/{identity}:
+    get:
+      operationId: legal_permits__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPermitProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_permits__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPermitProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPermitUpdateRequest
+  /api/v1/legal/permits/{identity}/transition:
+    post:
+      operationId: legal_permits__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPermitProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPermitTransitionRequest
+  /api/v1/legal/contracts:
+    get:
+      operationId: legal_contracts_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_contracts_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractCreateRequest
+  /api/v1/legal/contracts/{identity}:
+    get:
+      operationId: legal_contracts__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_contracts__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractUpdateRequest
+  /api/v1/legal/contracts/{identity}/transition:
+    post:
+      operationId: legal_contracts__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractTransitionRequest
+  /api/v1/legal/land-documents:
+    get:
+      operationId: legal_land_documents_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_land_documents_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentCreateRequest
+  /api/v1/legal/land-documents/{identity}:
+    get:
+      operationId: legal_land_documents__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_land_documents__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentUpdateRequest
+  /api/v1/legal/land-documents/{identity}/transition:
+    post:
+      operationId: legal_land_documents__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentTransitionRequest
+  /api/v1/legal/due-diligences:
+    get:
+      operationId: legal_due_diligences_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_due_diligences_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceCreateRequest
+  /api/v1/legal/due-diligences/{identity}:
+    get:
+      operationId: legal_due_diligences__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_due_diligences__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceUpdateRequest
+  /api/v1/legal/due-diligences/{identity}/transition:
+    post:
+      operationId: legal_due_diligences__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceTransitionRequest
+  /api/v1/legal/due-diligence-items:
+    get:
+      operationId: legal_due_diligence_items_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_due_diligence_items_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemCreateRequest
+  /api/v1/legal/due-diligence-items/{identity}:
+    get:
+      operationId: legal_due_diligence_items__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_due_diligence_items__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemUpdateRequest
+  /api/v1/legal/due-diligence-items/{identity}/transition:
+    post:
+      operationId: legal_due_diligence_items__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemTransitionRequest
+  /api/v1/legal/cases:
+    get:
+      operationId: legal_cases_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalCaseListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_cases_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalCaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalCaseCreateRequest
+  /api/v1/legal/cases/{identity}:
+    get:
+      operationId: legal_cases__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalCaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_cases__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalCaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalCaseUpdateRequest
+  /api/v1/legal/cases/{identity}/transition:
+    post:
+      operationId: legal_cases__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalCaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalCaseTransitionRequest
+  /api/v1/legal/claim-reviews:
+    get:
+      operationId: legal_claim_reviews_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_claim_reviews_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewCreateRequest
+  /api/v1/legal/claim-reviews/{identity}:
+    get:
+      operationId: legal_claim_reviews__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_claim_reviews__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewUpdateRequest
+  /api/v1/legal/claim-reviews/{identity}/transition:
+    post:
+      operationId: legal_claim_reviews__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewTransitionRequest
+  /api/v1/legal/expiries:
+    get:
+      operationId: legal_expiries_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalExpiryListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_expiries_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalExpiryProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalExpiryCreateRequest
+  /api/v1/legal/expiries/{identity}:
+    get:
+      operationId: legal_expiries__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalExpiryProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_expiries__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalExpiryProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalExpiryUpdateRequest
+  /api/v1/legal/expiries/{identity}/transition:
+    post:
+      operationId: legal_expiries__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalExpiryProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalExpiryTransitionRequest
+  /api/v1/legal/privacy-requests:
+    get:
+      operationId: legal_privacy_requests_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_privacy_requests_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestCreateRequest
+  /api/v1/legal/privacy-requests/{identity}:
+    get:
+      operationId: legal_privacy_requests__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_privacy_requests__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestUpdateRequest
+  /api/v1/legal/privacy-requests/{identity}/transition:
+    post:
+      operationId: legal_privacy_requests__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestTransitionRequest
+  /api/v1/legal/risks:
+    get:
+      operationId: legal_risks_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalRiskListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_risks_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalRiskProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalRiskCreateRequest
+  /api/v1/legal/risks/{identity}:
+    get:
+      operationId: legal_risks__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalRiskProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_risks__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalRiskProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalRiskUpdateRequest
+  /api/v1/legal/risks/{identity}/transition:
+    post:
+      operationId: legal_risks__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalRiskProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalRiskTransitionRequest
+  /api/v1/legal/controls:
+    get:
+      operationId: legal_controls_get_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalControlListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legal_controls_post_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalControlProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalControlCreateRequest
+  /api/v1/legal/controls/{identity}:
+    get:
+      operationId: legal_controls__detail_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalControlProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: legal_controls__detail_patch
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalControlProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalControlUpdateRequest
+  /api/v1/legal/controls/{identity}/transition:
+    post:
+      operationId: legal_controls__detail_transition_post
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalControlProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalControlTransitionRequest
+  /api/v1/legal/overview:
+    get:
+      operationId: legal_overview_get
+      tags:
+      - legal
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical operational counts
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/v1/hr/employees:
+    get:
+      operationId: hr_employees_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_employees_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeCreateRequest
+  /api/v1/hr/employees/{identity}:
+    get:
+      operationId: hr_employees__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_employees__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeUpdateRequest
+  /api/v1/hr/employees/{identity}/transition:
+    post:
+      operationId: hr_employees__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeTransitionRequest
+  /api/v1/hr/attendances:
+    get:
+      operationId: hr_attendances_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrAttendanceListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_attendances_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrAttendanceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrAttendanceCreateRequest
+  /api/v1/hr/attendances/{identity}:
+    get:
+      operationId: hr_attendances__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrAttendanceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/hr/leave-requests:
+    get:
+      operationId: hr_leave_requests_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_leave_requests_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestCreateRequest
+  /api/v1/hr/leave-requests/{identity}:
+    get:
+      operationId: hr_leave_requests__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_leave_requests__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestUpdateRequest
+  /api/v1/hr/leave-requests/{identity}/transition:
+    post:
+      operationId: hr_leave_requests__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestTransitionRequest
+  /api/v1/hr/recruitments:
+    get:
+      operationId: hr_recruitments_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrRecruitmentListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_recruitments_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrRecruitmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrRecruitmentCreateRequest
+  /api/v1/hr/recruitments/{identity}:
+    get:
+      operationId: hr_recruitments__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrRecruitmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_recruitments__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrRecruitmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrRecruitmentUpdateRequest
+  /api/v1/hr/recruitments/{identity}/transition:
+    post:
+      operationId: hr_recruitments__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrRecruitmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrRecruitmentTransitionRequest
+  /api/v1/hr/candidates:
+    get:
+      operationId: hr_candidates_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_candidates_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateCreateRequest
+  /api/v1/hr/candidates/{identity}:
+    get:
+      operationId: hr_candidates__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_candidates__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateUpdateRequest
+  /api/v1/hr/candidates/{identity}/transition:
+    post:
+      operationId: hr_candidates__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateTransitionRequest
+  /api/v1/hr/interviews:
+    get:
+      operationId: hr_interviews_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInterviewListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_interviews_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInterviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInterviewCreateRequest
+  /api/v1/hr/interviews/{identity}:
+    get:
+      operationId: hr_interviews__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInterviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_interviews__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInterviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInterviewUpdateRequest
+  /api/v1/hr/interviews/{identity}/transition:
+    post:
+      operationId: hr_interviews__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInterviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInterviewTransitionRequest
+  /api/v1/hr/onboardings:
+    get:
+      operationId: hr_onboardings_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrOnboardingListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_onboardings_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrOnboardingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrOnboardingCreateRequest
+  /api/v1/hr/onboardings/{identity}:
+    get:
+      operationId: hr_onboardings__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrOnboardingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_onboardings__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrOnboardingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrOnboardingUpdateRequest
+  /api/v1/hr/onboardings/{identity}/transition:
+    post:
+      operationId: hr_onboardings__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrOnboardingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrOnboardingTransitionRequest
+  /api/v1/hr/performance-reviews:
+    get:
+      operationId: hr_performance_reviews_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_performance_reviews_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewCreateRequest
+  /api/v1/hr/performance-reviews/{identity}:
+    get:
+      operationId: hr_performance_reviews__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_performance_reviews__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewUpdateRequest
+  /api/v1/hr/performance-reviews/{identity}/transition:
+    post:
+      operationId: hr_performance_reviews__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPerformanceReviewTransitionRequest
+  /api/v1/hr/trainings:
+    get:
+      operationId: hr_trainings_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_trainings_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingCreateRequest
+  /api/v1/hr/trainings/{identity}:
+    get:
+      operationId: hr_trainings__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_trainings__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingUpdateRequest
+  /api/v1/hr/trainings/{identity}/transition:
+    post:
+      operationId: hr_trainings__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingTransitionRequest
+  /api/v1/hr/training-enrollments:
+    get:
+      operationId: hr_training_enrollments_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_training_enrollments_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentCreateRequest
+  /api/v1/hr/training-enrollments/{identity}:
+    get:
+      operationId: hr_training_enrollments__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/hr/training-enrollments/{identity}/transition:
+    post:
+      operationId: hr_training_enrollments__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrTrainingEnrollmentTransitionRequest
+  /api/v1/hr/successions:
+    get:
+      operationId: hr_successions_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_successions_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionCreateRequest
+  /api/v1/hr/successions/{identity}:
+    get:
+      operationId: hr_successions__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_successions__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionUpdateRequest
+  /api/v1/hr/successions/{identity}/transition:
+    post:
+      operationId: hr_successions__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionTransitionRequest
+  /api/v1/hr/succession-candidates:
+    get:
+      operationId: hr_succession_candidates_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionCandidateListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_succession_candidates_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionCandidateProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionCandidateCreateRequest
+  /api/v1/hr/succession-candidates/{identity}:
+    get:
+      operationId: hr_succession_candidates__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionCandidateProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_succession_candidates__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionCandidateProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrSuccessionCandidateUpdateRequest
+  /api/v1/hr/grievances:
+    get:
+      operationId: hr_grievances_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrGrievanceListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_grievances_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrGrievanceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrGrievanceCreateRequest
+  /api/v1/hr/grievances/{identity}:
+    get:
+      operationId: hr_grievances__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrGrievanceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_grievances__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrGrievanceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrGrievanceUpdateRequest
+  /api/v1/hr/grievances/{identity}/transition:
+    post:
+      operationId: hr_grievances__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrGrievanceProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrGrievanceTransitionRequest
+  /api/v1/hr/employment-contracts:
+    get:
+      operationId: hr_employment_contracts_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_employment_contracts_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractCreateRequest
+  /api/v1/hr/employment-contracts/{identity}:
+    get:
+      operationId: hr_employment_contracts__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_employment_contracts__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractUpdateRequest
+  /api/v1/hr/employment-contracts/{identity}/transition:
+    post:
+      operationId: hr_employment_contracts__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractTransitionRequest
+  /api/v1/hr/personnel-files:
+    get:
+      operationId: hr_personnel_files_get_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hr_personnel_files_post_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileCreateRequest
+  /api/v1/hr/personnel-files/{identity}:
+    get:
+      operationId: hr_personnel_files__detail_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: hr_personnel_files__detail_patch
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileUpdateRequest
+  /api/v1/hr/personnel-files/{identity}/transition:
+    post:
+      operationId: hr_personnel_files__detail_transition_post
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrPersonnelFileTransitionRequest
+  /api/v1/hr/overview:
+    get:
+      operationId: hr_overview_get
+      tags:
+      - hr
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical operational counts
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+  /api/v1/it/systems:
+    get:
+      operationId: it_systems_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSystemListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_systems_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSystemProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSystemCreateRequest
+  /api/v1/it/systems/{identity}:
+    get:
+      operationId: it_systems__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSystemProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_systems__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSystemProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSystemUpdateRequest
+  /api/v1/it/systems/{identity}/transition:
+    post:
+      operationId: it_systems__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSystemProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSystemTransitionRequest
+  /api/v1/it/integrations:
+    get:
+      operationId: it_integrations_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIntegrationListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_integrations_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIntegrationProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIntegrationCreateRequest
+  /api/v1/it/integrations/{identity}:
+    get:
+      operationId: it_integrations__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIntegrationProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_integrations__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIntegrationProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIntegrationUpdateRequest
+  /api/v1/it/integrations/{identity}/transition:
+    post:
+      operationId: it_integrations__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIntegrationProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIntegrationTransitionRequest
+  /api/v1/it/databases:
+    get:
+      operationId: it_databases_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDatabaseListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_databases_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDatabaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDatabaseCreateRequest
+  /api/v1/it/databases/{identity}:
+    get:
+      operationId: it_databases__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDatabaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_databases__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDatabaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDatabaseUpdateRequest
+  /api/v1/it/databases/{identity}/transition:
+    post:
+      operationId: it_databases__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDatabaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDatabaseTransitionRequest
+  /api/v1/it/environments:
+    get:
+      operationId: it_environments_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItEnvironmentListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_environments_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItEnvironmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItEnvironmentCreateRequest
+  /api/v1/it/environments/{identity}:
+    get:
+      operationId: it_environments__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItEnvironmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_environments__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItEnvironmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItEnvironmentUpdateRequest
+  /api/v1/it/environments/{identity}/transition:
+    post:
+      operationId: it_environments__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItEnvironmentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItEnvironmentTransitionRequest
+  /api/v1/it/repositories:
+    get:
+      operationId: it_repositories_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRepositoryListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_repositories_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRepositoryProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRepositoryCreateRequest
+  /api/v1/it/repositories/{identity}:
+    get:
+      operationId: it_repositories__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRepositoryProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_repositories__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRepositoryProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRepositoryUpdateRequest
+  /api/v1/it/repositories/{identity}/transition:
+    post:
+      operationId: it_repositories__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRepositoryProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRepositoryTransitionRequest
+  /api/v1/it/cicd-pipelines:
+    get:
+      operationId: it_cicd_pipelines_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCicdPipelineListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_cicd_pipelines_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCicdPipelineProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCicdPipelineCreateRequest
+  /api/v1/it/cicd-pipelines/{identity}:
+    get:
+      operationId: it_cicd_pipelines__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCicdPipelineProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_cicd_pipelines__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCicdPipelineProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCicdPipelineUpdateRequest
+  /api/v1/it/cicd-pipelines/{identity}/transition:
+    post:
+      operationId: it_cicd_pipelines__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCicdPipelineProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCicdPipelineTransitionRequest
+  /api/v1/it/ci-runs:
+    get:
+      operationId: it_ci_runs_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCiRunListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_ci_runs_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCiRunProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCiRunCreateRequest
+  /api/v1/it/ci-runs/{identity}:
+    get:
+      operationId: it_ci_runs__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItCiRunProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/it/releases:
+    get:
+      operationId: it_releases_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItReleaseListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_releases_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItReleaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItReleaseCreateRequest
+  /api/v1/it/releases/{identity}:
+    get:
+      operationId: it_releases__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItReleaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_releases__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItReleaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItReleaseUpdateRequest
+  /api/v1/it/releases/{identity}/transition:
+    post:
+      operationId: it_releases__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItReleaseProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItReleaseTransitionRequest
+  /api/v1/it/technical-debts:
+    get:
+      operationId: it_technical_debts_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItTechnicalDebtListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_technical_debts_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItTechnicalDebtProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItTechnicalDebtCreateRequest
+  /api/v1/it/technical-debts/{identity}:
+    get:
+      operationId: it_technical_debts__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItTechnicalDebtProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_technical_debts__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItTechnicalDebtProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItTechnicalDebtUpdateRequest
+  /api/v1/it/technical-debts/{identity}/transition:
+    post:
+      operationId: it_technical_debts__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItTechnicalDebtProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItTechnicalDebtTransitionRequest
+  /api/v1/it/service-monitors:
+    get:
+      operationId: it_service_monitors_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItServiceMonitorListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_service_monitors_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItServiceMonitorProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItServiceMonitorCreateRequest
+  /api/v1/it/service-monitors/{identity}:
+    get:
+      operationId: it_service_monitors__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItServiceMonitorProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/it/incidents:
+    get:
+      operationId: it_incidents_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIncidentListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_incidents_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIncidentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIncidentCreateRequest
+  /api/v1/it/incidents/{identity}:
+    get:
+      operationId: it_incidents__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIncidentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_incidents__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIncidentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIncidentUpdateRequest
+  /api/v1/it/incidents/{identity}/transition:
+    post:
+      operationId: it_incidents__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIncidentProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItIncidentTransitionRequest
+  /api/v1/it/security-findings:
+    get:
+      operationId: it_security_findings_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSecurityFindingListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_security_findings_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSecurityFindingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSecurityFindingCreateRequest
+  /api/v1/it/security-findings/{identity}:
+    get:
+      operationId: it_security_findings__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSecurityFindingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_security_findings__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSecurityFindingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSecurityFindingUpdateRequest
+  /api/v1/it/security-findings/{identity}/transition:
+    post:
+      operationId: it_security_findings__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSecurityFindingProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItSecurityFindingTransitionRequest
+  /api/v1/it/backup-policies:
+    get:
+      operationId: it_backup_policies_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupPolicyListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_backup_policies_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupPolicyProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupPolicyCreateRequest
+  /api/v1/it/backup-policies/{identity}:
+    get:
+      operationId: it_backup_policies__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupPolicyProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_backup_policies__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupPolicyProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupPolicyUpdateRequest
+  /api/v1/it/backup-policies/{identity}/transition:
+    post:
+      operationId: it_backup_policies__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupPolicyProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupPolicyTransitionRequest
+  /api/v1/it/backup-runs:
+    get:
+      operationId: it_backup_runs_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupRunListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_backup_runs_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupRunProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupRunCreateRequest
+  /api/v1/it/backup-runs/{identity}:
+    get:
+      operationId: it_backup_runs__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItBackupRunProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/it/restore-tests:
+    get:
+      operationId: it_restore_tests_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRestoreTestListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_restore_tests_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRestoreTestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRestoreTestCreateRequest
+  /api/v1/it/restore-tests/{identity}:
+    get:
+      operationId: it_restore_tests__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItRestoreTestProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/it/dr-plans:
+    get:
+      operationId: it_dr_plans_get_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDrPlanListProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: it_dr_plans_post_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '201':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDrPlanProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDrPlanCreateRequest
+  /api/v1/it/dr-plans/{identity}:
+    get:
+      operationId: it_dr_plans__detail_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDrPlanProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: it_dr_plans__detail_patch
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDrPlanProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDrPlanUpdateRequest
+  /api/v1/it/dr-plans/{identity}/transition:
+    post:
+      operationId: it_dr_plans__detail_transition_post
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical record projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDrPlanProjection
+        default:
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/it/it-contracts.schema.json#/$defs/ItDrPlanTransitionRequest
+  /api/v1/it/overview:
+    get:
+      operationId: it_overview_get
+      tags:
+      - it
+      security:
+      - bearerAuth: []
+      responses:
+        '200':
+          description: Canonical operational counts
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/it/it-contracts.schema.json
+        default:
+          $ref: '#/components/responses/ErrorResponse'
 components:
   securitySchemes:
     bearerAuth:

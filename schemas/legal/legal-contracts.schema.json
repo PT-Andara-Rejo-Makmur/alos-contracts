@@ -1,0 +1,2564 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json",
+  "title": "LegalOverview",
+  "$defs": {
+    "LegalPermitStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED",
+        "ARCHIVED"
+      ]
+    },
+    "LegalPermitTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalPermitStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalPermitCreateRequest": {
+      "type": "object",
+      "properties": {
+        "permit_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "permit_number": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "issued_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "permit_type",
+        "subject"
+      ],
+      "additionalProperties": false
+    },
+    "LegalPermitUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "permit_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "permit_number": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "issued_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalPermitProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "permit_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "permit_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "permit_number": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "subject": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "issued_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalPermitStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "permit_id",
+        "permit_type",
+        "permit_number",
+        "subject",
+        "issued_at",
+        "expires_at",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalPermitListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalPermitProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalContractStatus": {
+      "type": "string",
+      "enum": [
+        "DRAFT",
+        "IN_REVIEW"
+      ]
+    },
+    "LegalContractTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalContractStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalContractCreateRequest": {
+      "type": "object",
+      "properties": {
+        "contract_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "contract_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "counterparty_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "start_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "contract_number",
+        "contract_type",
+        "counterparty_name"
+      ],
+      "additionalProperties": false
+    },
+    "LegalContractUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "contract_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "contract_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "counterparty_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "start_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalContractProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "contract_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "contract_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "contract_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "counterparty_name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "start_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "end_date": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalContractStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "contract_id",
+        "contract_number",
+        "contract_type",
+        "counterparty_name",
+        "start_date",
+        "end_date",
+        "status",
+        "document_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalContractListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalContractProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalLandDocumentStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED",
+        "ARCHIVED"
+      ]
+    },
+    "LegalLandDocumentTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalLandDocumentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "property_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_number": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "holder_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "issued_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "document_type"
+      ],
+      "additionalProperties": false
+    },
+    "LegalLandDocumentUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "document_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_number": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "holder_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "issued_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalLandDocumentProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "land_document_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "property_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_number": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 200
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "holder_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "issued_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "expires_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "land_document_id",
+        "property_ref",
+        "document_type",
+        "document_number",
+        "holder_name",
+        "issued_at",
+        "expires_at",
+        "status",
+        "document_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalLandDocumentListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalLandDocumentProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalDueDiligenceStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_REVIEW"
+      ]
+    },
+    "LegalDueDiligenceTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalDueDiligenceCreateRequest": {
+      "type": "object",
+      "properties": {
+        "subject_type": {
+          "type": "string",
+          "enum": [
+            "CONTRACT",
+            "PERMIT",
+            "LAND_DOCUMENT",
+            "CASE"
+          ]
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "required": [
+        "subject_type",
+        "subject_id",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "LegalDueDiligenceUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalDueDiligenceProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "due_diligence_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "subject_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "owner_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "due_diligence_id",
+        "subject_type",
+        "subject_id",
+        "title",
+        "status",
+        "owner_actor_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalDueDiligenceListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalDueDiligenceItemStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_PROGRESS",
+        "COMPLETED"
+      ]
+    },
+    "LegalDueDiligenceItemTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalDueDiligenceItemCreateRequest": {
+      "type": "object",
+      "properties": {
+        "due_diligence_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "item_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "finding": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "due_diligence_id",
+        "item_type"
+      ],
+      "additionalProperties": false
+    },
+    "LegalDueDiligenceItemUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "item_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "finding": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalDueDiligenceItemProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "due_diligence_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "due_diligence_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "item_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "finding": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "due_diligence_item_id",
+        "due_diligence_id",
+        "item_type",
+        "description",
+        "status",
+        "finding",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalDueDiligenceItemListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalDueDiligenceItemProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalCaseStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_REVIEW"
+      ]
+    },
+    "LegalCaseTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalCaseStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalCaseCreateRequest": {
+      "type": "object",
+      "properties": {
+        "case_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "case_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "case_number",
+        "case_type",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "LegalCaseUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "case_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "case_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalCaseProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "case_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "case_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "case_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "owner_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalCaseStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "case_id",
+        "case_number",
+        "case_type",
+        "title",
+        "description",
+        "status",
+        "owner_actor_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalCaseListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalCaseProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalClaimReviewStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_REVIEW",
+        "REVIEWED"
+      ]
+    },
+    "LegalClaimReviewTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalClaimReviewCreateRequest": {
+      "type": "object",
+      "properties": {
+        "subject_type": {
+          "type": "string",
+          "enum": [
+            "CONTRACT",
+            "PERMIT",
+            "LAND_DOCUMENT",
+            "CASE"
+          ]
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "claimant_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "claim_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{1,18}(?:\\.\\d{1,2})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "subject_type",
+        "subject_id"
+      ],
+      "additionalProperties": false
+    },
+    "LegalClaimReviewUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "claimant_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "claim_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{1,18}(?:\\.\\d{1,2})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalClaimReviewProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "claim_review_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "subject_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "claimant_name": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "claim_amount": {
+          "oneOf": [
+            {
+              "type": "string",
+              "pattern": "^\\d{1,18}(?:\\.\\d{1,2})?$"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "claim_review_id",
+        "subject_type",
+        "subject_id",
+        "claimant_name",
+        "claim_amount",
+        "assessment",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalClaimReviewListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalClaimReviewProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalExpiryStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "ACKNOWLEDGED"
+      ]
+    },
+    "LegalExpiryTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalExpiryStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalExpiryCreateRequest": {
+      "type": "object",
+      "properties": {
+        "subject_type": {
+          "type": "string",
+          "enum": [
+            "CONTRACT",
+            "PERMIT",
+            "LAND_DOCUMENT",
+            "CASE"
+          ]
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "reminder_days": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "subject_type",
+        "subject_id",
+        "expires_at"
+      ],
+      "additionalProperties": false
+    },
+    "LegalExpiryUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "expires_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "reminder_days": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalExpiryProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "expiry_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "subject_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "expires_at": {
+          "type": "string",
+          "format": "date"
+        },
+        "reminder_days": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalExpiryStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "expiry_id",
+        "subject_type",
+        "subject_id",
+        "expires_at",
+        "reminder_days",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalExpiryListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalExpiryProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalPrivacyRequestStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_PROGRESS"
+      ]
+    },
+    "LegalPrivacyRequestTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalPrivacyRequestCreateRequest": {
+      "type": "object",
+      "properties": {
+        "request_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requester_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "request_type"
+      ],
+      "additionalProperties": false
+    },
+    "LegalPrivacyRequestUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "request_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requester_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalPrivacyRequestProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "privacy_request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "request_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requester_ref": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "due_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "privacy_request_id",
+        "request_type",
+        "requester_ref",
+        "description",
+        "status",
+        "due_at",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalPrivacyRequestListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalPrivacyRequestProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalRiskStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "MITIGATING",
+        "REVIEWED"
+      ]
+    },
+    "LegalRiskTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalRiskStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalRiskCreateRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "likelihood": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "impact": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "rating": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        }
+      },
+      "required": [
+        "title",
+        "likelihood",
+        "impact",
+        "rating"
+      ],
+      "additionalProperties": false
+    },
+    "LegalRiskUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "likelihood": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "impact": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "rating": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalRiskProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "risk_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "likelihood": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "impact": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "rating": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "owner_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalRiskStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "risk_id",
+        "title",
+        "description",
+        "likelihood",
+        "impact",
+        "rating",
+        "status",
+        "owner_actor_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalRiskListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalRiskProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalControlStatus": {
+      "type": "string",
+      "enum": [
+        "ACTIVE",
+        "INACTIVE"
+      ]
+    },
+    "LegalControlTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalControlStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalControlCreateRequest": {
+      "type": "object",
+      "properties": {
+        "control_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frequency": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "control_code",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "LegalControlUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "control_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frequency": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalControlProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "control_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "control_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 500
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "frequency": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "owner_actor_id": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalControlStatus"
+          },
+          "uniqueItems": true
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "control_id",
+        "control_code",
+        "title",
+        "description",
+        "frequency",
+        "owner_actor_id",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalControlListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalControlProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "source": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+    },
+    "counts": {
+      "type": "object",
+      "properties": {
+        "permits": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "contracts": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "land_documents": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "due_diligences": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "due_diligence_items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "cases": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "claim_reviews": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "expiries": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "privacy_requests": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "risks": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "controls": {
+          "type": "integer",
+          "minimum": 0
+        }
+      },
+      "required": [
+        "permits",
+        "contracts",
+        "land_documents",
+        "due_diligences",
+        "due_diligence_items",
+        "cases",
+        "claim_reviews",
+        "expiries",
+        "privacy_requests",
+        "risks",
+        "controls"
+      ],
+      "additionalProperties": false
+    },
+    "last_updated_at": {
+      "oneOf": [
+        {
+          "type": "string",
+          "format": "date-time"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "source",
+    "counts",
+    "last_updated_at"
+  ],
+  "additionalProperties": false
+}

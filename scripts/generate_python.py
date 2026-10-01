@@ -459,7 +459,7 @@ def main() -> int:
     expected_shared_work = render_shared_work()
     projection_outputs = {
         ROOT / "generated" / "python" / (domain + '_contracts.py'): render_projection(domain, python=True)
-        for domain in ("strategy", "executive", "sales", "marketing", "property", "finance")
+        for domain in ("strategy", "executive", "sales", "marketing", "property", "finance", "legal", "hr", "it")
     }
     for output, content in projection_outputs.items():
         if args.check:
