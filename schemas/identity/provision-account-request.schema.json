@@ -2,23 +2,48 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://schemas.alos.dev/v1/identity/provision-account-request.schema.json",
   "title": "Provision Account Request",
-  "description": "Employee account request and an existing workspace target. Tenant, organization, actor, and authority facts are derived by Backend.",
+  "description": "Employee account request and an existing workspace target. Email comes exclusively from the HR Employee record. Tenant, organization, actor, and authority facts are derived by Backend.",
   "type": "object",
   "additionalProperties": false,
-  "required": ["employee_id", "workspace_id", "role_refs", "effective_at"],
+  "required": [
+    "employee_id",
+    "workspace_id",
+    "role_refs",
+    "effective_at"
+  ],
   "properties": {
-    "employee_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"},
-    "email": {"type": "string", "format": "email", "maxLength": 255},
-    "workspace_id": {"$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"},
+    "employee_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/employee_id"
+    },
+    "workspace_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+    },
     "role_refs": {
       "type": "array",
       "minItems": 1,
       "maxItems": 1,
       "uniqueItems": true,
-      "items": {"$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/authorization_role"}
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/identity/authorization-vocabulary.schema.json#/$defs/authorization_role"
+      }
     },
-    "effective_at": {"type": "string", "format": "date-time"},
-    "expires_at": {"type": ["string", "null"], "format": "date-time"},
-    "note": {"type": ["string", "null"], "maxLength": 2000}
+    "effective_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "note": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "maxLength": 2000
+    }
   }
 }

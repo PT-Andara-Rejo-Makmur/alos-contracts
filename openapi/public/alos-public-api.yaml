@@ -841,6 +841,8 @@ paths:
         Requires the canonical `identity.accounts.manage` permission. Tenant and
         organization are always derived from the authenticated principal; the
         supplied workspace must already belong to that active authority boundary.
+        Account email is derived exclusively from the eligible HR Employee record;
+        client email fields are rejected.
       requestBody:
         required: true
         content:

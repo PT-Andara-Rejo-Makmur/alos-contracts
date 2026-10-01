@@ -115,6 +115,12 @@
       "violation": "$.role_refs: maxItems became more restrictive",
       "decision": "INTENTIONALLY_CHANGED",
       "migration": "Project at most one authoritative role per workspace membership."
+    },
+    {
+      "schema": "schemas/identity/provision-account-request.schema.json",
+      "violation": "$: properties removed: ['email']",
+      "decision": "INTENTIONALLY_CHANGED",
+      "migration": "Identity authority cutover: clients must omit email. Backend derives email from the locked HR Employee record; old client email fields are rejected. Deploy Contracts, Backend, and Web together."
     }
   ]
 }

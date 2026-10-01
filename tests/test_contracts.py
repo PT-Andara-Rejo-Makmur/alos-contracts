@@ -286,14 +286,11 @@ def test_provision_account_request_uses_one_role_and_backend_owned_authority(sch
     validate = validator(schema_id, schemas, registry)
     payload = {
         "employee_id": "employee-001",
-        "email": "new-account@andara.local",
         "workspace_id": "workspace_existing",
         "role_refs": ["DIVISION_MEMBER"],
         "effective_at": "2026-09-30T00:00:00Z",
     }
     validate.validate(payload)
-    canonical_payload = {k: v for k, v in payload.items() if k != "email"}
-    validate.validate(canonical_payload)
 
     with pytest.raises(ValidationError):
         validate.validate({**payload, "tenant_id": "tenant_browser_selected"})
@@ -304,6 +301,7 @@ def test_provision_account_request_uses_one_role_and_backend_owned_authority(sch
     with pytest.raises(ValidationError):
         validate.validate({**payload, "role_refs": ["DIVISION_MEMBER", "IT_ADMIN"]})
     for field, value in {
+        "email": "arbitrary@example.test",
         "password": "IT-selected-secret",
         "permission_refs": ["finance.read"],
         "scope_refs": ["scope.finance"],
