@@ -7,8 +7,10 @@ import json
 from pathlib import Path
 
 if __package__:
+    from .projection_codegen import render as render_projection
     from .shared_work_codegen import render_python as render_shared_work
 else:
+    from projection_codegen import render as render_projection
     from shared_work_codegen import render_python as render_shared_work
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -455,6 +457,18 @@ def main() -> int:
     expected_skills = render_skills()
     expected_identity = render_identity()
     expected_shared_work = render_shared_work()
+    projection_outputs = {
+        ROOT / "generated" / "python" / (domain + '_contracts.py'): render_projection(domain, python=True)
+        for domain in ("strategy", "executive")
+    }
+    for output, content in projection_outputs.items():
+        if args.check:
+            if not output.exists() or output.read_text(encoding="utf-8") != content:
+                raise SystemExit(f"{output.relative_to(ROOT)} is stale; run the generator")
+            print(f"Verified {output.relative_to(ROOT)}")
+        else:
+            output.write_text(content, encoding="utf-8", newline="\n")
+            print(f"Generated {output.relative_to(ROOT)}")
     if args.check:
         if not OUTPUT.exists() or OUTPUT.read_text(encoding="utf-8") != expected:
             raise SystemExit(

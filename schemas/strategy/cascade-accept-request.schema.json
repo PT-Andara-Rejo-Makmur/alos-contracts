@@ -1,0 +1,19 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/strategy/cascade-accept-request.schema.json",
+  "title": "CascadeAcceptRequest",
+  "type": "object",
+  "properties": {
+    "derived_targets": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/business-target-create-request.schema.json"
+      }
+    }
+  },
+  "required": [
+    "derived_targets"
+  ],
+  "additionalProperties": false
+}

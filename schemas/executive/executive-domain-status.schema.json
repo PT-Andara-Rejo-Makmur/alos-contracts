@@ -1,0 +1,36 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/executive/executive-domain-status.schema.json",
+  "title": "ExecutiveDomainStatus",
+  "type": "object",
+  "properties": {
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-connection-status.schema.json"
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+      }
+    },
+    "last_verified_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "domain",
+    "status",
+    "sources",
+    "last_verified_at"
+  ],
+  "additionalProperties": false,
+  "description": "Connection state of a domain and its sources; contains no operational metrics."
+}

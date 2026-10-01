@@ -2,6 +2,16 @@
 
 Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/en/1.1.0/) dan Semantic Versioning.
 
+## [Unreleased]
+
+### Ditambahkan
+
+- Executive read projections untuk availability Strategy, Shared Work, dan sumber domain,
+  dengan status connected, connected-empty, unavailable, dan error serta timestamp nullable.
+- Schema canonical untuk update Strategy plan dan accept cascade, diekstrak dari OpenAPI publik.
+- Generator dan consistency checks untuk seluruh schema Strategy serta Executive pada Python
+  dan TypeScript; contract fields dan enum berasal langsung dari JSON Schema.
+
 ## [2.0.0] - 2026-09-30
 
 ### Diubah

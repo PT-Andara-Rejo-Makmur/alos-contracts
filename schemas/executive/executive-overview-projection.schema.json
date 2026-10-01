@@ -1,0 +1,57 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/executive/executive-overview-projection.schema.json",
+  "title": "ExecutiveOverviewProjection",
+  "type": "object",
+  "properties": {
+    "tenant_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+    },
+    "organization_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+    },
+    "workspace_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+    },
+    "period": {
+      "oneOf": [
+        {
+          "$ref": "https://schemas.alos.dev/v1/strategy/business-period.schema.json"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    },
+    "strategy": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+    },
+    "shared_work": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+    },
+    "domains": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/executive/executive-domain-status.schema.json"
+      }
+    },
+    "last_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "tenant_id",
+    "organization_id",
+    "workspace_id",
+    "strategy",
+    "shared_work",
+    "domains",
+    "last_updated_at"
+  ],
+  "additionalProperties": false,
+  "description": "Governed read projection of canonical sources, never an authoritative operational entity. Unknown timestamps and periods remain null. No Executive endpoint is implemented by this foundation."
+}

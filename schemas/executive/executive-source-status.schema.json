@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json",
+  "title": "ExecutiveSourceStatus",
+  "type": "object",
+  "properties": {
+    "source": {
+      "type": "string",
+      "minLength": 1
+    },
+    "status": {
+      "$ref": "https://schemas.alos.dev/v1/executive/executive-connection-status.schema.json"
+    },
+    "authoritative": {
+      "type": "boolean"
+    },
+    "last_updated_at": {
+      "type": [
+        "string",
+        "null"
+      ],
+      "format": "date-time"
+    },
+    "verification_state": {
+      "oneOf": [
+        {
+          "$ref": "https://schemas.alos.dev/v1/strategy/metric-observation-create-request.schema.json#/properties/verification_state"
+        },
+        {
+          "type": "null"
+        }
+      ]
+    }
+  },
+  "required": [
+    "source",
+    "status",
+    "authoritative",
+    "last_updated_at"
+  ],
+  "additionalProperties": false,
+  "description": "Read-only source availability. Null means unknown; authority describes the source, never this projection."
+}

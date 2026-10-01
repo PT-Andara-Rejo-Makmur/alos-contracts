@@ -1,0 +1,12 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/executive/executive-connection-status.schema.json",
+  "title": "ExecutiveConnectionStatus",
+  "type": "string",
+  "enum": [
+    "CONNECTED",
+    "CONNECTED_EMPTY",
+    "UNAVAILABLE",
+    "ERROR"
+  ]
+}
