@@ -6,6 +6,8 @@
 
 import type { ExecutiveSourceStatus } from "./executive";
 
+import type { SharedWorkMaterialActionProjection } from "./shared-work";
+
 export type SalesCustomerStatus = "ACTIVE" | "INACTIVE";
 
 export interface SalesCustomerTransitionRequest {
@@ -92,6 +94,7 @@ export type SalesOpportunityStatus = "CANCELLED" | "LOST" | "OPEN" | "WON";
 
 export interface SalesOpportunityTransitionRequest {
   readonly status: SalesOpportunityStatus;
+  readonly approval_id?: string;
 }
 
 export interface SalesOpportunityCreateRequest {
@@ -129,6 +132,7 @@ export interface SalesOpportunityProjection {
   readonly updated_at: string;
   readonly allowed_transitions: readonly (SalesOpportunityStatus)[];
   readonly allowed_pipeline_stages: readonly ("Qualified" | "Survey" | "Booking")[];
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface SalesOpportunityListProjection {
@@ -180,6 +184,7 @@ export type SalesBookingStatus = "CANCELLED" | "CONFIRMED" | "PENDING";
 
 export interface SalesBookingTransitionRequest {
   readonly status: SalesBookingStatus;
+  readonly approval_id?: string;
 }
 
 export interface SalesBookingCreateRequest {
@@ -206,6 +211,7 @@ export interface SalesBookingProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (SalesBookingStatus)[];
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface SalesBookingListProjection {
@@ -218,6 +224,7 @@ export type SalesClosingStatus = "CANCELLED" | "COMPLETED" | "OPEN";
 
 export interface SalesClosingTransitionRequest {
   readonly status: SalesClosingStatus;
+  readonly approval_id?: string;
 }
 
 export interface SalesClosingCreateRequest {
@@ -246,6 +253,7 @@ export interface SalesClosingProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (SalesClosingStatus)[];
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface SalesClosingListProjection {
@@ -339,6 +347,7 @@ export type SalesPricingStatus = "ACTIVE" | "DRAFT" | "INACTIVE";
 
 export interface SalesPricingTransitionRequest {
   readonly status: SalesPricingStatus;
+  readonly approval_id?: string;
 }
 
 export interface SalesPricingCreateRequest {
@@ -365,6 +374,7 @@ export interface SalesPricingProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (SalesPricingStatus)[];
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface SalesPricingListProjection {

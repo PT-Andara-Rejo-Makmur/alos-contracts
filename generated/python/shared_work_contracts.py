@@ -31,7 +31,7 @@ SharedWorkApprovalStatus = Literal['PENDING', 'APPROVED', 'RETURNED', 'REJECTED'
 
 SharedWorkApprovalDecision = Literal['APPROVED', 'RETURNED', 'REJECTED', 'HOLD']
 
-SharedWorkApprovalSubjectType = Literal['PROJECT', 'TASK']
+SharedWorkApprovalSubjectType = Literal['PROJECT', 'TASK', 'SALES_OPPORTUNITY', 'SALES_BOOKING', 'SALES_CLOSING', 'SALES_PRICING', 'PROPERTY_UNIT', 'PROPERTY_CHANGE_ORDER', 'PROPERTY_PAYMENT_CERTIFICATE', 'FINANCE_BUDGET']
 
 SharedWorkDocumentStatus = Literal['DRAFT', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'RETIRED']
 
@@ -159,12 +159,19 @@ class SharedWorkApprovalProjection(TypedDict, total=False):
     documents_count: int
     evidence_count: int
     comments_count: int
+    requested_action: 'SharedWorkMaterialAction | None'
+    subject_snapshot: str | None
+    consumed_at: str | None
+    consumed_by: str | None
+    transition_ref: str | None
+    allowed_decisions: list[SharedWorkApprovalDecision]
 
 class SharedWorkApprovalRequest(TypedDict, total=False):
     subject_type: Required[SharedWorkApprovalSubjectType]
     subject_id: Required[str]
     reason: str | None
     materiality_value: float | None
+    requested_action: 'SharedWorkMaterialAction'
 
 class SharedWorkApprovalDecisionRequest(TypedDict, total=False):
     decision_reason: str
@@ -433,3 +440,12 @@ class SharedWorkCommentProjection(TypedDict, total=False):
 
 class SharedWorkFindingAssignmentRequest(TypedDict, total=False):
     owner_actor_id: Required[str]
+
+SharedWorkMaterialAction = Literal['WIN_OPPORTUNITY', 'CONFIRM_BOOKING', 'COMPLETE_CLOSING', 'ACTIVATE_PRICING', 'RESERVE_UNIT', 'SELL_UNIT', 'APPROVE_CHANGE_ORDER', 'APPROVE_PAYMENT_CERTIFICATE', 'APPROVE_BUDGET', 'ACTIVATE_BUDGET', 'CLOSE_BUDGET']
+
+class SharedWorkMaterialActionProjection(TypedDict, total=False):
+    subject_type: Required[SharedWorkApprovalSubjectType]
+    requested_action: Required[SharedWorkMaterialAction]
+    target_status: Required[str]
+    approval_required: Required[bool]
+    execution_allowed: Required[bool]

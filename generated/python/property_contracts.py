@@ -10,12 +10,13 @@ from typing import Literal, Required, TypedDict
 
 from executive_contracts import ExecutiveSourceStatus
 
-from shared_work_contracts import SharedWorkFindingSeverity
+from shared_work_contracts import SharedWorkFindingSeverity, SharedWorkMaterialActionProjection
 
 PropertyUnitStatus = Literal['AVAILABLE', 'ON_HOLD', 'RESERVED', 'SOLD']
 
 class PropertyUnitTransitionRequest(TypedDict, total=False):
     status: Required['PropertyUnitStatus']
+    approval_id: 'str'
 
 class PropertyUnitCreateRequest(TypedDict, total=False):
     project_id: 'str | None'
@@ -47,6 +48,7 @@ class PropertyUnitProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[PropertyUnitStatus]']
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class PropertyUnitListProjection(TypedDict, total=False):
     items: Required['list[PropertyUnitProjection]']
@@ -260,6 +262,7 @@ PropertyChangeOrderStatus = Literal['APPROVED', 'CANCELLED', 'DRAFT', 'SUBMITTED
 
 class PropertyChangeOrderTransitionRequest(TypedDict, total=False):
     status: Required['PropertyChangeOrderStatus']
+    approval_id: 'str'
 
 class PropertyChangeOrderCreateRequest(TypedDict, total=False):
     project_id: Required['str']
@@ -285,6 +288,7 @@ class PropertyChangeOrderProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[PropertyChangeOrderStatus]']
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class PropertyChangeOrderListProjection(TypedDict, total=False):
     items: Required['list[PropertyChangeOrderProjection]']
@@ -295,6 +299,7 @@ PropertyPaymentCertificateStatus = Literal['APPROVED', 'CANCELLED', 'DRAFT', 'SU
 
 class PropertyPaymentCertificateTransitionRequest(TypedDict, total=False):
     status: Required['PropertyPaymentCertificateStatus']
+    approval_id: 'str'
 
 class PropertyPaymentCertificateCreateRequest(TypedDict, total=False):
     project_id: Required['str']
@@ -319,6 +324,7 @@ class PropertyPaymentCertificateProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[PropertyPaymentCertificateStatus]']
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class PropertyPaymentCertificateListProjection(TypedDict, total=False):
     items: Required['list[PropertyPaymentCertificateProjection]']

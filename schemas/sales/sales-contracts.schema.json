@@ -478,6 +478,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesOpportunityStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -711,6 +716,12 @@
             ]
           },
           "uniqueItems": true
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
+          }
         }
       },
       "required": [
@@ -968,6 +979,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesBookingStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -1085,6 +1101,12 @@
           "items": {
             "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesBookingStatus"
           }
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
+          }
         }
       },
       "required": [
@@ -1141,6 +1163,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesClosingStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -1301,6 +1328,12 @@
           "type": "array",
           "items": {
             "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesClosingStatus"
+          }
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
         }
       },
@@ -1775,6 +1808,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesPricingStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -1914,6 +1952,12 @@
           "type": "array",
           "items": {
             "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesPricingStatus"
+          }
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
         }
       },

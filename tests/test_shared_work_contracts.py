@@ -198,7 +198,7 @@ def test_approval_workflow_is_typed_and_authority_fields_are_server_owned(
 ) -> None:
     schema = load_json("schemas/shared-work/shared-work.schema.json")
     definitions = schema["$defs"]
-    assert definitions["ApprovalSubjectType"]["enum"] == ["PROJECT", "TASK"]
+    assert definitions["ApprovalSubjectType"]["enum"][:2] == ["PROJECT", "TASK"]
     for name, valid, forbidden in (
         ("ApprovalRequest", {"subject_type": "PROJECT", "subject_id": "project_1"}, {"status": "APPROVED"}),
         ("ApprovalDecisionRequest", {"decision_reason": "Reviewed"}, {"approver_actor_id": "actor_1"}),

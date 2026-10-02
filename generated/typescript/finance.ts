@@ -6,6 +6,8 @@
 
 import type { ExecutiveSourceStatus } from "./executive";
 
+import type { SharedWorkMaterialActionProjection } from "./shared-work";
+
 export type FinanceBankAccountStatus = "ACTIVE" | "INACTIVE";
 
 export interface FinanceBankAccountTransitionRequest {
@@ -251,6 +253,7 @@ export type FinanceBudgetStatus = "ACTIVE" | "APPROVED" | "CLOSED" | "DRAFT" | "
 
 export interface FinanceBudgetTransitionRequest {
   readonly status: FinanceBudgetStatus;
+  readonly approval_id?: string;
 }
 
 export interface FinanceBudgetCreateRequest {
@@ -274,6 +277,7 @@ export interface FinanceBudgetProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (FinanceBudgetStatus)[];
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface FinanceBudgetListProjection {

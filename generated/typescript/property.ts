@@ -6,12 +6,13 @@
 
 import type { ExecutiveSourceStatus } from "./executive";
 
-import type { SharedWorkFindingSeverity } from "./shared-work";
+import type { SharedWorkFindingSeverity, SharedWorkMaterialActionProjection } from "./shared-work";
 
 export type PropertyUnitStatus = "AVAILABLE" | "ON_HOLD" | "RESERVED" | "SOLD";
 
 export interface PropertyUnitTransitionRequest {
   readonly status: PropertyUnitStatus;
+  readonly approval_id?: string;
 }
 
 export interface PropertyUnitCreateRequest {
@@ -46,6 +47,7 @@ export interface PropertyUnitProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (PropertyUnitStatus)[];
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface PropertyUnitListProjection {
@@ -288,6 +290,7 @@ export type PropertyChangeOrderStatus = "APPROVED" | "CANCELLED" | "DRAFT" | "SU
 
 export interface PropertyChangeOrderTransitionRequest {
   readonly status: PropertyChangeOrderStatus;
+  readonly approval_id?: string;
 }
 
 export interface PropertyChangeOrderCreateRequest {
@@ -316,6 +319,7 @@ export interface PropertyChangeOrderProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (PropertyChangeOrderStatus)[];
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface PropertyChangeOrderListProjection {
@@ -328,6 +332,7 @@ export type PropertyPaymentCertificateStatus = "APPROVED" | "CANCELLED" | "DRAFT
 
 export interface PropertyPaymentCertificateTransitionRequest {
   readonly status: PropertyPaymentCertificateStatus;
+  readonly approval_id?: string;
 }
 
 export interface PropertyPaymentCertificateCreateRequest {
@@ -355,6 +360,7 @@ export interface PropertyPaymentCertificateProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (PropertyPaymentCertificateStatus)[];
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface PropertyPaymentCertificateListProjection {

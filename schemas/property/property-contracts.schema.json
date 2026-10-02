@@ -17,6 +17,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyUnitStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -254,6 +259,12 @@
           "type": "array",
           "items": {
             "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyUnitStatus"
+          }
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
         }
       },
@@ -1457,6 +1468,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyChangeOrderStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -1590,6 +1606,12 @@
           "items": {
             "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyChangeOrderStatus"
           }
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
+          }
         }
       },
       "required": [
@@ -1647,6 +1669,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -1787,6 +1814,12 @@
           "type": "array",
           "items": {
             "$ref": "https://schemas.alos.dev/v1/property/property-contracts.schema.json#/$defs/PropertyPaymentCertificateStatus"
+          }
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
         }
       },

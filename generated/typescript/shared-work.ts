@@ -23,7 +23,7 @@ export type SharedWorkTaskStatus = "OPEN" | "IN_PROGRESS" | "BLOCKED" | "UNDER_R
 export type SharedWorkTaskPriority = "LOW" | "NORMAL" | "HIGH" | "CRITICAL";
 export type SharedWorkApprovalStatus = "PENDING" | "APPROVED" | "RETURNED" | "REJECTED" | "HELD";
 export type SharedWorkApprovalDecision = "APPROVED" | "RETURNED" | "REJECTED" | "HOLD";
-export type SharedWorkApprovalSubjectType = "PROJECT" | "TASK";
+export type SharedWorkApprovalSubjectType = "PROJECT" | "TASK" | "SALES_OPPORTUNITY" | "SALES_BOOKING" | "SALES_CLOSING" | "SALES_PRICING" | "PROPERTY_UNIT" | "PROPERTY_CHANGE_ORDER" | "PROPERTY_PAYMENT_CERTIFICATE" | "FINANCE_BUDGET";
 export type SharedWorkDocumentStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "REJECTED" | "RETIRED";
 export type SharedWorkReportStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "PUBLISHED" | "ARCHIVED";
 export type SharedWorkFindingStatus = "OPEN" | "ASSIGNED" | "IN_PROGRESS" | "PENDING_VERIFICATION" | "VERIFIED" | "CLOSED";
@@ -155,6 +155,12 @@ export interface SharedWorkApprovalProjection {
   readonly documents_count?: number;
   readonly evidence_count?: number;
   readonly comments_count?: number;
+  readonly requested_action?: SharedWorkMaterialAction | null;
+  readonly subject_snapshot?: string | null;
+  readonly consumed_at?: string | null;
+  readonly consumed_by?: string | null;
+  readonly transition_ref?: string | null;
+  readonly allowed_decisions?: readonly SharedWorkApprovalDecision[];
 }
 
 export interface SharedWorkApprovalRequest {
@@ -162,6 +168,7 @@ export interface SharedWorkApprovalRequest {
   readonly subject_id: string;
   readonly reason?: string | null;
   readonly materiality_value?: number | null;
+  readonly requested_action?: SharedWorkMaterialAction;
 }
 
 export interface SharedWorkApprovalDecisionRequest {
@@ -452,4 +459,13 @@ export interface SharedWorkCommentProjection {
 
 export interface SharedWorkFindingAssignmentRequest {
   readonly owner_actor_id: string;
+}
+export type SharedWorkMaterialAction = "WIN_OPPORTUNITY" | "CONFIRM_BOOKING" | "COMPLETE_CLOSING" | "ACTIVATE_PRICING" | "RESERVE_UNIT" | "SELL_UNIT" | "APPROVE_CHANGE_ORDER" | "APPROVE_PAYMENT_CERTIFICATE" | "APPROVE_BUDGET" | "ACTIVATE_BUDGET" | "CLOSE_BUDGET";
+
+export interface SharedWorkMaterialActionProjection {
+  readonly subject_type: SharedWorkApprovalSubjectType;
+  readonly requested_action: SharedWorkMaterialAction;
+  readonly target_status: string;
+  readonly approval_required: boolean;
+  readonly execution_allowed: boolean;
 }

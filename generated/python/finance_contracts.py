@@ -10,6 +10,8 @@ from typing import Literal, Required, TypedDict
 
 from executive_contracts import ExecutiveSourceStatus
 
+from shared_work_contracts import SharedWorkMaterialActionProjection
+
 FinanceBankAccountStatus = Literal['ACTIVE', 'INACTIVE']
 
 class FinanceBankAccountTransitionRequest(TypedDict, total=False):
@@ -228,6 +230,7 @@ FinanceBudgetStatus = Literal['ACTIVE', 'APPROVED', 'CLOSED', 'DRAFT', 'UNDER_RE
 
 class FinanceBudgetTransitionRequest(TypedDict, total=False):
     status: Required['FinanceBudgetStatus']
+    approval_id: 'str'
 
 class FinanceBudgetCreateRequest(TypedDict, total=False):
     name: Required['str']
@@ -248,6 +251,7 @@ class FinanceBudgetProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[FinanceBudgetStatus]']
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class FinanceBudgetListProjection(TypedDict, total=False):
     items: Required['list[FinanceBudgetProjection]']

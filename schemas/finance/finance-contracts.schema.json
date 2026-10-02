@@ -1215,6 +1215,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBudgetStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -1304,6 +1309,12 @@
           "type": "array",
           "items": {
             "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinanceBudgetStatus"
+          }
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
         }
       },

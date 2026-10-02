@@ -10,6 +10,8 @@ from typing import Literal, Required, TypedDict
 
 from executive_contracts import ExecutiveSourceStatus
 
+from shared_work_contracts import SharedWorkMaterialActionProjection
+
 SalesCustomerStatus = Literal['ACTIVE', 'INACTIVE']
 
 class SalesCustomerTransitionRequest(TypedDict, total=False):
@@ -86,6 +88,7 @@ SalesOpportunityStatus = Literal['CANCELLED', 'LOST', 'OPEN', 'WON']
 
 class SalesOpportunityTransitionRequest(TypedDict, total=False):
     status: Required['SalesOpportunityStatus']
+    approval_id: 'str'
 
 class SalesOpportunityCreateRequest(TypedDict, total=False):
     customer_id: Required['str']
@@ -119,6 +122,7 @@ class SalesOpportunityProjection(TypedDict, total=False):
     updated_at: Required['str']
     allowed_transitions: Required['list[SalesOpportunityStatus]']
     allowed_pipeline_stages: Required["list[Literal['Qualified', 'Survey', 'Booking']]"]
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class SalesOpportunityListProjection(TypedDict, total=False):
     items: Required['list[SalesOpportunityProjection]']
@@ -163,6 +167,7 @@ SalesBookingStatus = Literal['CANCELLED', 'CONFIRMED', 'PENDING']
 
 class SalesBookingTransitionRequest(TypedDict, total=False):
     status: Required['SalesBookingStatus']
+    approval_id: 'str'
 
 class SalesBookingCreateRequest(TypedDict, total=False):
     customer_id: Required['str']
@@ -186,6 +191,7 @@ class SalesBookingProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[SalesBookingStatus]']
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class SalesBookingListProjection(TypedDict, total=False):
     items: Required['list[SalesBookingProjection]']
@@ -196,6 +202,7 @@ SalesClosingStatus = Literal['CANCELLED', 'COMPLETED', 'OPEN']
 
 class SalesClosingTransitionRequest(TypedDict, total=False):
     status: Required['SalesClosingStatus']
+    approval_id: 'str'
 
 class SalesClosingCreateRequest(TypedDict, total=False):
     booking_id: 'str | None'
@@ -221,6 +228,7 @@ class SalesClosingProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[SalesClosingStatus]']
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class SalesClosingListProjection(TypedDict, total=False):
     items: Required['list[SalesClosingProjection]']
@@ -302,6 +310,7 @@ SalesPricingStatus = Literal['ACTIVE', 'DRAFT', 'INACTIVE']
 
 class SalesPricingTransitionRequest(TypedDict, total=False):
     status: Required['SalesPricingStatus']
+    approval_id: 'str'
 
 class SalesPricingCreateRequest(TypedDict, total=False):
     name: Required['str']
@@ -325,6 +334,7 @@ class SalesPricingProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[SalesPricingStatus]']
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class SalesPricingListProjection(TypedDict, total=False):
     items: Required['list[SalesPricingProjection]']
