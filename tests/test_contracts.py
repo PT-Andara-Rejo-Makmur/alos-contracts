@@ -416,7 +416,7 @@ def test_event_example_is_valid(load_json, schemas, registry):
 
 
 @pytest.mark.parametrize("fixture_path", AUTHORITY_COMPATIBILITY_FIXTURES)
-def test_adapted_mvp1_fixture_is_valid(fixture_path, load_json, schemas, registry):
+def test_adapted_authority_bootstrap_fixture_is_valid(fixture_path, load_json, schemas, registry):
     payload = load_json(fixture_path)
     validator(payload["$schema"], schemas, registry).validate(without_schema(payload))
 
