@@ -1,0 +1,45 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-message-request.schema.json",
+  "title": "AraMessageRequest",
+  "type": "object",
+  "properties": {
+    "message": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000
+    },
+    "business_reference": {
+      "type": "object",
+      "required": [
+        "domain",
+        "resource_id"
+      ],
+      "properties": {
+        "domain": {
+          "enum": [
+            "SHARED_WORK",
+            "SALES",
+            "STRATEGY",
+            "PROPERTY",
+            "FINANCE",
+            "HR",
+            "LEGAL",
+            "IT",
+            "MARKETING"
+          ]
+        },
+        "resource_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "additionalProperties": false
+    }
+  },
+  "required": [
+    "message"
+  ],
+  "additionalProperties": false
+}

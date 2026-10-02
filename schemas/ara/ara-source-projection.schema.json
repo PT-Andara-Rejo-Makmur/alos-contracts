@@ -1,0 +1,42 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-source-projection.schema.json",
+  "title": "AraSourceProjection",
+  "type": "object",
+  "properties": {
+    "tool_call_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tool_call_id"
+    },
+    "tool_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "domain": {
+      "type": "string",
+      "minLength": 1
+    },
+    "evidence_ref": {
+      "$ref": "https://schemas.alos.dev/v1/ara/ara-evidence-projection.schema.json"
+    },
+    "source_ref": {
+      "type": "string",
+      "minLength": 1
+    },
+    "freshness": {
+      "enum": [
+        "CURRENT",
+        "STALE",
+        "UNKNOWN"
+      ]
+    }
+  },
+  "required": [
+    "tool_call_id",
+    "tool_id",
+    "domain",
+    "evidence_ref",
+    "source_ref",
+    "freshness"
+  ],
+  "additionalProperties": false
+}

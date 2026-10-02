@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-run-projection.schema.json",
+  "title": "AraRunProjection",
+  "type": "object",
+  "properties": {
+    "thread_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "run_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id"
+    },
+    "correlation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+    },
+    "status": {
+      "enum": [
+        "RUNNING",
+        "CANCEL_REQUESTED",
+        "CANCELLED",
+        "COMPLETED",
+        "FAILED",
+        "TIMED_OUT",
+        "BLOCKED",
+        "NEEDS_INFO"
+      ]
+    },
+    "runtime_mode": {
+      "const": "DETERMINISTIC_TEST"
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1,
+      "format": "date-time"
+    },
+    "response": {
+      "$ref": "https://schemas.alos.dev/v1/ara/ara-response-projection.schema.json"
+    }
+  },
+  "required": [
+    "thread_id",
+    "run_id",
+    "correlation_id",
+    "status",
+    "runtime_mode",
+    "created_at"
+  ],
+  "additionalProperties": false
+}

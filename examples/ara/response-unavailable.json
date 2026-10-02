@@ -1,0 +1,8 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/ara/ara-response-projection.schema.json",
+  "response_type": "FAILED",
+  "answer": "Layanan ARA belum tersedia. Silakan coba kembali.",
+  "sources": [],
+  "failed_sources": [],
+  "limitations": ["Production Model Provider: Belum Terhubung."]
+}

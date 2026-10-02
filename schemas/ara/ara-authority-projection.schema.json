@@ -1,0 +1,78 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-authority-projection.schema.json",
+  "title": "AraAuthorityProjection",
+  "type": "object",
+  "properties": {
+    "tenant_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+    },
+    "organization_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+    },
+    "workspace_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+    },
+    "actor_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"
+    },
+    "status": {
+      "enum": [
+        "ACTIVE",
+        "DENIED",
+        "NEEDS_INFO"
+      ]
+    },
+    "maximum_data_classification": {
+      "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json"
+    },
+    "scope_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "allowed_tool_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "allowed_capability_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "execution_budget": {
+      "$ref": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json"
+    },
+    "runtime_mode": {
+      "const": "DETERMINISTIC_TEST"
+    },
+    "production_provider_connected": {
+      "const": false
+    },
+    "service_available": {
+      "type": "boolean"
+    }
+  },
+  "required": [
+    "tenant_id",
+    "organization_id",
+    "workspace_id",
+    "actor_id",
+    "status",
+    "maximum_data_classification",
+    "scope_refs",
+    "allowed_tool_ids",
+    "allowed_capability_ids",
+    "execution_budget",
+    "runtime_mode",
+    "production_provider_connected"
+  ],
+  "additionalProperties": false
+}

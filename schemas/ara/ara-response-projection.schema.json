@@ -1,0 +1,64 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-response-projection.schema.json",
+  "title": "AraResponseProjection",
+  "type": "object",
+  "properties": {
+    "response_type": {
+      "enum": [
+        "ANSWER",
+        "NEEDS_INFO",
+        "DENIED",
+        "NEEDS_REVIEW",
+        "FAILED"
+      ]
+    },
+    "answer": {
+      "type": "string",
+      "minLength": 1
+    },
+    "sources": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/ara/ara-source-projection.schema.json"
+      }
+    },
+    "failed_sources": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "limitations": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "action_proposal": {
+      "$ref": "https://schemas.alos.dev/v1/ara/ara-action-proposal-projection.schema.json"
+    },
+    "review_package": {
+      "$ref": "https://schemas.alos.dev/v1/review/review-package.schema.json"
+    },
+    "factory_draft": {
+      "$ref": "https://schemas.alos.dev/v1/factory/factory-analysis-result.schema.json"
+    },
+    "research_result": {
+      "$ref": "https://schemas.alos.dev/v1/research/research-result.schema.json"
+    },
+    "delegation_result": {
+      "$ref": "https://schemas.alos.dev/v1/agent/agent-run-result.schema.json"
+    }
+  },
+  "required": [
+    "response_type",
+    "answer",
+    "sources",
+    "failed_sources",
+    "limitations"
+  ],
+  "additionalProperties": false
+}

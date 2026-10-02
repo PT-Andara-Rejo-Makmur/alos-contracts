@@ -1,0 +1,4 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/ara/ara-message-request.schema.json",
+  "message": "Tampilkan lead Sales"
+}

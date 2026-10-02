@@ -4,49 +4,131 @@
   "title": "ContextBundle",
   "type": "object",
   "description": "Tenant-bound context projection supplied to governed execution. Backend authority remains in ExecutionContext; credentials, secrets, reasoning traces, ranking scores, and planner state are forbidden.",
-  "required": ["context_id", "tenant_id", "organization_id", "workspace_id", "actor_id", "correlation_id", "scope_refs", "created_at", "items"],
+  "required": [
+    "context_id",
+    "tenant_id",
+    "organization_id",
+    "workspace_id",
+    "actor_id",
+    "correlation_id",
+    "scope_refs",
+    "created_at",
+    "items"
+  ],
   "properties": {
-    "context_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
-    "tenant_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id" },
-    "organization_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id" },
-    "workspace_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id" },
-    "actor_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id" },
-    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
-    "goal": { "type": "string", "minLength": 1 },
-    "capability_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id" },
+    "context_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id"
+    },
+    "tenant_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+    },
+    "organization_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+    },
+    "workspace_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+    },
+    "actor_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"
+    },
+    "correlation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+    },
+    "goal": {
+      "type": "string",
+      "minLength": 1
+    },
+    "capability_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/capability_id"
+    },
     "allowed_tool_ids": {
       "description": "A narrowed projection of Backend-authorized tools. This field cannot grant tool authority or direct execution.",
       "type": "array",
-      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id"
+      },
       "uniqueItems": true
     },
-    "execution_budget": { "$ref": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json" },
+    "execution_budget": {
+      "$ref": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json"
+    },
     "memory_refs": {
       "type": "array",
-      "items": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id"
+      },
       "uniqueItems": true
     },
-    "created_at": { "type": "string", "format": "date-time" },
-    "expires_at": { "type": "string", "format": "date-time" },
-    "scope_refs": { "type": "array", "minItems": 1, "items": { "type": "string", "minLength": 1 }, "uniqueItems": true },
+    "created_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "expires_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "scope_refs": {
+      "type": "array",
+      "minItems": 1,
+      "items": {
+        "type": "string",
+        "minLength": 1
+      },
+      "uniqueItems": true
+    },
     "items": {
       "type": "array",
       "items": {
         "type": "object",
-        "required": ["key", "value", "source_id", "evidence_id", "source_version", "content_hash", "anchor", "data_classification"],
+        "required": [
+          "key",
+          "value",
+          "source_id",
+          "evidence_id",
+          "source_version",
+          "content_hash",
+          "anchor",
+          "data_classification"
+        ],
         "properties": {
-          "key": { "type": "string", "minLength": 1 },
+          "key": {
+            "type": "string",
+            "minLength": 1
+          },
           "value": {},
-          "source_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id" },
-          "evidence_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id" },
-          "source_version": { "type": "string", "minLength": 1 },
-          "content_hash": { "type": "string", "pattern": "^sha256:[a-f0-9]{64}$" },
-          "anchor": { "type": "string", "minLength": 1 },
-          "data_classification": { "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json" },
-          "source_type": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/source_type" },
-          "freshness": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/freshness_status" },
-          "reliability": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/source_reliability" },
-          "content_trust": { "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/content_trust" },
+          "source_id": {
+            "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id"
+          },
+          "evidence_id": {
+            "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/evidence_id"
+          },
+          "source_version": {
+            "type": "string",
+            "minLength": 1
+          },
+          "content_hash": {
+            "type": "string",
+            "pattern": "^sha256:[a-f0-9]{64}$"
+          },
+          "anchor": {
+            "type": "string",
+            "minLength": 1
+          },
+          "data_classification": {
+            "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json"
+          },
+          "source_type": {
+            "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/source_type"
+          },
+          "freshness": {
+            "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/freshness_status"
+          },
+          "reliability": {
+            "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/source_reliability"
+          },
+          "content_trust": {
+            "$ref": "https://schemas.alos.dev/v1/common/source-semantics.schema.json#/$defs/content_trust"
+          },
           "instruction_authority": {
             "description": "Context content is data and never instruction authority.",
             "const": false
@@ -55,14 +137,27 @@
         "allOf": [
           {
             "if": {
-              "required": ["source_type"],
-              "properties": { "source_type": { "const": "EXTERNAL" } }
+              "required": [
+                "source_type"
+              ],
+              "properties": {
+                "source_type": {
+                  "const": "EXTERNAL"
+                }
+              }
             },
             "then": {
-              "required": ["content_trust", "instruction_authority"],
+              "required": [
+                "content_trust",
+                "instruction_authority"
+              ],
               "properties": {
-                "content_trust": { "const": "UNTRUSTED" },
-                "instruction_authority": { "const": false }
+                "content_trust": {
+                  "const": "UNTRUSTED"
+                },
+                "instruction_authority": {
+                  "const": false
+                }
               }
             }
           }
@@ -70,7 +165,46 @@
         "additionalProperties": false
       }
     },
-    "evidence_refs": { "type": "array", "items": { "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json" } }
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json"
+      }
+    },
+    "data_scope": {
+      "enum": [
+        "COMPANY",
+        "ORGANIZATIONAL_UNIT",
+        "WORKSPACE",
+        "DIVISION",
+        "PROJECT",
+        "OWN_ASSIGNED"
+      ]
+    },
+    "division_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "project_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/project_id"
+    },
+    "permission_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "allowed_capability_ids": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "data_classification": {
+      "$ref": "https://schemas.alos.dev/v1/common/data-classification.schema.json"
+    }
   },
   "additionalProperties": false
 }

@@ -11,6 +11,122 @@ servers:
 security:
   - bearerAuth: []
 paths:
+  /api/v1/ara/authority:
+    get:
+      operationId: getAraAuthority
+      tags: [ara]
+      summary: Authoritative scoped ARA conversation operation
+      responses:
+        "200": {"description": "Authoritative ARA projection", "content": {"application/json": {"schema": {"$ref": "../../schemas/ara/ara-authority-projection.schema.json"}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "503": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/ara/threads:
+    get:
+      operationId: listAraThreads
+      tags: [ara]
+      summary: Authoritative scoped ARA conversation operation
+      responses:
+        "200": {"description": "Authoritative ARA projection", "content": {"application/json": {"schema": {"type": "array", "items": {"$ref": "../../schemas/ara/ara-thread-projection.schema.json"}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "503": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: createAraThread
+      tags: [ara]
+      summary: Authoritative scoped ARA conversation operation
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/ara/ara-thread-create-request.schema.json}}}}
+      responses:
+        "201": {"description": "Authoritative ARA projection", "content": {"application/json": {"schema": {"$ref": "../../schemas/ara/ara-thread-projection.schema.json"}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "503": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/ara/threads/{thread_id}:
+    get:
+      operationId: getAraThread
+      tags: [ara]
+      summary: Authoritative scoped ARA conversation operation
+      parameters:
+        - {name: thread_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {"description": "Authoritative ARA projection", "content": {"application/json": {"schema": {"$ref": "../../schemas/ara/ara-thread-projection.schema.json"}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "503": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/ara/threads/{thread_id}/messages:
+    get:
+      operationId: listAraMessages
+      tags: [ara]
+      summary: Authoritative scoped ARA conversation operation
+      parameters:
+        - {name: thread_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {"description": "Authoritative ARA projection", "content": {"application/json": {"schema": {"type": "array", "items": {"$ref": "../../schemas/ara/ara-message-projection.schema.json"}}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "503": {$ref: "#/components/responses/ErrorResponse"}
+    post:
+      operationId: sendAraMessage
+      tags: [ara]
+      summary: Authoritative scoped ARA conversation operation
+      parameters:
+        - {name: thread_id, in: path, required: true, schema: {type: string}}
+      requestBody: {required: true, content: {application/json: {schema: {$ref: ../../schemas/ara/ara-message-request.schema.json}}}}
+      responses:
+        "200": {"description": "Authoritative ARA projection", "content": {"application/json": {"schema": {"$ref": "../../schemas/ara/ara-run-projection.schema.json"}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "503": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/ara/threads/{thread_id}/runs/{run_id}:
+    get:
+      operationId: getAraRun
+      tags: [ara]
+      summary: Authoritative scoped ARA conversation operation
+      parameters:
+        - {name: thread_id, in: path, required: true, schema: {type: string}}
+        - {name: run_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {"description": "Authoritative ARA projection", "content": {"application/json": {"schema": {"$ref": "../../schemas/ara/ara-run-projection.schema.json"}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "503": {$ref: "#/components/responses/ErrorResponse"}
+  /api/v1/ara/threads/{thread_id}/runs/{run_id}/cancel:
+    post:
+      operationId: cancelAraRun
+      tags: [ara]
+      summary: Authoritative scoped ARA conversation operation
+      parameters:
+        - {name: thread_id, in: path, required: true, schema: {type: string}}
+        - {name: run_id, in: path, required: true, schema: {type: string}}
+      responses:
+        "200": {"description": "Authoritative ARA projection", "content": {"application/json": {"schema": {"$ref": "../../schemas/ara/ara-run-projection.schema.json"}}}}
+        "401": {$ref: "#/components/responses/ErrorResponse"}
+        "403": {$ref: "#/components/responses/ErrorResponse"}
+        "404": {$ref: "#/components/responses/ErrorResponse"}
+        "409": {$ref: "#/components/responses/ErrorResponse"}
+        "422": {$ref: "#/components/responses/ErrorResponse"}
+        "503": {$ref: "#/components/responses/ErrorResponse"}
   /api/v1/documents:
     get:
       operationId: listDocuments

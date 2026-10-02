@@ -29,6 +29,10 @@ class Renderer:
         return value, source
 
     def value(self, schema: dict, name: str, document: dict) -> str:
+        if self.domain == "ara" and "allOf" in schema:
+            reference = next((item for item in schema["allOf"] if "$ref" in item), None)
+            if reference is not None:
+                return self.value(reference, name, document)
         if "$ref" in schema:
             ref = schema["$ref"]
             if "/common/identifiers.schema.json" in ref:
@@ -40,7 +44,13 @@ class Renderer:
                 return identifier
             if "#" not in ref:
                 if f"/{self.domain}/" not in ref:
+                    if self.domain == "ara":
+                        if source["title"] in {"DataClassification", "EvidenceRef", "ExecutionBudget"}:
+                            self.imports.setdefault("context_research", set()).add(source["title"])
+                            return source["title"]
+                        return self.declare("Ara" + source["title"], target, source)
                     module = source["$id"].split("/v1/", 1)[1].split("/", 1)[0]
+                    module = "context_research" if source["title"] in {"DataClassification", "EvidenceRef"} else module
                     self.imports.setdefault(module, set()).add(source["title"])
                     return source["title"]
                 return self.declare(source["title"], target, source)

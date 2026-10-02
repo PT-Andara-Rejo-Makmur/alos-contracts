@@ -1,0 +1,43 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-action-proposal-projection.schema.json",
+  "title": "AraActionProposalProjection",
+  "type": "object",
+  "properties": {
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "kind": {
+      "enum": [
+        "TASK",
+        "MATERIAL_ACTION",
+        "CAPABILITY_DRAFT",
+        "RESEARCH"
+      ]
+    },
+    "status": {
+      "const": "NEEDS_REVIEW"
+    },
+    "summary": {
+      "type": "string",
+      "minLength": 1
+    },
+    "required_permission": {
+      "type": "string",
+      "minLength": 1
+    },
+    "executed": {
+      "const": false
+    }
+  },
+  "required": [
+    "proposal_id",
+    "kind",
+    "status",
+    "summary",
+    "required_permission",
+    "executed"
+  ],
+  "additionalProperties": false
+}

@@ -12,3 +12,4 @@ export * from "./finance";
 export * from "./legal";
 export * from "./hr";
 export * from "./it";
+export * from "./ara";

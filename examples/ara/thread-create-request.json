@@ -1,0 +1,4 @@
+{
+  "$schema": "https://schemas.alos.dev/v1/ara/ara-thread-create-request.schema.json",
+  "title": "Tindak lanjut Sales"
+}

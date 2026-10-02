@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-message-projection.schema.json",
+  "title": "AraMessageProjection",
+  "type": "object",
+  "properties": {
+    "message_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "thread_id": {
+      "type": "string",
+      "minLength": 1
+    },
+    "role": {
+      "enum": [
+        "USER",
+        "ASSISTANT"
+      ]
+    },
+    "content": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 20000
+    },
+    "created_at": {
+      "type": "string",
+      "minLength": 1,
+      "format": "date-time"
+    },
+    "correlation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+    },
+    "run_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id"
+    },
+    "response": {
+      "$ref": "https://schemas.alos.dev/v1/ara/ara-response-projection.schema.json"
+    }
+  },
+  "required": [
+    "message_id",
+    "thread_id",
+    "role",
+    "content",
+    "created_at",
+    "correlation_id",
+    "run_id"
+  ],
+  "additionalProperties": false
+}

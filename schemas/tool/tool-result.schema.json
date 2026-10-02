@@ -3,25 +3,104 @@
   "$id": "https://schemas.alos.dev/v1/tool/tool-result.schema.json",
   "title": "ToolResult",
   "type": "object",
-  "required": ["tool_call_id", "run_id", "status", "completed_at"],
+  "required": [
+    "tool_call_id",
+    "run_id",
+    "status",
+    "completed_at"
+  ],
   "properties": {
-    "tool_call_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tool_call_id" },
-    "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
-    "tool_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
-    "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
-    "status": { "type": "string", "enum": ["SUCCESS", "COMPLETED", "FAILED", "TIMEOUT", "DENIED", "REJECTED"] },
+    "tool_call_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tool_call_id"
+    },
+    "run_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id"
+    },
+    "tool_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id"
+    },
+    "correlation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "SUCCESS",
+        "COMPLETED",
+        "FAILED",
+        "TIMEOUT",
+        "DENIED",
+        "REJECTED"
+      ]
+    },
     "output": {},
-    "error": { "$ref": "https://schemas.alos.dev/v1/common/error.schema.json" },
-    "completed_at": { "type": "string", "format": "date-time" }
+    "error": {
+      "$ref": "https://schemas.alos.dev/v1/common/error.schema.json"
+    },
+    "completed_at": {
+      "type": "string",
+      "format": "date-time"
+    },
+    "source_refs": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "minLength": 1
+      }
+    },
+    "evidence_refs": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/evidence/evidence-ref.schema.json"
+      }
+    }
   },
   "allOf": [
     {
-      "if": { "properties": { "status": { "enum": ["SUCCESS", "COMPLETED"] } }, "required": ["status"] },
-      "then": { "required": ["tool_id", "correlation_id", "output"] }
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "SUCCESS",
+              "COMPLETED"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "tool_id",
+          "correlation_id",
+          "output"
+        ]
+      }
     },
     {
-      "if": { "properties": { "status": { "enum": ["FAILED", "TIMEOUT", "DENIED", "REJECTED"] } }, "required": ["status"] },
-      "then": { "required": ["tool_id", "correlation_id", "error"] }
+      "if": {
+        "properties": {
+          "status": {
+            "enum": [
+              "FAILED",
+              "TIMEOUT",
+              "DENIED",
+              "REJECTED"
+            ]
+          }
+        },
+        "required": [
+          "status"
+        ]
+      },
+      "then": {
+        "required": [
+          "tool_id",
+          "correlation_id",
+          "error"
+        ]
+      }
     }
   ],
   "additionalProperties": false
