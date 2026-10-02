@@ -51,6 +51,7 @@ def test_internal_routes_name_the_actual_service_owner():
         "/internal/v1/factory/analyze",
         "/internal/v1/research",
         "/internal/v1/research/run",
+        "/internal/v1/models/readiness",
         "/internal/v1/system/integration",
         "/internal/v1/system/info",
     }
