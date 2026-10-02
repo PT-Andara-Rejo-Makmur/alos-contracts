@@ -29,8 +29,8 @@ class AraAuthorityProjection(TypedDict, total=False):
     allowed_tool_ids: Required['list[str]']
     allowed_capability_ids: Required['list[str]']
     execution_budget: Required['ExecutionBudget']
-    runtime_mode: Required["Literal['DETERMINISTIC_TEST']"]
-    production_provider_connected: Required['Literal[False]']
+    runtime_mode: Required["Literal['DETERMINISTIC_TEST', 'NORMAL']"]
+    production_provider_connected: Required['bool']
     service_available: 'bool'
 
 AraEvidenceProjection = EvidenceRef
@@ -384,6 +384,9 @@ class AraAgentRunResultUsage(TypedDict, total=False):
     output_tokens: 'int'
     latency_milliseconds: 'int'
     estimated_cost: 'float'
+    cost_telemetry: "Literal['AVAILABLE', 'UNAVAILABLE']"
+    token_telemetry: "Literal['AVAILABLE', 'UNAVAILABLE']"
+    provider_request_ids: 'list[str]'
 
 class AraToolResult(TypedDict, total=False):
     tool_call_id: Required['str']
@@ -417,7 +420,7 @@ class AraRunProjection(TypedDict, total=False):
     run_id: Required['str']
     correlation_id: Required['str']
     status: Required["Literal['RUNNING', 'CANCEL_REQUESTED', 'CANCELLED', 'COMPLETED', 'FAILED', 'TIMED_OUT', 'BLOCKED', 'NEEDS_INFO']"]
-    runtime_mode: Required["Literal['DETERMINISTIC_TEST']"]
+    runtime_mode: Required["Literal['DETERMINISTIC_TEST', 'NORMAL']"]
     created_at: Required['str']
     response: 'AraResponseProjection'
 

@@ -7,6 +7,7 @@
   "properties": {
     "research_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/canonical_id" },
     "run_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id" },
+    "execution_mode": { "type": "string", "enum": ["NORMAL", "TEST"], "description": "Backend-selected canonical execution mode; never a browser authority field." },
     "correlation_id": { "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id" },
     "domain": { "type": "string", "enum": ["TECHNOLOGY", "PROPERTY_BUSINESS", "MANAGEMENT", "PROPERTY_MARKET"] },
     "question": { "type": "string", "minLength": 1 },

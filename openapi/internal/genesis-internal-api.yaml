@@ -18,6 +18,44 @@ tags:
   - name: Backend callbacks
     description: GENESIS-to-Backend callbacks governed by Backend authority.
 paths:
+  /internal/v1/models/readiness:
+    get:
+      tags: [GENESIS implements]
+      x-service-owner: genesis-ai
+      operationId: getModelProviderReadiness
+      summary: Discover authoritative production model readiness without exposing credentials
+      parameters:
+        - in: query
+          name: policy_ref
+          schema:
+            type: string
+            default: ara.production
+            enum: [ara.production, policy.fast, policy.standard, policy.reasoning, policy.coding, policy.critical, policy.evidence-bound-research.v1]
+      responses:
+        "200":
+          description: Internal provider readiness and discovered model IDs
+          content:
+            application/json:
+              schema:
+                type: object
+                additionalProperties: false
+                required: [status, configured, reachable, authenticated, model_selected, available_model_ids]
+                properties:
+                  status:
+                    enum: [CONNECTED, MISCONFIGURED, UNAVAILABLE, AUTH_FAILED, MODEL_SELECTION_REQUIRED]
+                  configured: {type: boolean}
+                  reachable: {type: boolean}
+                  authenticated: {type: boolean}
+                  model_selected: {type: boolean}
+                  available_model_ids:
+                    type: array
+                    items: {type: string}
+                  selected_model_id: {type: [string, "null"]}
+                  error_code: {type: [string, "null"]}
+        "401":
+          $ref: "#/components/responses/ErrorResponse"
+        "422":
+          $ref: "#/components/responses/ErrorResponse"
   /internal/v1/research:
     post:
       tags: [GENESIS implements]

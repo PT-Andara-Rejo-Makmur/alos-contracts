@@ -23,7 +23,10 @@
         "input_tokens": { "type": "integer", "minimum": 0 },
         "output_tokens": { "type": "integer", "minimum": 0 },
         "latency_milliseconds": { "type": "integer", "minimum": 0 },
-        "estimated_cost": { "type": "number", "minimum": 0 }
+        "estimated_cost": { "type": "number", "minimum": 0 },
+        "cost_telemetry": { "enum": ["AVAILABLE", "UNAVAILABLE"] },
+        "token_telemetry": { "enum": ["AVAILABLE", "UNAVAILABLE"] },
+        "provider_request_ids": { "type": "array", "items": { "type": "string", "minLength": 1 } }
       },
       "additionalProperties": false
     },

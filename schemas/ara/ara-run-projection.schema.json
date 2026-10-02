@@ -27,7 +27,7 @@
       ]
     },
     "runtime_mode": {
-      "const": "DETERMINISTIC_TEST"
+      "enum": ["DETERMINISTIC_TEST", "NORMAL"]
     },
     "created_at": {
       "type": "string",

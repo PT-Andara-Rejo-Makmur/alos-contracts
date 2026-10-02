@@ -51,10 +51,10 @@
       "$ref": "https://schemas.alos.dev/v1/runtime/execution-budget.schema.json"
     },
     "runtime_mode": {
-      "const": "DETERMINISTIC_TEST"
+      "enum": ["DETERMINISTIC_TEST", "NORMAL"]
     },
     "production_provider_connected": {
-      "const": false
+      "type": "boolean"
     },
     "service_available": {
       "type": "boolean"

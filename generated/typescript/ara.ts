@@ -26,8 +26,8 @@ export interface AraAuthorityProjection {
   readonly allowed_tool_ids: readonly (string)[];
   readonly allowed_capability_ids: readonly (string)[];
   readonly execution_budget: ExecutionBudget;
-  readonly runtime_mode: "DETERMINISTIC_TEST";
-  readonly production_provider_connected: false;
+  readonly runtime_mode: "DETERMINISTIC_TEST" | "NORMAL";
+  readonly production_provider_connected: boolean;
   readonly service_available?: boolean;
 }
 
@@ -409,6 +409,9 @@ export interface AraAgentRunResultUsage {
   readonly output_tokens?: number;
   readonly latency_milliseconds?: number;
   readonly estimated_cost?: number;
+  readonly cost_telemetry?: "AVAILABLE" | "UNAVAILABLE";
+  readonly token_telemetry?: "AVAILABLE" | "UNAVAILABLE";
+  readonly provider_request_ids?: readonly (string)[];
 }
 
 export interface AraToolResult {
@@ -447,7 +450,7 @@ export interface AraRunProjection {
   readonly run_id: string;
   readonly correlation_id: string;
   readonly status: "RUNNING" | "CANCEL_REQUESTED" | "CANCELLED" | "COMPLETED" | "FAILED" | "TIMED_OUT" | "BLOCKED" | "NEEDS_INFO";
-  readonly runtime_mode: "DETERMINISTIC_TEST";
+  readonly runtime_mode: "DETERMINISTIC_TEST" | "NORMAL";
   readonly created_at: string;
   readonly response?: AraResponseProjection;
 }
