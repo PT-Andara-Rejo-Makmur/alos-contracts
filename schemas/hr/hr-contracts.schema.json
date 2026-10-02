@@ -3014,6 +3014,844 @@
         "source"
       ],
       "additionalProperties": false
+    },
+    "HrFacilityRequestStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_PROGRESS",
+        "CANCELLED",
+        "COMPLETED"
+      ]
+    },
+    "HrFacilityRequestCreateRequest": {
+      "type": "object",
+      "properties": {
+        "facility_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "needed_on": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolution_notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "facility_code",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "HrFacilityRequestUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "needed_on": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolution_notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "HrFacilityRequestTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "HrFacilityRequestProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "facility_request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "facility_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "description": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "needed_on": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "resolution_notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestStatus"
+          }
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "facility_request_id",
+        "facility_code",
+        "title",
+        "description",
+        "needed_on",
+        "resolution_notes",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrFacilityRequestListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrInventoryItemStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED"
+      ]
+    },
+    "HrInventoryItemCreateRequest": {
+      "type": "object",
+      "properties": {
+        "asset_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "condition": {
+          "type": "string",
+          "enum": [
+            "GOOD",
+            "NEEDS_MAINTENANCE",
+            "UNKNOWN"
+          ]
+        },
+        "recorded_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "asset_code",
+        "name",
+        "condition",
+        "recorded_on"
+      ],
+      "additionalProperties": false
+    },
+    "HrInventoryItemProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "inventory_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "asset_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "name": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "condition": {
+          "type": "string",
+          "enum": [
+            "GOOD",
+            "NEEDS_MAINTENANCE",
+            "UNKNOWN"
+          ]
+        },
+        "recorded_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "notes": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrInventoryItemStatus"
+          }
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "inventory_item_id",
+        "asset_code",
+        "name",
+        "condition",
+        "recorded_on",
+        "notes",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrInventoryItemListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrInventoryItemProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrAssetHandoverStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED"
+      ]
+    },
+    "HrAssetHandoverCreateRequest": {
+      "type": "object",
+      "properties": {
+        "inventory_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "handover_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "event": {
+          "type": "string",
+          "enum": [
+            "GIVEN",
+            "RETURNED"
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "inventory_item_id",
+        "employee_id",
+        "handover_on",
+        "event",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "HrAssetHandoverProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "asset_handover_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "inventory_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "employee_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "handover_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "event": {
+          "type": "string",
+          "enum": [
+            "GIVEN",
+            "RETURNED"
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrAssetHandoverStatus"
+          }
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "asset_handover_id",
+        "inventory_item_id",
+        "employee_id",
+        "handover_on",
+        "event",
+        "notes",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrAssetHandoverListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrAssetHandoverProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrMaintenanceRecordStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED"
+      ]
+    },
+    "HrMaintenanceRecordCreateRequest": {
+      "type": "object",
+      "properties": {
+        "inventory_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "performed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "INSPECTED",
+            "REPAIR_COMPLETED",
+            "UNRESOLVED"
+          ]
+        }
+      },
+      "required": [
+        "inventory_item_id",
+        "performed_on",
+        "summary",
+        "result"
+      ],
+      "additionalProperties": false
+    },
+    "HrMaintenanceRecordProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "maintenance_record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "inventory_item_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "performed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "result": {
+          "type": "string",
+          "enum": [
+            "INSPECTED",
+            "REPAIR_COMPLETED",
+            "UNRESOLVED"
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrMaintenanceRecordStatus"
+          }
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "maintenance_record_id",
+        "inventory_item_id",
+        "performed_on",
+        "summary",
+        "result",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrMaintenanceRecordListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrMaintenanceRecordProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrServiceAssessmentStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED"
+      ]
+    },
+    "HrServiceAssessmentCreateRequest": {
+      "type": "object",
+      "properties": {
+        "facility_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "assessed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "readiness": {
+          "type": "string",
+          "enum": [
+            "READY",
+            "NOT_READY",
+            "UNKNOWN"
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        }
+      },
+      "required": [
+        "facility_code",
+        "assessed_on",
+        "readiness",
+        "notes"
+      ],
+      "additionalProperties": false
+    },
+    "HrServiceAssessmentProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "service_assessment_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "facility_code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "assessed_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "readiness": {
+          "type": "string",
+          "enum": [
+            "READY",
+            "NOT_READY",
+            "UNKNOWN"
+          ]
+        },
+        "notes": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrServiceAssessmentStatus"
+          }
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "service_assessment_id",
+        "facility_code",
+        "assessed_on",
+        "readiness",
+        "notes",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "HrServiceAssessmentListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrServiceAssessmentProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
     }
   },
   "type": "object",
@@ -3081,6 +3919,26 @@
           "minimum": 0
         },
         "personnel_files": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "facility_requests": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "inventory_items": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "asset_handovers": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "maintenance_records": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "service_assessments": {
           "type": "integer",
           "minimum": 0
         }

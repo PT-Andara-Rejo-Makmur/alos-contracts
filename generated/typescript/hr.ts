@@ -592,6 +592,173 @@ export interface HrPersonnelFileListProjection {
   readonly source: ExecutiveSourceStatus;
 }
 
+export type HrFacilityRequestStatus = "OPEN" | "IN_PROGRESS" | "CANCELLED" | "COMPLETED";
+
+export interface HrFacilityRequestCreateRequest {
+  readonly facility_code: string;
+  readonly title: string;
+  readonly description?: string | null;
+  readonly needed_on?: string | null;
+  readonly resolution_notes?: string | null;
+}
+
+export interface HrFacilityRequestUpdateRequest {
+  readonly title?: string;
+  readonly description?: string | null;
+  readonly needed_on?: string | null;
+  readonly resolution_notes?: string | null;
+}
+
+export interface HrFacilityRequestTransitionRequest {
+  readonly status: HrFacilityRequestStatus;
+}
+
+export interface HrFacilityRequestProjection {
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly facility_request_id: string;
+  readonly facility_code: string;
+  readonly title: string;
+  readonly description: string | null;
+  readonly needed_on: string | null;
+  readonly resolution_notes: string | null;
+  readonly status: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly allowed_transitions: readonly (HrFacilityRequestStatus)[];
+}
+
+export interface HrFacilityRequestListProjection {
+  readonly items: readonly (HrFacilityRequestProjection)[];
+  readonly total: number;
+  readonly source: ExecutiveSourceStatus;
+}
+
+export type HrInventoryItemStatus = "RECORDED";
+
+export interface HrInventoryItemCreateRequest {
+  readonly asset_code: string;
+  readonly name: string;
+  readonly condition: "GOOD" | "NEEDS_MAINTENANCE" | "UNKNOWN";
+  readonly recorded_on: string;
+  readonly notes?: string | null;
+}
+
+export interface HrInventoryItemProjection {
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly inventory_item_id: string;
+  readonly asset_code: string;
+  readonly name: string;
+  readonly condition: "GOOD" | "NEEDS_MAINTENANCE" | "UNKNOWN";
+  readonly recorded_on: string;
+  readonly notes: string | null;
+  readonly status: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly allowed_transitions: readonly (HrInventoryItemStatus)[];
+}
+
+export interface HrInventoryItemListProjection {
+  readonly items: readonly (HrInventoryItemProjection)[];
+  readonly total: number;
+  readonly source: ExecutiveSourceStatus;
+}
+
+export type HrAssetHandoverStatus = "RECORDED";
+
+export interface HrAssetHandoverCreateRequest {
+  readonly inventory_item_id: string;
+  readonly employee_id: string;
+  readonly handover_on: string;
+  readonly event: "GIVEN" | "RETURNED";
+  readonly notes: string;
+}
+
+export interface HrAssetHandoverProjection {
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly asset_handover_id: string;
+  readonly inventory_item_id: string;
+  readonly employee_id: string;
+  readonly handover_on: string;
+  readonly event: "GIVEN" | "RETURNED";
+  readonly notes: string;
+  readonly status: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly allowed_transitions: readonly (HrAssetHandoverStatus)[];
+}
+
+export interface HrAssetHandoverListProjection {
+  readonly items: readonly (HrAssetHandoverProjection)[];
+  readonly total: number;
+  readonly source: ExecutiveSourceStatus;
+}
+
+export type HrMaintenanceRecordStatus = "RECORDED";
+
+export interface HrMaintenanceRecordCreateRequest {
+  readonly inventory_item_id: string;
+  readonly performed_on: string;
+  readonly summary: string;
+  readonly result: "INSPECTED" | "REPAIR_COMPLETED" | "UNRESOLVED";
+}
+
+export interface HrMaintenanceRecordProjection {
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly maintenance_record_id: string;
+  readonly inventory_item_id: string;
+  readonly performed_on: string;
+  readonly summary: string;
+  readonly result: "INSPECTED" | "REPAIR_COMPLETED" | "UNRESOLVED";
+  readonly status: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly allowed_transitions: readonly (HrMaintenanceRecordStatus)[];
+}
+
+export interface HrMaintenanceRecordListProjection {
+  readonly items: readonly (HrMaintenanceRecordProjection)[];
+  readonly total: number;
+  readonly source: ExecutiveSourceStatus;
+}
+
+export type HrServiceAssessmentStatus = "RECORDED";
+
+export interface HrServiceAssessmentCreateRequest {
+  readonly facility_code: string;
+  readonly assessed_on: string;
+  readonly readiness: "READY" | "NOT_READY" | "UNKNOWN";
+  readonly notes: string;
+}
+
+export interface HrServiceAssessmentProjection {
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly service_assessment_id: string;
+  readonly facility_code: string;
+  readonly assessed_on: string;
+  readonly readiness: "READY" | "NOT_READY" | "UNKNOWN";
+  readonly notes: string;
+  readonly status: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly allowed_transitions: readonly (HrServiceAssessmentStatus)[];
+}
+
+export interface HrServiceAssessmentListProjection {
+  readonly items: readonly (HrServiceAssessmentProjection)[];
+  readonly total: number;
+  readonly source: ExecutiveSourceStatus;
+}
+
 export interface HrOverview {
   readonly source: ExecutiveSourceStatus;
   readonly counts: HrOverviewCounts;
@@ -614,4 +781,9 @@ export interface HrOverviewCounts {
   readonly grievances: number;
   readonly employment_contracts: number;
   readonly personnel_files: number;
+  readonly facility_requests?: number;
+  readonly inventory_items?: number;
+  readonly asset_handovers?: number;
+  readonly maintenance_records?: number;
+  readonly service_assessments?: number;
 }

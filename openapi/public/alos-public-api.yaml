@@ -12406,6 +12406,492 @@ paths:
                 $ref: ../../schemas/it/it-contracts.schema.json
         default:
           $ref: '#/components/responses/ErrorResponse'
+  /api/v1/hr/facility-requests:
+    get:
+      operationId: hrFacilityRequestsHrFacilityRequestListProjection1
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestListProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hrFacilityRequestsHrFacilityRequest1
+      tags:
+      - hr
+      responses:
+        '201':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestCreateRequest
+  /api/v1/hr/facility-requests/{identity}:
+    get:
+      operationId: hrFacilityRequestsHrFacilityRequest2
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: hrFacilityRequestsHrFacilityRequest3
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/v1/hr/facility-requests/{identity}/transition:
+    post:
+      operationId: hrFacilityRequestsHrFacilityRequest4
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrFacilityRequestTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/v1/hr/inventory-items:
+    get:
+      operationId: hrInventoryItemsHrInventoryItemListProjection1
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInventoryItemListProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hrInventoryItemsHrInventoryItem1
+      tags:
+      - hr
+      responses:
+        '201':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInventoryItemProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInventoryItemCreateRequest
+  /api/v1/hr/inventory-items/{identity}:
+    get:
+      operationId: hrInventoryItemsHrInventoryItem2
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrInventoryItemProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/v1/hr/asset-handovers:
+    get:
+      operationId: hrAssetHandoversHrAssetHandoverListProjection1
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrAssetHandoverListProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hrAssetHandoversHrAssetHandover1
+      tags:
+      - hr
+      responses:
+        '201':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrAssetHandoverProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrAssetHandoverCreateRequest
+  /api/v1/hr/asset-handovers/{identity}:
+    get:
+      operationId: hrAssetHandoversHrAssetHandover2
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrAssetHandoverProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/v1/hr/maintenance-records:
+    get:
+      operationId: hrMaintenanceRecordsHrMaintenanceRecordListProjection1
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrMaintenanceRecordListProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hrMaintenanceRecordsHrMaintenanceRecord1
+      tags:
+      - hr
+      responses:
+        '201':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrMaintenanceRecordProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrMaintenanceRecordCreateRequest
+  /api/v1/hr/maintenance-records/{identity}:
+    get:
+      operationId: hrMaintenanceRecordsHrMaintenanceRecord2
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrMaintenanceRecordProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/v1/hr/service-assessments:
+    get:
+      operationId: hrServiceAssessmentsHrServiceAssessmentListProjection1
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrServiceAssessmentListProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: hrServiceAssessmentsHrServiceAssessment1
+      tags:
+      - hr
+      responses:
+        '201':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrServiceAssessmentProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrServiceAssessmentCreateRequest
+  /api/v1/hr/service-assessments/{identity}:
+    get:
+      operationId: hrServiceAssessmentsHrServiceAssessment2
+      tags:
+      - hr
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrServiceAssessmentProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
 components:
   securitySchemes:
     bearerAuth:

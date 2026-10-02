@@ -525,6 +525,156 @@ class HrPersonnelFileListProjection(TypedDict, total=False):
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
 
+HrFacilityRequestStatus = Literal['OPEN', 'IN_PROGRESS', 'CANCELLED', 'COMPLETED']
+
+class HrFacilityRequestCreateRequest(TypedDict, total=False):
+    facility_code: Required['str']
+    title: Required['str']
+    description: 'str | None'
+    needed_on: 'str | None'
+    resolution_notes: 'str | None'
+
+class HrFacilityRequestUpdateRequest(TypedDict, total=False):
+    title: 'str'
+    description: 'str | None'
+    needed_on: 'str | None'
+    resolution_notes: 'str | None'
+
+class HrFacilityRequestTransitionRequest(TypedDict, total=False):
+    status: Required['HrFacilityRequestStatus']
+
+class HrFacilityRequestProjection(TypedDict, total=False):
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    facility_request_id: Required['str']
+    facility_code: Required['str']
+    title: Required['str']
+    description: Required['str | None']
+    needed_on: Required['str | None']
+    resolution_notes: Required['str | None']
+    status: Required['str']
+    created_at: Required['str']
+    updated_at: Required['str']
+    allowed_transitions: Required['list[HrFacilityRequestStatus]']
+
+class HrFacilityRequestListProjection(TypedDict, total=False):
+    items: Required['list[HrFacilityRequestProjection]']
+    total: Required['int']
+    source: Required['ExecutiveSourceStatus']
+
+HrInventoryItemStatus = Literal['RECORDED']
+
+class HrInventoryItemCreateRequest(TypedDict, total=False):
+    asset_code: Required['str']
+    name: Required['str']
+    condition: Required["Literal['GOOD', 'NEEDS_MAINTENANCE', 'UNKNOWN']"]
+    recorded_on: Required['str']
+    notes: 'str | None'
+
+class HrInventoryItemProjection(TypedDict, total=False):
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    inventory_item_id: Required['str']
+    asset_code: Required['str']
+    name: Required['str']
+    condition: Required["Literal['GOOD', 'NEEDS_MAINTENANCE', 'UNKNOWN']"]
+    recorded_on: Required['str']
+    notes: Required['str | None']
+    status: Required['str']
+    created_at: Required['str']
+    updated_at: Required['str']
+    allowed_transitions: Required['list[HrInventoryItemStatus]']
+
+class HrInventoryItemListProjection(TypedDict, total=False):
+    items: Required['list[HrInventoryItemProjection]']
+    total: Required['int']
+    source: Required['ExecutiveSourceStatus']
+
+HrAssetHandoverStatus = Literal['RECORDED']
+
+class HrAssetHandoverCreateRequest(TypedDict, total=False):
+    inventory_item_id: Required['str']
+    employee_id: Required['str']
+    handover_on: Required['str']
+    event: Required["Literal['GIVEN', 'RETURNED']"]
+    notes: Required['str']
+
+class HrAssetHandoverProjection(TypedDict, total=False):
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    asset_handover_id: Required['str']
+    inventory_item_id: Required['str']
+    employee_id: Required['str']
+    handover_on: Required['str']
+    event: Required["Literal['GIVEN', 'RETURNED']"]
+    notes: Required['str']
+    status: Required['str']
+    created_at: Required['str']
+    updated_at: Required['str']
+    allowed_transitions: Required['list[HrAssetHandoverStatus]']
+
+class HrAssetHandoverListProjection(TypedDict, total=False):
+    items: Required['list[HrAssetHandoverProjection]']
+    total: Required['int']
+    source: Required['ExecutiveSourceStatus']
+
+HrMaintenanceRecordStatus = Literal['RECORDED']
+
+class HrMaintenanceRecordCreateRequest(TypedDict, total=False):
+    inventory_item_id: Required['str']
+    performed_on: Required['str']
+    summary: Required['str']
+    result: Required["Literal['INSPECTED', 'REPAIR_COMPLETED', 'UNRESOLVED']"]
+
+class HrMaintenanceRecordProjection(TypedDict, total=False):
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    maintenance_record_id: Required['str']
+    inventory_item_id: Required['str']
+    performed_on: Required['str']
+    summary: Required['str']
+    result: Required["Literal['INSPECTED', 'REPAIR_COMPLETED', 'UNRESOLVED']"]
+    status: Required['str']
+    created_at: Required['str']
+    updated_at: Required['str']
+    allowed_transitions: Required['list[HrMaintenanceRecordStatus]']
+
+class HrMaintenanceRecordListProjection(TypedDict, total=False):
+    items: Required['list[HrMaintenanceRecordProjection]']
+    total: Required['int']
+    source: Required['ExecutiveSourceStatus']
+
+HrServiceAssessmentStatus = Literal['RECORDED']
+
+class HrServiceAssessmentCreateRequest(TypedDict, total=False):
+    facility_code: Required['str']
+    assessed_on: Required['str']
+    readiness: Required["Literal['READY', 'NOT_READY', 'UNKNOWN']"]
+    notes: Required['str']
+
+class HrServiceAssessmentProjection(TypedDict, total=False):
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    service_assessment_id: Required['str']
+    facility_code: Required['str']
+    assessed_on: Required['str']
+    readiness: Required["Literal['READY', 'NOT_READY', 'UNKNOWN']"]
+    notes: Required['str']
+    status: Required['str']
+    created_at: Required['str']
+    updated_at: Required['str']
+    allowed_transitions: Required['list[HrServiceAssessmentStatus]']
+
+class HrServiceAssessmentListProjection(TypedDict, total=False):
+    items: Required['list[HrServiceAssessmentProjection]']
+    total: Required['int']
+    source: Required['ExecutiveSourceStatus']
+
 class HrOverview(TypedDict, total=False):
     source: Required['ExecutiveSourceStatus']
     counts: Required['HrOverviewCounts']
@@ -546,3 +696,8 @@ class HrOverviewCounts(TypedDict, total=False):
     grievances: Required['int']
     employment_contracts: Required['int']
     personnel_files: Required['int']
+    facility_requests: 'int'
+    inventory_items: 'int'
+    asset_handovers: 'int'
+    maintenance_records: 'int'
+    service_assessments: 'int'
