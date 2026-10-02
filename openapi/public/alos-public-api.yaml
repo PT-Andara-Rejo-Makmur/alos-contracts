@@ -12892,6 +12892,243 @@ paths:
         required: true
         schema:
           type: string
+  /api/v1/legal/legal-reviews:
+    get:
+      operationId: legalLegalReviewsLegalReviewListProjection1
+      tags:
+      - legal
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalReviewListProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legalLegalReviewsLegalReview1
+      tags:
+      - legal
+      responses:
+        '201':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalReviewProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalReviewCreateRequest
+  /api/v1/legal/legal-reviews/{identity}:
+    get:
+      operationId: legalLegalReviewsLegalReview2
+      tags:
+      - legal
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalReviewProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+    patch:
+      operationId: legalLegalReviewsLegalReview3
+      tags:
+      - legal
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalReviewProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalReviewUpdateRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/v1/legal/legal-reviews/{identity}/transition:
+    post:
+      operationId: legalLegalReviewsLegalReview4
+      tags:
+      - legal
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalReviewProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalReviewTransitionRequest
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+  /api/v1/legal/contract-revisions:
+    get:
+      operationId: legalContractRevisionsLegalContractRevisionListProjection1
+      tags:
+      - legal
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractRevisionListProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: legalContractRevisionsLegalContractRevision1
+      tags:
+      - legal
+      responses:
+        '201':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractRevisionProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractRevisionCreateRequest
+  /api/v1/legal/contract-revisions/{identity}:
+    get:
+      operationId: legalContractRevisionsLegalContractRevision2
+      tags:
+      - legal
+      responses:
+        '200':
+          description: Canonical scoped projection
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractRevisionProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
 components:
   securitySchemes:
     bearerAuth:

@@ -421,6 +421,74 @@ class LegalControlListProjection(TypedDict, total=False):
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
 
+LegalReviewStatus = Literal['OPEN', 'IN_REVIEW', 'REVIEWED']
+
+class LegalReviewCreateRequest(TypedDict, total=False):
+    contract_id: Required['str']
+    title: Required['str']
+    review_summary: 'str | None'
+    assessment: "Literal['RECORDED_ISSUES', 'NO_RECORDED_ISSUES', 'INCONCLUSIVE'] | None"
+
+class LegalReviewUpdateRequest(TypedDict, total=False):
+    title: 'str'
+    review_summary: 'str | None'
+    assessment: "Literal['RECORDED_ISSUES', 'NO_RECORDED_ISSUES', 'INCONCLUSIVE'] | None"
+
+class LegalReviewTransitionRequest(TypedDict, total=False):
+    status: Required['LegalReviewStatus']
+
+class LegalReviewProjection(TypedDict, total=False):
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    legal_review_id: Required['str']
+    contract_id: Required['str']
+    title: Required['str']
+    review_summary: Required['str | None']
+    assessment: Required["Literal['RECORDED_ISSUES', 'NO_RECORDED_ISSUES', 'INCONCLUSIVE'] | None"]
+    status: Required['str']
+    created_at: Required['str']
+    updated_at: Required['str']
+    allowed_transitions: Required['list[LegalReviewStatus]']
+    reviewed_by: Required['str | None']
+    reviewed_at: Required['str | None']
+
+class LegalReviewListProjection(TypedDict, total=False):
+    items: Required['list[LegalReviewProjection]']
+    total: Required['int']
+    source: Required['ExecutiveSourceStatus']
+
+LegalContractRevisionStatus = Literal['RECORDED']
+
+class LegalContractRevisionCreateRequest(TypedDict, total=False):
+    contract_id: Required['str']
+    document_id: Required['str']
+    document_version: Required['str']
+    revision_number: Required['int']
+    summary: Required['str']
+    recorded_on: Required['str']
+
+class LegalContractRevisionProjection(TypedDict, total=False):
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    contract_revision_id: Required['str']
+    contract_id: Required['str']
+    document_id: Required['str']
+    document_version: Required['str']
+    revision_number: Required['int']
+    summary: Required['str']
+    recorded_on: Required['str']
+    status: Required['str']
+    created_at: Required['str']
+    updated_at: Required['str']
+    allowed_transitions: Required['list[LegalContractRevisionStatus]']
+
+class LegalContractRevisionListProjection(TypedDict, total=False):
+    items: Required['list[LegalContractRevisionProjection]']
+    total: Required['int']
+    source: Required['ExecutiveSourceStatus']
+
 class LegalOverview(TypedDict, total=False):
     source: Required['ExecutiveSourceStatus']
     counts: Required['LegalOverviewCounts']
@@ -438,3 +506,5 @@ class LegalOverviewCounts(TypedDict, total=False):
     privacy_requests: Required['int']
     risks: Required['int']
     controls: Required['int']
+    legal_reviews: 'int'
+    contract_revisions: 'int'

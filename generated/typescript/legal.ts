@@ -472,6 +472,82 @@ export interface LegalControlListProjection {
   readonly source: ExecutiveSourceStatus;
 }
 
+export type LegalReviewStatus = "OPEN" | "IN_REVIEW" | "REVIEWED";
+
+export interface LegalReviewCreateRequest {
+  readonly contract_id: string;
+  readonly title: string;
+  readonly review_summary?: string | null;
+  readonly assessment?: "RECORDED_ISSUES" | "NO_RECORDED_ISSUES" | "INCONCLUSIVE" | null;
+}
+
+export interface LegalReviewUpdateRequest {
+  readonly title?: string;
+  readonly review_summary?: string | null;
+  readonly assessment?: "RECORDED_ISSUES" | "NO_RECORDED_ISSUES" | "INCONCLUSIVE" | null;
+}
+
+export interface LegalReviewTransitionRequest {
+  readonly status: LegalReviewStatus;
+}
+
+export interface LegalReviewProjection {
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly legal_review_id: string;
+  readonly contract_id: string;
+  readonly title: string;
+  readonly review_summary: string | null;
+  readonly assessment: "RECORDED_ISSUES" | "NO_RECORDED_ISSUES" | "INCONCLUSIVE" | null;
+  readonly status: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly allowed_transitions: readonly (LegalReviewStatus)[];
+  readonly reviewed_by: string | null;
+  readonly reviewed_at: string | null;
+}
+
+export interface LegalReviewListProjection {
+  readonly items: readonly (LegalReviewProjection)[];
+  readonly total: number;
+  readonly source: ExecutiveSourceStatus;
+}
+
+export type LegalContractRevisionStatus = "RECORDED";
+
+export interface LegalContractRevisionCreateRequest {
+  readonly contract_id: string;
+  readonly document_id: string;
+  readonly document_version: string;
+  readonly revision_number: number;
+  readonly summary: string;
+  readonly recorded_on: string;
+}
+
+export interface LegalContractRevisionProjection {
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly contract_revision_id: string;
+  readonly contract_id: string;
+  readonly document_id: string;
+  readonly document_version: string;
+  readonly revision_number: number;
+  readonly summary: string;
+  readonly recorded_on: string;
+  readonly status: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly allowed_transitions: readonly (LegalContractRevisionStatus)[];
+}
+
+export interface LegalContractRevisionListProjection {
+  readonly items: readonly (LegalContractRevisionProjection)[];
+  readonly total: number;
+  readonly source: ExecutiveSourceStatus;
+}
+
 export interface LegalOverview {
   readonly source: ExecutiveSourceStatus;
   readonly counts: LegalOverviewCounts;
@@ -490,4 +566,6 @@ export interface LegalOverviewCounts {
   readonly privacy_requests: number;
   readonly risks: number;
   readonly controls: number;
+  readonly legal_reviews?: number;
+  readonly contract_revisions?: number;
 }

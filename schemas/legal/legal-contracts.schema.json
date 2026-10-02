@@ -2473,6 +2473,407 @@
         "source"
       ],
       "additionalProperties": false
+    },
+    "LegalReviewStatus": {
+      "type": "string",
+      "enum": [
+        "OPEN",
+        "IN_REVIEW",
+        "REVIEWED"
+      ]
+    },
+    "LegalReviewCreateRequest": {
+      "type": "object",
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "review_summary": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "RECORDED_ISSUES",
+                "NO_RECORDED_ISSUES",
+                "INCONCLUSIVE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "contract_id",
+        "title"
+      ],
+      "additionalProperties": false
+    },
+    "LegalReviewUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "review_summary": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "RECORDED_ISSUES",
+                "NO_RECORDED_ISSUES",
+                "INCONCLUSIVE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "LegalReviewTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalReviewStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "LegalReviewProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "legal_review_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "contract_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 300
+        },
+        "review_summary": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "assessment": {
+          "oneOf": [
+            {
+              "type": "string",
+              "enum": [
+                "RECORDED_ISSUES",
+                "NO_RECORDED_ISSUES",
+                "INCONCLUSIVE"
+              ]
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalReviewStatus"
+          }
+        },
+        "reviewed_by": {
+          "oneOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reviewed_at": {
+          "oneOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "legal_review_id",
+        "contract_id",
+        "title",
+        "review_summary",
+        "assessment",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions",
+        "reviewed_by",
+        "reviewed_at"
+      ],
+      "additionalProperties": false
+    },
+    "LegalReviewListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalReviewProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalContractRevisionStatus": {
+      "type": "string",
+      "enum": [
+        "RECORDED"
+      ]
+    },
+    "LegalContractRevisionCreateRequest": {
+      "type": "object",
+      "properties": {
+        "contract_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "revision_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "recorded_on": {
+          "type": "string",
+          "format": "date"
+        }
+      },
+      "required": [
+        "contract_id",
+        "document_id",
+        "document_version",
+        "revision_number",
+        "summary",
+        "recorded_on"
+      ],
+      "additionalProperties": false
+    },
+    "LegalContractRevisionProjection": {
+      "type": "object",
+      "properties": {
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "contract_revision_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "contract_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "document_version": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 100
+        },
+        "revision_number": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "summary": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000
+        },
+        "recorded_on": {
+          "type": "string",
+          "format": "date"
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 32
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalContractRevisionStatus"
+          }
+        }
+      },
+      "required": [
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "contract_revision_id",
+        "contract_id",
+        "document_id",
+        "document_version",
+        "revision_number",
+        "summary",
+        "recorded_on",
+        "status",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "LegalContractRevisionListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/legal/legal-contracts.schema.json#/$defs/LegalContractRevisionProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
     }
   },
   "type": "object",
@@ -2524,6 +2925,14 @@
           "minimum": 0
         },
         "controls": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "legal_reviews": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "contract_revisions": {
           "type": "integer",
           "minimum": 0
         }
