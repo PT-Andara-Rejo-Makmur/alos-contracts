@@ -231,22 +231,22 @@ def test_strategy_create_command_rejects_backend_owned_authority_fields(schemas,
         with pytest.raises(ValidationError):
             validate.validate({**command, backend_owned: "client-controlled"})
 
-MVP1_COMPATIBILITY_FIXTURES = [
-    "compatibility/fixtures/mvp1/agent-definition.adapted.json",
-    "compatibility/fixtures/mvp1/agent-run-request.adapted.json",
-    "compatibility/fixtures/mvp1/agent-run-result.adapted.json",
-    "compatibility/fixtures/mvp1/ai-review-result.adapted.json",
-    "compatibility/fixtures/mvp1/capability-definition.adapted.json",
-    "compatibility/fixtures/mvp1/decision-ref.adapted.json",
-    "compatibility/fixtures/mvp1/evidence-bundle.adapted.json",
-    "compatibility/fixtures/mvp1/evidence-ref.adapted.json",
-    "compatibility/fixtures/mvp1/execution-context.adapted.json",
-    "compatibility/fixtures/mvp1/context-bundle.adapted.json",
-    "compatibility/fixtures/mvp1/research-request.adapted.json",
-    "compatibility/fixtures/mvp1/research-result.adapted.json",
-    "compatibility/fixtures/mvp1/run-event.adapted.json",
-    "compatibility/fixtures/mvp1/tool-request.adapted.json",
-    "compatibility/fixtures/mvp1/tool-result.adapted.json",
+AUTHORITY_COMPATIBILITY_FIXTURES = [
+    "compatibility/fixtures/authority-bootstrap/agent-definition.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/agent-run-request.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/agent-run-result.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/ai-review-result.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/capability-definition.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/decision-ref.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/evidence-bundle.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/evidence-ref.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/execution-context.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/context-bundle.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/research-request.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/research-result.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/run-event.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/tool-request.adapted.json",
+    "compatibility/fixtures/authority-bootstrap/tool-result.adapted.json",
 ]
 
 
@@ -415,7 +415,7 @@ def test_event_example_is_valid(load_json, schemas, registry):
     validator(payload["$schema"], schemas, registry).validate(without_schema(payload))
 
 
-@pytest.mark.parametrize("fixture_path", MVP1_COMPATIBILITY_FIXTURES)
+@pytest.mark.parametrize("fixture_path", AUTHORITY_COMPATIBILITY_FIXTURES)
 def test_adapted_mvp1_fixture_is_valid(fixture_path, load_json, schemas, registry):
     payload = load_json(fixture_path)
     validator(payload["$schema"], schemas, registry).validate(without_schema(payload))
@@ -438,7 +438,7 @@ def test_capability_draft_accepts_canonical_or_deprecated_type_field(schemas, re
 
 
 def test_legacy_identifier_aliases_are_not_accepted(load_json, schemas, registry):
-    payload = without_schema(load_json(MVP1_COMPATIBILITY_FIXTURES[0]))
+    payload = without_schema(load_json(AUTHORITY_COMPATIBILITY_FIXTURES[0]))
     payload["agent_key"] = payload.pop("agent_id")
 
     with pytest.raises(ValidationError):
@@ -457,7 +457,7 @@ def test_ambiguous_legacy_release_states_require_explicit_mapping(schemas, regis
 
 
 def test_rejected_tool_result_requires_structured_error(load_json, schemas, registry):
-    payload = without_schema(load_json("compatibility/fixtures/mvp1/tool-result.adapted.json"))
+    payload = without_schema(load_json("compatibility/fixtures/authority-bootstrap/tool-result.adapted.json"))
     payload["status"] = "REJECTED"
     payload.pop("output")
 
@@ -469,7 +469,7 @@ def test_rejected_tool_result_requires_structured_error(load_json, schemas, regi
 def test_non_success_tool_result_requires_structured_error(
     status, load_json, schemas, registry
 ):
-    payload = without_schema(load_json("compatibility/fixtures/mvp1/tool-result.adapted.json"))
+    payload = without_schema(load_json("compatibility/fixtures/authority-bootstrap/tool-result.adapted.json"))
     payload["status"] = status
     payload.pop("output")
     payload.pop("error", None)
@@ -490,7 +490,7 @@ def test_failed_agent_run_requires_structured_error(load_json, schemas, registry
 
 
 def test_ai_review_cannot_claim_authoritative_approval(load_json, schemas, registry):
-    payload = without_schema(load_json("compatibility/fixtures/mvp1/ai-review-result.adapted.json"))
+    payload = without_schema(load_json("compatibility/fixtures/authority-bootstrap/ai-review-result.adapted.json"))
     payload["status"] = "APPROVED_BY_AI"
 
     with pytest.raises(ValidationError):

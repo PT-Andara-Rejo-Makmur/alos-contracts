@@ -168,13 +168,13 @@ def test_generated_typescript_uses_valid_trailing_slash_regex():
 
 
 # ---------------------------------------------------------------------------
-# MVP2 stage contract freeze (M2-H01-BE-02):
+# Governed factory pipeline contract:
 # Requirement -> RequirementUnderstanding -> CapabilityDecision ->
 # CapabilityDraft -> CapabilityDetail
 # ---------------------------------------------------------------------------
 
 
-STAGE_BASE = f"{SCHEMA_BASE}/factory"
+FACTORY_SCHEMA_BASE = f"{SCHEMA_BASE}/factory"
 CAPABILITY_BASE = f"{SCHEMA_BASE}/capability"
 
 _UNDERSTANDING_MVP2_FIELDS = {
@@ -190,20 +190,20 @@ _UNDERSTANDING_MVP2_FIELDS = {
 
 def test_requirement_stage_is_typed_and_backend_owned(load_json, schemas, registry):
     request = without_schema(load_json("examples/factory/factory-analysis-request.json"))
-    validate(f"{STAGE_BASE}/requirement.schema.json", request["requirement"], schemas, registry)
+    validate(f"{FACTORY_SCHEMA_BASE}/requirement.schema.json", request["requirement"], schemas, registry)
 
     assert request["requirement"]["requirement_id"] == "req_corr_factory_001"
 
     injected = copy.deepcopy(request["requirement"])
     injected["scope_refs"] = ["scope.workspace.other"]
     with pytest.raises(ValidationError):
-        validate(f"{STAGE_BASE}/requirement.schema.json", injected, schemas, registry)
+        validate(f"{FACTORY_SCHEMA_BASE}/requirement.schema.json", injected, schemas, registry)
 
 
 def test_requirement_understanding_stage_is_typed(load_json, schemas, registry):
     result = without_schema(load_json("examples/factory/factory-analysis-result.create.json"))
     understanding = result["resolution"]["understanding"]
-    validate(f"{STAGE_BASE}/requirement-understanding.schema.json", understanding, schemas, registry)
+    validate(f"{FACTORY_SCHEMA_BASE}/requirement-understanding.schema.json", understanding, schemas, registry)
 
     assert understanding["requirement_id"] == "req_corr_factory_001"
     assert understanding["ambiguity"] == "NONE"
@@ -213,28 +213,28 @@ def test_requirement_understanding_stage_is_typed(load_json, schemas, registry):
         for key, value in understanding.items()
         if key not in _UNDERSTANDING_MVP2_FIELDS
     }
-    validate(f"{STAGE_BASE}/requirement-understanding.schema.json", legacy, schemas, registry)
+    validate(f"{FACTORY_SCHEMA_BASE}/requirement-understanding.schema.json", legacy, schemas, registry)
 
     forged = copy.deepcopy(understanding)
     forged["authority_level"] = "DIRECTOR_APPROVER"
     with pytest.raises(ValidationError):
-        validate(f"{STAGE_BASE}/requirement-understanding.schema.json", forged, schemas, registry)
+        validate(f"{FACTORY_SCHEMA_BASE}/requirement-understanding.schema.json", forged, schemas, registry)
 
 
 def test_capability_decision_stage_is_typed(load_json, schemas, registry):
     result = without_schema(load_json("examples/factory/factory-analysis-result.create.json"))
     resolution = result["resolution"]
-    validate(f"{STAGE_BASE}/capability-decision.schema.json", resolution, schemas, registry)
-    validate(f"{STAGE_BASE}/factory-resolution.schema.json", resolution, schemas, registry)
+    validate(f"{FACTORY_SCHEMA_BASE}/capability-decision.schema.json", resolution, schemas, registry)
+    validate(f"{FACTORY_SCHEMA_BASE}/factory-resolution.schema.json", resolution, schemas, registry)
 
     ambiguous = copy.deepcopy(resolution)
     ambiguous["understanding"]["ambiguity"] = "NEEDS_CLARIFICATION"
-    validate(f"{STAGE_BASE}/capability-decision.schema.json", ambiguous, schemas, registry)
+    validate(f"{FACTORY_SCHEMA_BASE}/capability-decision.schema.json", ambiguous, schemas, registry)
 
     invalid = copy.deepcopy(resolution)
     invalid["decision"] = "ACTIVATE"
     with pytest.raises(ValidationError):
-        validate(f"{STAGE_BASE}/capability-decision.schema.json", invalid, schemas, registry)
+        validate(f"{FACTORY_SCHEMA_BASE}/capability-decision.schema.json", invalid, schemas, registry)
 
     legacy = {key: value for key, value in resolution.items() if key != "human_gate_required"}
     legacy["understanding"] = {
@@ -242,7 +242,7 @@ def test_capability_decision_stage_is_typed(load_json, schemas, registry):
         for key, value in legacy["understanding"].items()
         if key not in _UNDERSTANDING_MVP2_FIELDS
     }
-    validate(f"{STAGE_BASE}/capability-decision.schema.json", legacy, schemas, registry)
+    validate(f"{FACTORY_SCHEMA_BASE}/capability-decision.schema.json", legacy, schemas, registry)
 
 
 def test_capability_draft_stage_keeps_human_gate_and_dependency_fields(

@@ -24,7 +24,7 @@ def example_paths() -> list[Path]:
     return sorted([
         *ROOT.glob("examples/**/*.json"),
         *ROOT.glob("events/**/*.example.json"),
-        *ROOT.glob("compatibility/fixtures/mvp1/**/*.json"),
+        *ROOT.glob("compatibility/fixtures/authority-bootstrap/**/*.json"),
     ])
 
 
