@@ -83,7 +83,7 @@ class BusinessProcessProjection(TypedDict, total=False):
     direction_reason: 'str | None'
     can_request_direction: 'bool'
 
-BusinessProcessType = Literal['CHANGE_ORDER', 'PAYMENT_CERTIFICATE', 'BOOKING', 'ONBOARDING', 'OFFBOARDING', 'CAPABILITY_REQUEST', 'EMPLOYMENT_CONTRACT']
+BusinessProcessType = Literal['CHANGE_ORDER', 'PAYMENT_CERTIFICATE', 'BOOKING', 'ONBOARDING', 'OFFBOARDING', 'CAPABILITY_REQUEST', 'EMPLOYMENT_CONTRACT', 'RECRUITMENT']
 
 BusinessProcessStatus = Literal['PENDING', 'READY', 'IN_PROGRESS', 'COMPLETED', 'RETURNED', 'CANCELLED']
 

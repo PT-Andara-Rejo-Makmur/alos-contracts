@@ -4,7 +4,7 @@
 
 
 
-export type BusinessProcessType = "CHANGE_ORDER" | "PAYMENT_CERTIFICATE" | "BOOKING" | "ONBOARDING" | "OFFBOARDING" | "CAPABILITY_REQUEST" | "EMPLOYMENT_CONTRACT";
+export type BusinessProcessType = "CHANGE_ORDER" | "PAYMENT_CERTIFICATE" | "BOOKING" | "ONBOARDING" | "OFFBOARDING" | "CAPABILITY_REQUEST" | "EMPLOYMENT_CONTRACT" | "RECRUITMENT";
 
 export type BusinessProcessStatus = "PENDING" | "READY" | "IN_PROGRESS" | "COMPLETED" | "RETURNED" | "CANCELLED";
 
@@ -57,6 +57,7 @@ export interface BusinessProcessPolicyRequestRules {
   readonly escalation_hours?: Readonly<Record<string, number>>;
   readonly escalation_routes?: Readonly<Record<string, BusinessProcessPolicyRequestRulesEscalationRoutesValue>>;
   readonly executive_acknowledgement?: boolean;
+  readonly finance_review_required?: boolean;
 }
 
 export interface BusinessProcessPolicyRequestRulesEscalationRoutesValue {
@@ -99,6 +100,7 @@ export interface BusinessProcessPolicyProjectionRules {
   readonly escalation_hours?: Readonly<Record<string, number>>;
   readonly escalation_routes?: Readonly<Record<string, BusinessProcessPolicyProjectionRulesEscalationRoutesValue>>;
   readonly executive_acknowledgement?: boolean;
+  readonly finance_review_required?: boolean;
 }
 
 export interface BusinessProcessPolicyProjectionRulesEscalationRoutesValue {

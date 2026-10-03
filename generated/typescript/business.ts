@@ -85,7 +85,7 @@ export interface BusinessProcessProjection {
   readonly can_request_direction?: boolean;
 }
 
-export type BusinessProcessType = "CHANGE_ORDER" | "PAYMENT_CERTIFICATE" | "BOOKING" | "ONBOARDING" | "OFFBOARDING" | "CAPABILITY_REQUEST" | "EMPLOYMENT_CONTRACT";
+export type BusinessProcessType = "CHANGE_ORDER" | "PAYMENT_CERTIFICATE" | "BOOKING" | "ONBOARDING" | "OFFBOARDING" | "CAPABILITY_REQUEST" | "EMPLOYMENT_CONTRACT" | "RECRUITMENT";
 
 export type BusinessProcessStatus = "PENDING" | "READY" | "IN_PROGRESS" | "COMPLETED" | "RETURNED" | "CANCELLED";
 

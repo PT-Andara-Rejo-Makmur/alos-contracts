@@ -8,7 +8,7 @@ from typing import Literal, Required, TypedDict
 
 
 
-BusinessProcessType = Literal['CHANGE_ORDER', 'PAYMENT_CERTIFICATE', 'BOOKING', 'ONBOARDING', 'OFFBOARDING', 'CAPABILITY_REQUEST', 'EMPLOYMENT_CONTRACT']
+BusinessProcessType = Literal['CHANGE_ORDER', 'PAYMENT_CERTIFICATE', 'BOOKING', 'ONBOARDING', 'OFFBOARDING', 'CAPABILITY_REQUEST', 'EMPLOYMENT_CONTRACT', 'RECRUITMENT']
 
 BusinessProcessStatus = Literal['PENDING', 'READY', 'IN_PROGRESS', 'COMPLETED', 'RETURNED', 'CANCELLED']
 
@@ -56,6 +56,7 @@ class BusinessProcessPolicyRequestRules(TypedDict, total=False):
     escalation_hours: 'dict[str, int]'
     escalation_routes: 'dict[str, BusinessProcessPolicyRequestRulesEscalationRoutesValue]'
     executive_acknowledgement: 'bool'
+    finance_review_required: 'bool'
 
 class BusinessProcessPolicyRequestRulesEscalationRoutesValue(TypedDict, total=False):
     workspace_id: Required['str']
@@ -94,6 +95,7 @@ class BusinessProcessPolicyProjectionRules(TypedDict, total=False):
     escalation_hours: 'dict[str, int]'
     escalation_routes: 'dict[str, BusinessProcessPolicyProjectionRulesEscalationRoutesValue]'
     executive_acknowledgement: 'bool'
+    finance_review_required: 'bool'
 
 class BusinessProcessPolicyProjectionRulesEscalationRoutesValue(TypedDict, total=False):
     workspace_id: Required['str']

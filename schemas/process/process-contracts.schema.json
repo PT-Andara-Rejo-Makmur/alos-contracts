@@ -12,7 +12,8 @@
         "ONBOARDING",
         "OFFBOARDING",
         "CAPABILITY_REQUEST",
-        "EMPLOYMENT_CONTRACT"
+        "EMPLOYMENT_CONTRACT",
+        "RECRUITMENT"
       ]
     },
     "BusinessProcessStatus": {
@@ -251,6 +252,9 @@
             },
             "executive_acknowledgement": {
               "type": "boolean"
+            },
+            "finance_review_required": {
+              "type": "boolean"
             }
           },
           "required": [],
@@ -417,6 +421,9 @@
               }
             },
             "executive_acknowledgement": {
+              "type": "boolean"
+            },
+            "finance_review_required": {
               "type": "boolean"
             }
           },
