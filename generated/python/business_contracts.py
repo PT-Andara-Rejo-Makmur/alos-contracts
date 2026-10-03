@@ -27,6 +27,62 @@ class BusinessSummary(TypedDict, total=False):
     generated_at: Required['str']
     metrics: Required['list[BusinessMetric]']
 
+AnalyticsGranularity = Literal['DAY', 'MONTH', 'QUARTER', 'YEAR']
+
+class AnalyticsPeriod(TypedDict, total=False):
+    from: Required['str']
+    to: Required['str']
+    granularity: Required['AnalyticsGranularity']
+
+class AnalyticsPoint(TypedDict, total=False):
+    period: Required['str']
+    value: Required['str | float']
+
+class AnalyticsSeries(TypedDict, total=False):
+    code: Required['str']
+    label: Required['str']
+    unit: Required["Literal['COUNT', 'AMOUNT', 'PERCENT']"]
+    available: Required['bool']
+    source: Required['str']
+    points: Required['list[AnalyticsPoint]']
+
+class AnalyticsBreakdownItem(TypedDict, total=False):
+    code: Required['str']
+    label: Required['str']
+    value: Required['str | float']
+
+class AnalyticsBreakdown(TypedDict, total=False):
+    code: Required['str']
+    label: Required['str']
+    unit: Required["Literal['COUNT', 'AMOUNT', 'PERCENT']"]
+    available: Required['bool']
+    source: Required['str']
+    items: Required['list[AnalyticsBreakdownItem]']
+
+class AnalyticsComparisonItem(TypedDict, total=False):
+    code: Required['str']
+    label: Required['str']
+    value: Required['str | float | None']
+    target_value: Required['str | float | None']
+    actual_value: Required['str | float | None']
+    forecast_value: Required['str | float | None']
+
+class AnalyticsComparison(TypedDict, total=False):
+    code: Required['str']
+    label: Required['str']
+    unit: Required["Literal['COUNT', 'AMOUNT', 'PERCENT']"]
+    available: Required['bool']
+    source: Required['str']
+    items: Required['list[AnalyticsComparisonItem]']
+
+class BusinessAnalyticsProjection(TypedDict, total=False):
+    domain: Required["Literal['sales', 'property', 'finance', 'legal', 'hr', 'it', 'executive']"]
+    generated_at: Required['str']
+    period: Required['AnalyticsPeriod']
+    series: Required['list[AnalyticsSeries]']
+    breakdowns: Required['list[AnalyticsBreakdown]']
+    comparisons: Required['list[AnalyticsComparison]']
+
 class BusinessRelationshipOverview(TypedDict, total=False):
     items: Required['list[BusinessRelationship]']
 

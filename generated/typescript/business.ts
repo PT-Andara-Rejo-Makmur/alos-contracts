@@ -25,6 +25,70 @@ export interface BusinessSummary {
   readonly metrics: readonly (BusinessMetric)[];
 }
 
+export type AnalyticsGranularity = "DAY" | "MONTH" | "QUARTER" | "YEAR";
+
+export interface AnalyticsPeriod {
+  readonly from: string;
+  readonly to: string;
+  readonly granularity: AnalyticsGranularity;
+}
+
+export interface AnalyticsPoint {
+  readonly period: string;
+  readonly value: string | number;
+}
+
+export interface AnalyticsSeries {
+  readonly code: string;
+  readonly label: string;
+  readonly unit: "COUNT" | "AMOUNT" | "PERCENT";
+  readonly available: boolean;
+  readonly source: string;
+  readonly points: readonly (AnalyticsPoint)[];
+}
+
+export interface AnalyticsBreakdownItem {
+  readonly code: string;
+  readonly label: string;
+  readonly value: string | number;
+}
+
+export interface AnalyticsBreakdown {
+  readonly code: string;
+  readonly label: string;
+  readonly unit: "COUNT" | "AMOUNT" | "PERCENT";
+  readonly available: boolean;
+  readonly source: string;
+  readonly items: readonly (AnalyticsBreakdownItem)[];
+}
+
+export interface AnalyticsComparisonItem {
+  readonly code: string;
+  readonly label: string;
+  readonly value: string | number | null;
+  readonly target_value: string | number | null;
+  readonly actual_value: string | number | null;
+  readonly forecast_value: string | number | null;
+}
+
+export interface AnalyticsComparison {
+  readonly code: string;
+  readonly label: string;
+  readonly unit: "COUNT" | "AMOUNT" | "PERCENT";
+  readonly available: boolean;
+  readonly source: string;
+  readonly items: readonly (AnalyticsComparisonItem)[];
+}
+
+export interface BusinessAnalyticsProjection {
+  readonly domain: "sales" | "property" | "finance" | "legal" | "hr" | "it" | "executive";
+  readonly generated_at: string;
+  readonly period: AnalyticsPeriod;
+  readonly series: readonly (AnalyticsSeries)[];
+  readonly breakdowns: readonly (AnalyticsBreakdown)[];
+  readonly comparisons: readonly (AnalyticsComparison)[];
+}
+
 export interface BusinessRelationshipOverview {
   readonly items: readonly (BusinessRelationship)[];
 }

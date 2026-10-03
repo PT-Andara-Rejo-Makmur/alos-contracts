@@ -93,3 +93,159 @@ def test_safety_severity_is_explicit_canonical_enum(registry):
     validate.validate(data)
     with pytest.raises(ValidationError):
         validate.validate({**data, "severity": "guessed"})
+
+
+def test_business_analytics_preserves_zero_and_decimal_amounts(registry):
+    validate = Draft202012Validator(
+        {"$ref": f"{BASE}business/business-contracts.schema.json#/$defs/BusinessAnalyticsProjection"},
+        registry=registry,
+        format_checker=FormatChecker(),
+    )
+    projection = {
+        "domain": "sales",
+        "generated_at": "2027-03-01T00:00:00Z",
+        "period": {"from": "2027-02-01", "to": "2027-02-28", "granularity": "MONTH"},
+        "series": [
+            {
+                "code": "closing_count",
+                "label": "Closing selesai",
+                "unit": "COUNT",
+                "available": True,
+                "source": "Closing yang telah selesai",
+                "points": [{"period": "2027-02-01", "value": 0}],
+            },
+            {
+                "code": "closing_value",
+                "label": "Nilai Closing",
+                "unit": "AMOUNT",
+                "available": True,
+                "source": "Closing yang telah selesai",
+                "points": [{"period": "2027-02-01", "value": "0.00"}],
+            },
+        ],
+        "breakdowns": [],
+        "comparisons": [],
+    }
+    validate.validate(projection)
+    with pytest.raises(ValidationError):
+        validate.validate(
+            {
+                **projection,
+                "series": [
+                    {**projection["series"][1], "points": [{"period": "2027-02-01", "value": 0.0}]}
+                ],
+            }
+        )
+
+
+def test_business_analytics_rejects_malformed_or_fabricated_unavailable_values(registry):
+    validate = Draft202012Validator(
+        {"$ref": f"{BASE}business/business-contracts.schema.json#/$defs/BusinessAnalyticsProjection"},
+        registry=registry,
+        format_checker=FormatChecker(),
+    )
+    base = {
+        "domain": "finance",
+        "generated_at": "2027-03-01T00:00:00Z",
+        "period": {"from": "2027-03-01", "to": "2027-03-31", "granularity": "MONTH"},
+        "series": [],
+        "breakdowns": [],
+        "comparisons": [],
+    }
+    validate.validate(base)
+    unavailable = {
+        "code": "cash_balance",
+        "label": "Posisi kas",
+        "unit": "AMOUNT",
+        "available": False,
+        "source": "Saldo kas terverifikasi",
+        "points": [],
+    }
+    validate.validate({**base, "series": [unavailable]})
+    with pytest.raises(ValidationError):
+        validate.validate({**base, "series": [{**unavailable, "points": [{"period": "2027-03-01", "value": "99.00"}]}]})
+    with pytest.raises(ValidationError):
+        validate.validate({**base, "period": {**base["period"], "granularity": "WEEK"}})
+    with pytest.raises(ValidationError):
+        validate.validate({**base, "series": [{**unavailable, "points": [{"period": "not-a-date", "value": "1.00"}]}]})
+
+
+def test_business_analytics_comparisons_enforce_exact_values_by_unit(registry):
+    validate = Draft202012Validator(
+        {"$ref": f"{BASE}business/business-contracts.schema.json#/$defs/BusinessAnalyticsProjection"},
+        registry=registry,
+        format_checker=FormatChecker(),
+    )
+    base = {
+        "domain": "executive",
+        "generated_at": "2027-03-01T00:00:00Z",
+        "period": {"from": "2027-03-01", "to": "2027-03-31", "granularity": "MONTH"},
+        "series": [],
+        "breakdowns": [],
+        "comparisons": [],
+    }
+    item = {
+        "code": "target_1",
+        "label": "Closing perusahaan",
+        "value": 0,
+        "target_value": 3,
+        "actual_value": 0,
+        "forecast_value": None,
+    }
+    count_comparison = {
+        "code": "closing_count",
+        "label": "Target, aktual, dan perkiraan",
+        "unit": "COUNT",
+        "available": True,
+        "source": "Observasi target yang dipilih",
+        "items": [item],
+    }
+    validate.validate({**base, "comparisons": [count_comparison]})
+    with pytest.raises(ValidationError):
+        validate.validate({
+            **base,
+            "comparisons": [{
+                **count_comparison,
+                "items": [{**item, "actual_value": "0"}],
+            }],
+        })
+
+    amount_comparison = {
+        **count_comparison,
+        "unit": "AMOUNT",
+        "items": [{**item, "value": "0.00", "target_value": "98765432109876543210.05",
+                   "actual_value": "0.00"}],
+    }
+    validate.validate({**base, "comparisons": [amount_comparison]})
+    with pytest.raises(ValidationError):
+        validate.validate({
+            **base,
+            "comparisons": [{
+                **amount_comparison,
+                "items": [{**amount_comparison["items"][0], "actual_value": 0}],
+            }],
+        })
+
+    percent_comparison = {
+        **count_comparison,
+        "unit": "PERCENT",
+        "items": [{**item, "value": 68.5, "target_value": 70, "actual_value": 68.5}],
+    }
+    validate.validate({**base, "comparisons": [percent_comparison]})
+    with pytest.raises(ValidationError):
+        validate.validate({
+            **base,
+            "comparisons": [{
+                **percent_comparison,
+                "items": [{**percent_comparison["items"][0], "actual_value": "68.5"}],
+            }],
+        })
+
+    with pytest.raises(ValidationError):
+        validate.validate({
+            **base,
+            "comparisons": [{
+                **count_comparison,
+                "available": False,
+            }],
+        })

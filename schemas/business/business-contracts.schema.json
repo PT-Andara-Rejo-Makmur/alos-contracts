@@ -90,6 +90,234 @@
       ],
       "additionalProperties": false
     },
+    "AnalyticsGranularity": {
+      "type": "string",
+      "enum": ["DAY", "MONTH", "QUARTER", "YEAR"]
+    },
+    "AnalyticsPeriod": {
+      "type": "object",
+      "properties": {
+        "from": {"type": "string", "format": "date"},
+        "to": {"type": "string", "format": "date"},
+        "granularity": {"$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/AnalyticsGranularity"}
+      },
+      "required": ["from", "to", "granularity"],
+      "additionalProperties": false
+    },
+    "AnalyticsPoint": {
+      "type": "object",
+      "description": "A backend-confirmed value for the start of a period bucket. Amounts are decimal strings.",
+      "properties": {
+        "period": {"type": "string", "format": "date"},
+        "value": {"type": ["string", "number"]}
+      },
+      "required": ["period", "value"],
+      "additionalProperties": false
+    },
+    "AnalyticsSeries": {
+      "type": "object",
+      "properties": {
+        "code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "label": {"type": "string", "minLength": 1, "maxLength": 4000, "pattern": "\\S"},
+        "unit": {"type": "string", "enum": ["COUNT", "AMOUNT", "PERCENT"]},
+        "available": {"type": "boolean"},
+        "source": {"type": "string", "minLength": 1, "maxLength": 200},
+        "points": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/AnalyticsPoint"}}
+      },
+      "required": ["code", "label", "unit", "available", "source", "points"],
+      "allOf": [
+        {
+          "if": {"properties": {"unit": {"const": "AMOUNT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "points": {
+                "items": {
+                  "properties": {
+                    "value": {"type": "string", "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"unit": {"const": "COUNT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "points": {"items": {"properties": {"value": {"type": "integer"}}}}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"unit": {"const": "PERCENT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "points": {"items": {"properties": {"value": {"type": "number"}}}}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"available": {"const": false}}, "required": ["available"]},
+          "then": {"properties": {"points": {"maxItems": 0}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "AnalyticsBreakdownItem": {
+      "type": "object",
+      "properties": {
+        "code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "label": {"type": "string", "minLength": 1, "maxLength": 4000, "pattern": "\\S"},
+        "value": {"type": ["string", "number"]}
+      },
+      "required": ["code", "label", "value"],
+      "additionalProperties": false
+    },
+    "AnalyticsBreakdown": {
+      "type": "object",
+      "properties": {
+        "code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "label": {"type": "string", "minLength": 1, "maxLength": 4000, "pattern": "\\S"},
+        "unit": {"type": "string", "enum": ["COUNT", "AMOUNT", "PERCENT"]},
+        "available": {"type": "boolean"},
+        "source": {"type": "string", "minLength": 1, "maxLength": 200},
+        "items": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/AnalyticsBreakdownItem"}}
+      },
+      "required": ["code", "label", "unit", "available", "source", "items"],
+      "allOf": [
+        {
+          "if": {"properties": {"unit": {"const": "AMOUNT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "items": {
+                "items": {
+                  "properties": {
+                    "value": {"type": "string", "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"unit": {"const": "COUNT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "items": {"items": {"properties": {"value": {"type": "integer"}}}}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"unit": {"const": "PERCENT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "items": {"items": {"properties": {"value": {"type": "number"}}}}
+            }
+          }
+        },
+        {
+          "if": {"properties": {"available": {"const": false}}, "required": ["available"]},
+          "then": {"properties": {"items": {"maxItems": 0}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "AnalyticsComparisonItem": {
+      "type": "object",
+      "properties": {
+        "code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "label": {"type": "string", "minLength": 1, "maxLength": 4000, "pattern": "\\S"},
+        "value": {"type": ["string", "number", "null"]},
+        "target_value": {"type": ["string", "number", "null"]},
+        "actual_value": {"type": ["string", "number", "null"]},
+        "forecast_value": {"type": ["string", "number", "null"]}
+      },
+      "required": ["code", "label", "value", "target_value", "actual_value", "forecast_value"],
+      "additionalProperties": false
+    },
+    "AnalyticsComparison": {
+      "type": "object",
+      "properties": {
+        "code": {"type": "string", "minLength": 1, "maxLength": 128},
+        "label": {"type": "string", "minLength": 1, "maxLength": 4000, "pattern": "\\S"},
+        "unit": {"type": "string", "enum": ["COUNT", "AMOUNT", "PERCENT"]},
+        "available": {"type": "boolean"},
+        "source": {"type": "string", "minLength": 1, "maxLength": 200},
+        "items": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/AnalyticsComparisonItem"}}
+      },
+      "required": ["code", "label", "unit", "available", "source", "items"],
+      "allOf": [
+        {
+          "if": {"properties": {"unit": {"const": "AMOUNT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "items": {
+                "items": {
+                  "properties": {
+                    "value": {"type": ["string", "null"], "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"},
+                    "target_value": {"type": ["string", "null"], "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"},
+                    "actual_value": {"type": ["string", "null"], "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"},
+                    "forecast_value": {"type": ["string", "null"], "pattern": "^-?(?:0|[1-9]\\d*)(?:\\.\\d+)?$"}
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"unit": {"const": "COUNT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "items": {
+                "items": {
+                  "properties": {
+                    "value": {"type": ["integer", "null"]},
+                    "target_value": {"type": ["integer", "null"]},
+                    "actual_value": {"type": ["integer", "null"]},
+                    "forecast_value": {"type": ["integer", "null"]}
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"unit": {"const": "PERCENT"}}, "required": ["unit"]},
+          "then": {
+            "properties": {
+              "items": {
+                "items": {
+                  "properties": {
+                    "value": {"type": ["number", "null"]},
+                    "target_value": {"type": ["number", "null"]},
+                    "actual_value": {"type": ["number", "null"]},
+                    "forecast_value": {"type": ["number", "null"]}
+                  }
+                }
+              }
+            }
+          }
+        },
+        {
+          "if": {"properties": {"available": {"const": false}}, "required": ["available"]},
+          "then": {"properties": {"items": {"maxItems": 0}}}
+        }
+      ],
+      "additionalProperties": false
+    },
+    "BusinessAnalyticsProjection": {
+      "type": "object",
+      "properties": {
+        "domain": {"type": "string", "enum": ["sales", "property", "finance", "legal", "hr", "it", "executive"]},
+        "generated_at": {"type": "string", "format": "date-time"},
+        "period": {"$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/AnalyticsPeriod"},
+        "series": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/AnalyticsSeries"}},
+        "breakdowns": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/AnalyticsBreakdown"}},
+        "comparisons": {"type": "array", "items": {"$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/AnalyticsComparison"}}
+      },
+      "required": ["domain", "generated_at", "period", "series", "breakdowns", "comparisons"],
+      "additionalProperties": false
+    },
     "BusinessRelationshipOverview": {
       "type": "object",
       "properties": {

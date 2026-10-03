@@ -13756,6 +13756,98 @@ paths:
         schema:
           type: string
           minLength: 1
+  /api/v1/business/{domain}/analytics:
+    get:
+      operationId: readBusinessAnalytics
+      tags:
+      - business-operations
+      summary: Read scoped business analytics
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        schema:
+          type: string
+          enum: [sales, property, finance, legal, hr, it]
+      - name: from
+        in: query
+        required: true
+        description: Inclusive start date; buckets use UTC for timestamp sources.
+        schema:
+          type: string
+          format: date
+      - name: to
+        in: query
+        required: true
+        description: Inclusive end date.
+        schema:
+          type: string
+          format: date
+      - name: granularity
+        in: query
+        required: true
+        schema:
+          $ref: ../../schemas/business/business-contracts.schema.json#/$defs/AnalyticsGranularity
+      responses:
+        '200':
+          description: Authoritative analytics from scoped canonical records
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessAnalyticsProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/v1/business/executive/analytics:
+    get:
+      operationId: readExecutiveAnalytics
+      tags:
+      - business-operations
+      summary: Read company-scope analytics for executive decisions
+      parameters:
+      - name: from
+        in: query
+        required: true
+        description: Inclusive start date; buckets use UTC for timestamp sources.
+        schema:
+          type: string
+          format: date
+      - name: to
+        in: query
+        required: true
+        description: Inclusive end date.
+        schema:
+          type: string
+          format: date
+      - name: granularity
+        in: query
+        required: true
+        schema:
+          $ref: ../../schemas/business/business-contracts.schema.json#/$defs/AnalyticsGranularity
+      responses:
+        '200':
+          description: Authoritative company-scope analytics
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessAnalyticsProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
   /api/v1/business/executive/performance:
     get:
       operationId: readBusinessPerformance
