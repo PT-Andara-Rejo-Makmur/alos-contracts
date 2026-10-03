@@ -72,6 +72,11 @@
           "type": "boolean",
           "const": true
         },
+        "project_assignable": {
+          "type": "boolean",
+          "default": false,
+          "description": "Backend-derived Project owner replacement eligibility: project.read or work.read. Consumers must require true; omission in older projections does not grant eligibility."
+        },
         "task_assignable": {
           "type": "boolean"
         },

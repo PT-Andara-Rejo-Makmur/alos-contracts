@@ -2,6 +2,10 @@
 
 `shared-work.schema.json` defines six entity projections, creation inputs, status vocabulary, and distinct permission references. These definitions grant no permissions and publish no endpoint. The Backend must derive tenant, organization, workspace access, actors, lifecycle transitions, and audit data from authenticated authority. Creation inputs deliberately exclude these fields.
 
+`WorkspaceMemberProjection.project_assignable` reports whether an active member of the authenticated workspace has `project.read` or `work.read` for Project owner replacement. The Backend always emits this boolean. It is optional in the schema to remain compatible with older projections; consumers must require `true` before offering a replacement. Task/finding flags and role names do not establish Project owner eligibility.
+
+Project creation without an owner override assigns the authenticated creator. Existing Backend validation also accepts `project.create` or `work.write` for that creator alone; this does not make other members with those permissions eligible replacements. Clients displaying an explicit creator selection should send that canonical `owner_actor_id`. Unchanged owner assignments should be omitted from update requests, including legacy assignments.
+
 | Entity | Canonical status | Permission actions |
 | --- | --- | --- |
 | Project | `PLANNED`, `ACTIVE`, `ON_HOLD`, `COMPLETED`, `CANCELLED`, `ARCHIVED` | read, create, update, archive |

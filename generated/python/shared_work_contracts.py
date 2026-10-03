@@ -16,6 +16,7 @@ class SharedWorkWorkspaceMemberProjection(TypedDict, total=False):
     workspace_id: Required[str]
     role_refs: Required[list[str]]
     active: Required[bool]
+    project_assignable: bool
     task_assignable: Required[bool]
     finding_assignable: Required[bool]
 

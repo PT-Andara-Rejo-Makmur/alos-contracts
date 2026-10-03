@@ -14,6 +14,7 @@ export interface SharedWorkWorkspaceMemberProjection {
   readonly workspace_id: string;
   readonly role_refs: readonly string[];
   readonly active: boolean;
+  readonly project_assignable?: boolean;
   readonly task_assignable: boolean;
   readonly finding_assignable: boolean;
 }
