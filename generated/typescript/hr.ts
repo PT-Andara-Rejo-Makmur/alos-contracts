@@ -88,10 +88,11 @@ export interface HrAttendanceListProjection {
   readonly source: ExecutiveSourceStatus;
 }
 
-export type HrLeaveRequestStatus = "PENDING" | "WITHDRAWN";
+export type HrLeaveRequestStatus = "PENDING" | "WITHDRAWN" | "APPROVED" | "REJECTED";
 
 export interface HrLeaveRequestTransitionRequest {
   readonly status: HrLeaveRequestStatus;
+  readonly decision_reason?: string;
 }
 
 export interface HrLeaveRequestCreateRequest {
@@ -125,6 +126,7 @@ export interface HrLeaveRequestProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (HrLeaveRequestStatus)[];
+  readonly decision_reason?: string | null;
 }
 
 export interface HrLeaveRequestListProjection {
@@ -144,12 +146,18 @@ export interface HrRecruitmentCreateRequest {
   readonly department_code?: string | null;
   readonly employment_type?: string | null;
   readonly opened_at: string;
+  readonly requesting_workspace_id?: string | null;
+  readonly reason?: string | null;
+  readonly headcount?: number | null;
 }
 
 export interface HrRecruitmentUpdateRequest {
   readonly position_title?: string;
   readonly department_code?: string | null;
   readonly employment_type?: string | null;
+  readonly requesting_workspace_id?: string | null;
+  readonly reason?: string | null;
+  readonly headcount?: number | null;
 }
 
 export interface HrRecruitmentProjection {
@@ -166,6 +174,9 @@ export interface HrRecruitmentProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (HrRecruitmentStatus)[];
+  readonly requesting_workspace_id?: string | null;
+  readonly reason?: string | null;
+  readonly headcount?: number | null;
 }
 
 export interface HrRecruitmentListProjection {
@@ -174,7 +185,7 @@ export interface HrRecruitmentListProjection {
   readonly source: ExecutiveSourceStatus;
 }
 
-export type HrCandidateStatus = "APPLIED" | "SCREENING" | "INTERVIEW";
+export type HrCandidateStatus = "APPLIED" | "SCREENING" | "INTERVIEW" | "OFFERED" | "HIRED" | "REJECTED" | "WITHDRAWN";
 
 export interface HrCandidateTransitionRequest {
   readonly status: HrCandidateStatus;
@@ -209,6 +220,7 @@ export interface HrCandidateProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (HrCandidateStatus)[];
+  readonly employee_id?: string | null;
 }
 
 export interface HrCandidateListProjection {
@@ -265,11 +277,13 @@ export interface HrOnboardingCreateRequest {
   readonly employee_id: string;
   readonly start_date: string;
   readonly target_completion_date?: string | null;
+  readonly facility_request_id?: string | null;
 }
 
 export interface HrOnboardingUpdateRequest {
   readonly start_date?: string;
   readonly target_completion_date?: string | null;
+  readonly facility_request_id?: string | null;
 }
 
 export interface HrOnboardingProjection {
@@ -285,6 +299,7 @@ export interface HrOnboardingProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (HrOnboardingStatus)[];
+  readonly facility_request_id?: string | null;
 }
 
 export interface HrOnboardingListProjection {
@@ -511,7 +526,7 @@ export interface HrGrievanceListProjection {
   readonly source: ExecutiveSourceStatus;
 }
 
-export type HrEmploymentContractStatus = "DRAFT" | "IN_REVIEW";
+export type HrEmploymentContractStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "ACTIVE" | "EXPIRED" | "CANCELLED";
 
 export interface HrEmploymentContractTransitionRequest {
   readonly status: HrEmploymentContractStatus;
@@ -524,6 +539,7 @@ export interface HrEmploymentContractCreateRequest {
   readonly start_date: string;
   readonly end_date?: string | null;
   readonly document_id?: string | null;
+  readonly legal_review_required?: boolean;
 }
 
 export interface HrEmploymentContractUpdateRequest {
@@ -531,6 +547,8 @@ export interface HrEmploymentContractUpdateRequest {
   readonly contract_type?: string;
   readonly start_date?: string;
   readonly end_date?: string | null;
+  readonly legal_review_required?: boolean;
+  readonly document_id?: string | null;
 }
 
 export interface HrEmploymentContractProjection {
@@ -548,6 +566,7 @@ export interface HrEmploymentContractProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (HrEmploymentContractStatus)[];
+  readonly legal_review_required?: boolean;
 }
 
 export interface HrEmploymentContractListProjection {
@@ -757,6 +776,12 @@ export interface HrServiceAssessmentListProjection {
   readonly items: readonly (HrServiceAssessmentProjection)[];
   readonly total: number;
   readonly source: ExecutiveSourceStatus;
+}
+
+export interface HrCandidateHireRequest {
+  readonly employee_number: string;
+  readonly join_date: string;
+  readonly reason: string;
 }
 
 export interface HrOverview {

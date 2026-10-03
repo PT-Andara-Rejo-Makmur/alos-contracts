@@ -13,3 +13,6 @@ export * from "./legal";
 export * from "./hr";
 export * from "./it";
 export * from "./ara";
+export * from "./process";
+export * from "./business";
+export * from "./document";

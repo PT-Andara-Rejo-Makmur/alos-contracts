@@ -1,0 +1,756 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/business/business-contracts.schema.json",
+  "title": "BusinessPerformance",
+  "$defs": {
+    "BusinessMetric": {
+      "type": "object",
+      "properties": {
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "value": {
+          "type": [
+            "string",
+            "integer",
+            "null"
+          ]
+        },
+        "unit": {
+          "type": "string",
+          "enum": [
+            "COUNT",
+            "AMOUNT",
+            "PERCENT"
+          ]
+        },
+        "available": {
+          "type": "boolean"
+        },
+        "source": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "code",
+        "label",
+        "value",
+        "unit",
+        "available",
+        "source"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessSummary": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "enum": [
+            "sales",
+            "property",
+            "finance",
+            "legal",
+            "hr",
+            "it"
+          ]
+        },
+        "generated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "metrics": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/BusinessMetric"
+          }
+        }
+      },
+      "required": [
+        "domain",
+        "generated_at",
+        "metrics"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessRelationshipOverview": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/BusinessRelationship"
+          }
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessWorkQueue": {
+      "type": "object",
+      "properties": {
+        "processes": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessProjection"
+          }
+        },
+        "tasks": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/TaskProjection"
+          }
+        },
+        "approvals": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/ApprovalProjection"
+          }
+        },
+        "findings": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/FindingProjection"
+          }
+        },
+        "notifications": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/BusinessNotification"
+          }
+        }
+      },
+      "required": [
+        "processes",
+        "tasks",
+        "approvals",
+        "findings",
+        "notifications"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessNotificationOverview": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/BusinessNotification"
+          }
+        }
+      },
+      "required": [
+        "items"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessNotification": {
+      "type": "object",
+      "properties": {
+        "notification_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "process_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "event": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "title": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "notification_id",
+        "process_id",
+        "event",
+        "title",
+        "workspace_id",
+        "created_at"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessRelationship": {
+      "type": "object",
+      "properties": {
+        "link_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "source_workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "source_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "source_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/source_id"
+        },
+        "target_workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "target_type": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "target_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"
+        },
+        "relation": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "process_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "created_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "correlation_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "link_id",
+        "tenant_id",
+        "organization_id",
+        "source_workspace_id",
+        "source_type",
+        "source_id",
+        "target_workspace_id",
+        "target_type",
+        "target_id",
+        "relation",
+        "process_id",
+        "created_by",
+        "correlation_id",
+        "created_at"
+      ],
+      "additionalProperties": false
+    },
+    "MetricBindingRequest": {
+      "type": "object",
+      "properties": {
+        "target_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "metric": {
+          "type": "string",
+          "enum": [
+            "CLOSING_COUNT",
+            "CLOSING_VALUE"
+          ]
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "target_version",
+        "metric",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "MetricBindingProjection": {
+      "type": "object",
+      "properties": {
+        "binding_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "target_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/target_id"
+        },
+        "target_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "metric": {
+          "type": "string",
+          "enum": [
+            "CLOSING_COUNT",
+            "CLOSING_VALUE"
+          ]
+        }
+      },
+      "required": [
+        "binding_id",
+        "target_id",
+        "target_version",
+        "metric"
+      ],
+      "additionalProperties": false
+    },
+    "MetricCalculationRequest": {
+      "type": "object",
+      "properties": {
+        "target_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "request_id": {
+          "type": "string",
+          "minLength": 8,
+          "maxLength": 128
+        }
+      },
+      "required": [
+        "target_version",
+        "request_id"
+      ],
+      "additionalProperties": false
+    },
+    "CapabilityBusinessRequestCreate": {
+      "type": "object",
+      "properties": {
+        "need": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 2000,
+          "pattern": "\\S"
+        },
+        "business_context": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 2000
+        }
+      },
+      "required": [
+        "need",
+        "goal"
+      ],
+      "additionalProperties": false
+    },
+    "CapabilityBusinessResolutionRequest": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "CapabilityBusinessRequest": {
+      "type": "object",
+      "properties": {
+        "request_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "\\S"
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "requested_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128,
+          "pattern": "\\S"
+        },
+        "need": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "goal": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "business_context": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 4000
+        },
+        "status": {
+          "const": "SUBMITTED"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "resolution_state": {
+          "enum": [
+            "UNRESOLVED",
+            "RESOLVING",
+            "RESOLVED",
+            "FAILED"
+          ]
+        },
+        "factory_result": {
+          "oneOf": [
+            {
+              "type": "null"
+            },
+            {
+              "$ref": "https://schemas.alos.dev/v1/factory/factory-analyze-response.schema.json"
+            }
+          ]
+        },
+        "governance": {
+          "type": "array",
+          "items": {
+            "type": "object",
+            "properties": {
+              "subject_id": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "\\S"
+              },
+              "version": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128,
+                "pattern": "\\S"
+              },
+              "registry_state": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "release_state": {
+                "type": [
+                  "string",
+                  "null"
+                ]
+              },
+              "release_id": {
+                "anyOf": [
+                  {
+                    "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/release_id"
+                  },
+                  {
+                    "type": "null"
+                  }
+                ]
+              }
+            },
+            "required": [
+              "subject_id",
+              "version",
+              "registry_state",
+              "release_state",
+              "release_id"
+            ],
+            "additionalProperties": false
+          }
+        },
+        "review_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/review_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "request_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "requested_by",
+        "need",
+        "goal",
+        "business_context",
+        "status",
+        "created_at",
+        "updated_at",
+        "resolution_state",
+        "factory_result",
+        "governance",
+        "review_id"
+      ],
+      "additionalProperties": false
+    },
+    "CapabilityBusinessRequestOverview": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/CapabilityBusinessRequest"
+          }
+        },
+        "can_create": {
+          "type": "boolean"
+        },
+        "can_resolve": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "items",
+        "can_create",
+        "can_resolve"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProjectRecord": {
+      "type": "object",
+      "properties": {
+        "domain": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "resource": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "record_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "label": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "status": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        }
+      },
+      "required": [
+        "domain",
+        "resource",
+        "record_id",
+        "label",
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProjectRecordOverview": {
+      "type": "object",
+      "properties": {
+        "project_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 200
+        },
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/BusinessProjectRecord"
+          }
+        }
+      },
+      "required": [
+        "project_id",
+        "items"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "domains": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/business/business-contracts.schema.json#/$defs/BusinessSummary"
+      }
+    },
+    "strategy": {
+      "$ref": "https://schemas.alos.dev/v1/strategy/strategy-overview-projection.schema.json"
+    },
+    "target_details": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/strategy/business-target-detail.schema.json"
+      }
+    },
+    "decisions": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessProjection"
+      }
+    },
+    "acknowledgements": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessProjection"
+      }
+    },
+    "attention": {
+      "type": "array",
+      "items": {
+        "type": "object",
+        "properties": {
+          "domain": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "code": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "label": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 4000,
+            "pattern": "\\S"
+          },
+          "value": {
+            "type": [
+              "string",
+              "integer",
+              "null"
+            ]
+          },
+          "unit": {
+            "type": "string",
+            "enum": [
+              "COUNT",
+              "AMOUNT",
+              "PERCENT"
+            ]
+          },
+          "available": {
+            "type": "boolean"
+          },
+          "source": {
+            "anyOf": [
+              {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              {
+                "type": "null"
+              }
+            ]
+          }
+        },
+        "required": [
+          "domain",
+          "code",
+          "label",
+          "value",
+          "unit",
+          "available",
+          "source"
+        ],
+        "additionalProperties": false
+      }
+    }
+  },
+  "required": [
+    "domains",
+    "strategy",
+    "target_details",
+    "decisions",
+    "acknowledgements",
+    "attention"
+  ],
+  "additionalProperties": false
+}

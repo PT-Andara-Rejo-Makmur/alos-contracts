@@ -10,6 +10,8 @@ from typing import Literal, Required, TypedDict
 
 from context_research_contracts import DataClassification, EvidenceRef, ExecutionBudget
 
+from shared_work_contracts import SharedWorkTaskCreateRequest
+
 class AraActionProposalProjection(TypedDict, total=False):
     proposal_id: Required['str']
     kind: Required["Literal['TASK', 'MATERIAL_ACTION', 'CAPABILITY_DRAFT', 'RESEARCH']"]
@@ -412,8 +414,21 @@ class AraMessageRequest(TypedDict, total=False):
     business_reference: 'AraMessageRequestBusinessReference'
 
 class AraMessageRequestBusinessReference(TypedDict, total=False):
-    domain: Required["Literal['SHARED_WORK', 'SALES', 'STRATEGY', 'PROPERTY', 'FINANCE', 'HR', 'LEGAL', 'IT', 'MARKETING']"]
+    domain: Required["Literal['SHARED_WORK', 'SALES', 'STRATEGY', 'PROPERTY', 'FINANCE', 'HR', 'LEGAL', 'IT', 'MARKETING', 'DOCUMENTS', 'PROCESS']"]
     resource_id: Required['str']
+
+class AraProgressEvent(TypedDict, total=False):
+    event_id: Required['int']
+    kind: Required["Literal['UNDERSTANDING', 'RETRIEVING', 'ANALYZING', 'PREPARING', 'WAITING_FOR_REVIEW', 'COMPLETED', 'FAILED']"]
+    occurred_at: Required['str']
+
+class AraProgressProjection(TypedDict, total=False):
+    events: Required['list[AraProgressEvent]']
+
+class AraProgressRequest(TypedDict, total=False):
+    event_key: Required['str']
+    kind: Required["Literal['UNDERSTANDING', 'RETRIEVING', 'ANALYZING', 'PREPARING', 'WAITING_FOR_REVIEW', 'COMPLETED', 'FAILED']"]
+    correlation_id: Required['str']
 
 class AraRunProjection(TypedDict, total=False):
     thread_id: Required['str']
@@ -423,6 +438,24 @@ class AraRunProjection(TypedDict, total=False):
     runtime_mode: Required["Literal['DETERMINISTIC_TEST', 'NORMAL']"]
     created_at: Required['str']
     response: 'AraResponseProjection'
+
+class AraTaskExecutionReceipt(TypedDict, total=False):
+    execution_id: Required['str']
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    actor_id: Required['str']
+    run_id: Required['str']
+    proposal_id: Required['str']
+    task_id: Required['str']
+    command_hash: Required['str']
+    review_reason: Required['str']
+    correlation_id: Required['str']
+    executed_at: Required['str']
+
+class AraTaskExecutionRequest(TypedDict, total=False):
+    review_reason: Required['str']
+    task: Required['SharedWorkTaskCreateRequest']
 
 class AraThreadCreateRequest(TypedDict, total=False):
     title: 'str'

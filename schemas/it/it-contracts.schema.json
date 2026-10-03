@@ -1420,7 +1420,12 @@
       "enum": [
         "PLANNED",
         "IN_REVIEW",
-        "CANCELLED"
+        "CANCELLED",
+        "READY",
+        "DEPLOYED",
+        "VERIFIED",
+        "FAILED",
+        "ROLLED_BACK"
       ]
     },
     "ItReleaseTransitionRequest": {
@@ -1466,6 +1471,44 @@
               "type": "null"
             }
           ]
+        },
+        "ci_run_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deployment_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verification_notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1480,6 +1523,44 @@
           "type": "string",
           "minLength": 1,
           "maxLength": 128
+        },
+        "ci_run_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deployment_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verification_notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "additionalProperties": false,
@@ -1561,6 +1642,44 @@
             "$ref": "https://schemas.alos.dev/v1/it/it-contracts.schema.json#/$defs/ItReleaseStatus"
           },
           "uniqueItems": true
+        },
+        "ci_run_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "deployment_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "verification_notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [

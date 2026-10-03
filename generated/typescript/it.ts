@@ -277,7 +277,7 @@ export interface ItCiRunListProjection {
   readonly source: ExecutiveSourceStatus;
 }
 
-export type ItReleaseStatus = "PLANNED" | "IN_REVIEW" | "CANCELLED";
+export type ItReleaseStatus = "PLANNED" | "IN_REVIEW" | "CANCELLED" | "READY" | "DEPLOYED" | "VERIFIED" | "FAILED" | "ROLLED_BACK";
 
 export interface ItReleaseTransitionRequest {
   readonly status: ItReleaseStatus;
@@ -287,10 +287,16 @@ export interface ItReleaseCreateRequest {
   readonly repository_id?: string | null;
   readonly version: string;
   readonly environment_id?: string | null;
+  readonly ci_run_id?: string | null;
+  readonly deployment_reference?: string | null;
+  readonly verification_notes?: string | null;
 }
 
 export interface ItReleaseUpdateRequest {
   readonly version?: string;
+  readonly ci_run_id?: string | null;
+  readonly deployment_reference?: string | null;
+  readonly verification_notes?: string | null;
 }
 
 export interface ItReleaseProjection {
@@ -306,6 +312,9 @@ export interface ItReleaseProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (ItReleaseStatus)[];
+  readonly ci_run_id?: string | null;
+  readonly deployment_reference?: string | null;
+  readonly verification_notes?: string | null;
 }
 
 export interface ItReleaseListProjection {

@@ -254,7 +254,12 @@
       "type": "string",
       "enum": [
         "DRAFT",
-        "IN_REVIEW"
+        "IN_REVIEW",
+        "REVIEWED",
+        "ACTIVE",
+        "EXPIRED",
+        "TERMINATED",
+        "ARCHIVED"
       ]
     },
     "LegalContractTransitionRequest": {
@@ -2872,6 +2877,27 @@
         "items",
         "total",
         "source"
+      ],
+      "additionalProperties": false
+    },
+    "LegalContractBusinessOriginRequest": {
+      "type": "object",
+      "properties": {
+        "process_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "process_id",
+        "reason"
       ],
       "additionalProperties": false
     }

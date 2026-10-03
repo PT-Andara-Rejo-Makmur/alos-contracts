@@ -19,13 +19,13 @@ def test_legal_claim_amount_requires_exact_bounded_decimal(registry, amount):
     ("legal", "LegalContractTransitionRequest", "SIGNED"),
     ("legal", "LegalPermitTransitionRequest", "VALID"),
     ("legal", "LegalDueDiligenceTransitionRequest", "APPROVED"),
-    ("hr", "HrLeaveRequestTransitionRequest", "APPROVED"),
-    ("hr", "HrCandidateTransitionRequest", "HIRED"),
+    ("hr", "HrLeaveRequestTransitionRequest", "SIGNED"),
+    ("hr", "HrCandidateTransitionRequest", "EMPLOYED"),
     ("hr", "HrEmploymentContractTransitionRequest", "SIGNED"),
     ("it", "ItReleaseTransitionRequest", "RELEASED"),
     ("it", "ItReleaseTransitionRequest", "ROLLBACK"),
 ])
-def test_material_authority_has_no_request_command(registry, domain, definition, status):
+def test_unrecognized_lifecycle_states_are_rejected(registry, domain, definition, status):
     with pytest.raises(ValidationError):
         validator(registry, domain, definition).validate({"status": status})
 

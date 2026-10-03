@@ -160,6 +160,7 @@ FinancePayableStatus = Literal['CANCELLED', 'OPEN', 'PAID']
 
 class FinancePayableTransitionRequest(TypedDict, total=False):
     status: Required['FinancePayableStatus']
+    approval_id: 'str'
 
 class FinancePayableCreateRequest(TypedDict, total=False):
     vendor_ref: 'str | None'
@@ -187,6 +188,9 @@ class FinancePayableProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[FinancePayableStatus]']
+    payment_authorized_by: 'str | None'
+    payment_authorized_at: 'str | None'
+    material_actions: 'list[SharedWorkMaterialActionProjection]'
 
 class FinancePayableListProjection(TypedDict, total=False):
     items: Required['list[FinancePayableProjection]']
@@ -485,6 +489,14 @@ class FinanceMonthCloseItemListProjection(TypedDict, total=False):
     items: Required['list[FinanceMonthCloseItemProjection]']
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
+
+class FinancePayableFromCertificateRequest(TypedDict, total=False):
+    due_date: 'str'
+    vendor_ref: 'str'
+
+class FinancePaymentTransactionRequest(TypedDict, total=False):
+    transaction_id: Required['str']
+    reason: Required['str']
 
 class FinanceOverview(TypedDict, total=False):
     source: Required['ExecutiveSourceStatus']

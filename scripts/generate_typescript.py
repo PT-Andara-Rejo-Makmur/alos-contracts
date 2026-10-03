@@ -25,7 +25,7 @@ INDEX_OUTPUT = ROOT / "generated" / "typescript" / "index.ts"
 def render_index() -> str:
     return "\n".join(
         f'export * from "./{module}";'
-        for module in ("factory", "context-research", "skills", "identity-access", "strategy", "shared-work", "executive", "sales", "marketing", "property", "finance", "legal", "hr", "it", "ara")
+        for module in ("factory", "context-research", "skills", "identity-access", "strategy", "shared-work", "executive", "sales", "marketing", "property", "finance", "legal", "hr", "it", "ara", "process", "business", "document")
     ) + "\n"
 
 
@@ -651,7 +651,7 @@ def main() -> int:
     expected_index = render_index()
     projection_outputs = {
         ROOT / "generated" / "typescript" / (domain + '.ts'): render_projection(domain, python=False)
-        for domain in ("strategy", "executive", "sales", "marketing", "property", "finance", "legal", "hr", "it", "ara")
+        for domain in ("strategy", "executive", "sales", "marketing", "property", "finance", "legal", "hr", "it", "ara", "process", "business", "document")
     }
     for output, content in projection_outputs.items():
         if args.check:

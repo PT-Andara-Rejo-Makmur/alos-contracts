@@ -1,0 +1,18 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-progress-projection.schema.json",
+  "title": "AraProgressProjection",
+  "type": "object",
+  "properties": {
+    "events": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/ara/ara-progress-event.schema.json"
+      }
+    }
+  },
+  "required": [
+    "events"
+  ],
+  "additionalProperties": false
+}

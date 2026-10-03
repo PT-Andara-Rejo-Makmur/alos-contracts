@@ -192,6 +192,7 @@ export interface SalesBookingCreateRequest {
   readonly property_unit_id: string;
   readonly booking_date: string;
   readonly amount?: string | null;
+  readonly opportunity_id?: string | null;
 }
 
 export interface SalesBookingUpdateRequest {
@@ -212,6 +213,7 @@ export interface SalesBookingProjection {
   readonly updated_at: string;
   readonly allowed_transitions: readonly (SalesBookingStatus)[];
   readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
+  readonly opportunity_id?: string | null;
 }
 
 export interface SalesBookingListProjection {
@@ -466,6 +468,61 @@ export interface SalesUnitReferenceListProjection {
   readonly source: ExecutiveSourceStatus;
 }
 
+export type SalesFinancingStatus = "COLLECTING" | "BANK_REVIEW" | "READY" | "SP3K_ISSUED" | "AKAD_COMPLETED" | "CANCELLED";
+
+export interface SalesFinancingCreateRequest {
+  readonly booking_id: string;
+  readonly payment_method: "CASH" | "CASH_INSTALLMENT" | "KPR";
+  readonly bank_reference?: string | null;
+  readonly required_document_notes?: string | null;
+  readonly document_ids?: readonly (string)[];
+  readonly sp3k_reference?: string | null;
+  readonly sp3k_on?: string | null;
+  readonly akad_on?: string | null;
+  readonly next_action: string;
+}
+
+export interface SalesFinancingUpdateRequest {
+  readonly bank_reference?: string | null;
+  readonly required_document_notes?: string | null;
+  readonly document_ids?: readonly (string)[];
+  readonly sp3k_reference?: string | null;
+  readonly sp3k_on?: string | null;
+  readonly akad_on?: string | null;
+  readonly next_action?: string;
+}
+
+export interface SalesFinancingTransitionRequest {
+  readonly status: SalesFinancingStatus;
+}
+
+export interface SalesFinancingProjection {
+  readonly booking_id: string;
+  readonly payment_method: "CASH" | "CASH_INSTALLMENT" | "KPR";
+  readonly bank_reference: string | null;
+  readonly required_document_notes: string | null;
+  readonly document_ids: readonly (string)[];
+  readonly sp3k_reference: string | null;
+  readonly sp3k_on: string | null;
+  readonly akad_on: string | null;
+  readonly next_action: string;
+  readonly financing_id: string;
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly status: SalesFinancingStatus;
+  readonly responsible_actor_id: string;
+  readonly created_at: string;
+  readonly updated_at: string;
+  readonly allowed_transitions: readonly (SalesFinancingStatus)[];
+}
+
+export interface SalesFinancingListProjection {
+  readonly items: readonly (SalesFinancingProjection)[];
+  readonly total: number;
+  readonly source: ExecutiveSourceStatus;
+}
+
 export interface SalesOverview {
   readonly source: ExecutiveSourceStatus;
   readonly counts: SalesOverviewCounts;
@@ -484,4 +541,5 @@ export interface SalesOverviewCounts {
   readonly pricings: number;
   readonly pricing_items: number;
   readonly collaterals: number;
+  readonly financing_contexts?: number;
 }

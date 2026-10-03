@@ -817,6 +817,11 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinancePayableStatus"
+        },
+        "approval_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
         }
       },
       "required": [
@@ -994,6 +999,35 @@
           "type": "array",
           "items": {
             "$ref": "https://schemas.alos.dev/v1/finance/finance-contracts.schema.json#/$defs/FinancePayableStatus"
+          }
+        },
+        "payment_authorized_by": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "payment_authorized_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "material_actions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
         }
       },
@@ -2630,6 +2664,43 @@
         "items",
         "total",
         "source"
+      ],
+      "additionalProperties": false
+    },
+    "FinancePayableFromCertificateRequest": {
+      "type": "object",
+      "properties": {
+        "due_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "vendor_ref": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        }
+      },
+      "required": [],
+      "additionalProperties": false
+    },
+    "FinancePaymentTransactionRequest": {
+      "type": "object",
+      "properties": {
+        "transaction_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "transaction_id",
+        "reason"
       ],
       "additionalProperties": false
     }

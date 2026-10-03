@@ -1,0 +1,70 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-task-execution-receipt.schema.json",
+  "title": "AraTaskExecutionReceipt",
+  "type": "object",
+  "properties": {
+    "execution_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "tenant_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+    },
+    "organization_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+    },
+    "workspace_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+    },
+    "actor_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"
+    },
+    "run_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/run_id"
+    },
+    "proposal_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "task_id": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 128
+    },
+    "command_hash": {
+      "type": "string",
+      "pattern": "^[a-f0-9]{64}$"
+    },
+    "review_reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000,
+      "pattern": "\\S"
+    },
+    "correlation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+    },
+    "executed_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "execution_id",
+    "tenant_id",
+    "organization_id",
+    "workspace_id",
+    "actor_id",
+    "run_id",
+    "proposal_id",
+    "task_id",
+    "command_hash",
+    "review_reason",
+    "correlation_id",
+    "executed_at"
+  ],
+  "additionalProperties": false
+}

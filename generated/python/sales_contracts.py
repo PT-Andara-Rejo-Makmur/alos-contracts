@@ -174,6 +174,7 @@ class SalesBookingCreateRequest(TypedDict, total=False):
     property_unit_id: Required['str']
     booking_date: Required['str']
     amount: 'str | None'
+    opportunity_id: 'str | None'
 
 class SalesBookingUpdateRequest(TypedDict, total=False):
     booking_date: 'str'
@@ -192,6 +193,7 @@ class SalesBookingProjection(TypedDict, total=False):
     updated_at: Required['str']
     allowed_transitions: Required['list[SalesBookingStatus]']
     material_actions: 'list[SharedWorkMaterialActionProjection]'
+    opportunity_id: 'str | None'
 
 class SalesBookingListProjection(TypedDict, total=False):
     items: Required['list[SalesBookingProjection]']
@@ -413,6 +415,56 @@ class SalesUnitReferenceListProjection(TypedDict, total=False):
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
 
+SalesFinancingStatus = Literal['COLLECTING', 'BANK_REVIEW', 'READY', 'SP3K_ISSUED', 'AKAD_COMPLETED', 'CANCELLED']
+
+class SalesFinancingCreateRequest(TypedDict, total=False):
+    booking_id: Required['str']
+    payment_method: Required["Literal['CASH', 'CASH_INSTALLMENT', 'KPR']"]
+    bank_reference: 'str | None'
+    required_document_notes: 'str | None'
+    document_ids: 'list[str]'
+    sp3k_reference: 'str | None'
+    sp3k_on: 'str | None'
+    akad_on: 'str | None'
+    next_action: Required['str']
+
+class SalesFinancingUpdateRequest(TypedDict, total=False):
+    bank_reference: 'str | None'
+    required_document_notes: 'str | None'
+    document_ids: 'list[str]'
+    sp3k_reference: 'str | None'
+    sp3k_on: 'str | None'
+    akad_on: 'str | None'
+    next_action: 'str'
+
+class SalesFinancingTransitionRequest(TypedDict, total=False):
+    status: Required['SalesFinancingStatus']
+
+class SalesFinancingProjection(TypedDict, total=False):
+    booking_id: Required['str']
+    payment_method: Required["Literal['CASH', 'CASH_INSTALLMENT', 'KPR']"]
+    bank_reference: Required['str | None']
+    required_document_notes: Required['str | None']
+    document_ids: Required['list[str]']
+    sp3k_reference: Required['str | None']
+    sp3k_on: Required['str | None']
+    akad_on: Required['str | None']
+    next_action: Required['str']
+    financing_id: Required['str']
+    tenant_id: Required['str']
+    organization_id: Required['str']
+    workspace_id: Required['str']
+    status: Required['SalesFinancingStatus']
+    responsible_actor_id: Required['str']
+    created_at: Required['str']
+    updated_at: Required['str']
+    allowed_transitions: Required['list[SalesFinancingStatus]']
+
+class SalesFinancingListProjection(TypedDict, total=False):
+    items: Required['list[SalesFinancingProjection]']
+    total: Required['int']
+    source: Required['ExecutiveSourceStatus']
+
 class SalesOverview(TypedDict, total=False):
     source: Required['ExecutiveSourceStatus']
     counts: Required['SalesOverviewCounts']
@@ -430,3 +482,4 @@ class SalesOverviewCounts(TypedDict, total=False):
     pricings: Required['int']
     pricing_items: Required['int']
     collaterals: Required['int']
+    financing_contexts: 'int'

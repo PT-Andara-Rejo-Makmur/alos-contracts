@@ -58,6 +58,7 @@ def test_internal_routes_name_the_actual_service_owner():
     backend_paths = {
         "/internal/v1/tool-requests",
         "/internal/v1/agent-runs/{run_id}/cancellation",
+        "/internal/v1/agent-runs/{run_id}/progress",
     }
 
     assert genesis_paths | backend_paths == set(paths)

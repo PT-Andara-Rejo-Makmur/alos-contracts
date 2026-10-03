@@ -1,0 +1,33 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-progress-request.schema.json",
+  "title": "AraProgressRequest",
+  "type": "object",
+  "properties": {
+    "event_key": {
+      "type": "string",
+      "pattern": "^[0-9]{1,3}$"
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "UNDERSTANDING",
+        "RETRIEVING",
+        "ANALYZING",
+        "PREPARING",
+        "WAITING_FOR_REVIEW",
+        "COMPLETED",
+        "FAILED"
+      ]
+    },
+    "correlation_id": {
+      "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+    }
+  },
+  "required": [
+    "event_key",
+    "kind",
+    "correlation_id"
+  ],
+  "additionalProperties": false
+}

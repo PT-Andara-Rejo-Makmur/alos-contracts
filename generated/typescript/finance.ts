@@ -174,6 +174,7 @@ export type FinancePayableStatus = "CANCELLED" | "OPEN" | "PAID";
 
 export interface FinancePayableTransitionRequest {
   readonly status: FinancePayableStatus;
+  readonly approval_id?: string;
 }
 
 export interface FinancePayableCreateRequest {
@@ -204,6 +205,9 @@ export interface FinancePayableProjection {
   readonly created_at: string;
   readonly updated_at: string;
   readonly allowed_transitions: readonly (FinancePayableStatus)[];
+  readonly payment_authorized_by?: string | null;
+  readonly payment_authorized_at?: string | null;
+  readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
 }
 
 export interface FinancePayableListProjection {
@@ -544,6 +548,16 @@ export interface FinanceMonthCloseItemListProjection {
   readonly items: readonly (FinanceMonthCloseItemProjection)[];
   readonly total: number;
   readonly source: ExecutiveSourceStatus;
+}
+
+export interface FinancePayableFromCertificateRequest {
+  readonly due_date?: string;
+  readonly vendor_ref?: string;
+}
+
+export interface FinancePaymentTransactionRequest {
+  readonly transaction_id: string;
+  readonly reason: string;
 }
 
 export interface FinanceOverview {

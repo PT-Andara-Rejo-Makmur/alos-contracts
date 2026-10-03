@@ -32,7 +32,7 @@ def test_projection_and_request_separate_authority(entity: str, identifier: str)
         "workspace_id",
         "workspace_ids",
         "actor_id",
-        "owner_actor_id",
+        *(["owner_actor_id"] if entity != "Project" else []),
         "requested_by",
         "approver_actor_id",
         "created_by",

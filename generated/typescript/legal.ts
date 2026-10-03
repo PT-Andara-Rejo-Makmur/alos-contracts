@@ -50,7 +50,7 @@ export interface LegalPermitListProjection {
   readonly source: ExecutiveSourceStatus;
 }
 
-export type LegalContractStatus = "DRAFT" | "IN_REVIEW";
+export type LegalContractStatus = "DRAFT" | "IN_REVIEW" | "REVIEWED" | "ACTIVE" | "EXPIRED" | "TERMINATED" | "ARCHIVED";
 
 export interface LegalContractTransitionRequest {
   readonly status: LegalContractStatus;
@@ -546,6 +546,11 @@ export interface LegalContractRevisionListProjection {
   readonly items: readonly (LegalContractRevisionProjection)[];
   readonly total: number;
   readonly source: ExecutiveSourceStatus;
+}
+
+export interface LegalContractBusinessOriginRequest {
+  readonly process_id: string;
+  readonly reason: string;
 }
 
 export interface LegalOverview {

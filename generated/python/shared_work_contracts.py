@@ -31,7 +31,7 @@ SharedWorkApprovalStatus = Literal['PENDING', 'APPROVED', 'RETURNED', 'REJECTED'
 
 SharedWorkApprovalDecision = Literal['APPROVED', 'RETURNED', 'REJECTED', 'HOLD']
 
-SharedWorkApprovalSubjectType = Literal['PROJECT', 'TASK', 'SALES_OPPORTUNITY', 'SALES_BOOKING', 'SALES_CLOSING', 'SALES_PRICING', 'PROPERTY_UNIT', 'PROPERTY_CHANGE_ORDER', 'PROPERTY_PAYMENT_CERTIFICATE', 'FINANCE_BUDGET']
+SharedWorkApprovalSubjectType = Literal['PROJECT', 'TASK', 'SALES_OPPORTUNITY', 'SALES_BOOKING', 'SALES_CLOSING', 'SALES_PRICING', 'PROPERTY_UNIT', 'PROPERTY_CHANGE_ORDER', 'PROPERTY_PAYMENT_CERTIFICATE', 'FINANCE_BUDGET', 'FINANCE_PAYABLE']
 
 SharedWorkDocumentStatus = Literal['DRAFT', 'IN_REVIEW', 'APPROVED', 'REJECTED', 'RETIRED']
 
@@ -67,6 +67,9 @@ class SharedWorkProjectProjection(TypedDict, total=False):
     evidence_count: int
     created_at: Required[str]
     updated_at: Required[str]
+    objective: str | None
+    priority: SharedWorkTaskPriority
+    owning_workspace_id: str | None
 
 class SharedWorkProjectCreateRequest(TypedDict, total=False):
     code: Required[str]
@@ -74,12 +77,18 @@ class SharedWorkProjectCreateRequest(TypedDict, total=False):
     description: str | None
     start_date: str | None
     target_end_date: str | None
+    objective: str | None
+    priority: SharedWorkTaskPriority
+    owner_actor_id: str | None
 
 class SharedWorkProjectUpdateRequest(TypedDict, total=False):
     name: str
     description: str | None
     start_date: str | None
     target_end_date: str | None
+    objective: str | None
+    priority: SharedWorkTaskPriority
+    owner_actor_id: str | None
 
 class SharedWorkTaskProjection(TypedDict, total=False):
     task_id: Required[str]
@@ -441,7 +450,7 @@ class SharedWorkCommentProjection(TypedDict, total=False):
 class SharedWorkFindingAssignmentRequest(TypedDict, total=False):
     owner_actor_id: Required[str]
 
-SharedWorkMaterialAction = Literal['WIN_OPPORTUNITY', 'CONFIRM_BOOKING', 'COMPLETE_CLOSING', 'ACTIVATE_PRICING', 'RESERVE_UNIT', 'SELL_UNIT', 'APPROVE_CHANGE_ORDER', 'APPROVE_PAYMENT_CERTIFICATE', 'APPROVE_BUDGET', 'ACTIVATE_BUDGET', 'CLOSE_BUDGET']
+SharedWorkMaterialAction = Literal['WIN_OPPORTUNITY', 'CONFIRM_BOOKING', 'COMPLETE_CLOSING', 'ACTIVATE_PRICING', 'RESERVE_UNIT', 'SELL_UNIT', 'APPROVE_CHANGE_ORDER', 'APPROVE_PAYMENT_CERTIFICATE', 'APPROVE_BUDGET', 'ACTIVATE_BUDGET', 'CLOSE_BUDGET', 'AUTHORIZE_PAYABLE']
 
 class SharedWorkMaterialActionProjection(TypedDict, total=False):
     subject_type: Required[SharedWorkApprovalSubjectType]

@@ -84,10 +84,11 @@ class HrAttendanceListProjection(TypedDict, total=False):
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
 
-HrLeaveRequestStatus = Literal['PENDING', 'WITHDRAWN']
+HrLeaveRequestStatus = Literal['PENDING', 'WITHDRAWN', 'APPROVED', 'REJECTED']
 
 class HrLeaveRequestTransitionRequest(TypedDict, total=False):
     status: Required['HrLeaveRequestStatus']
+    decision_reason: 'str'
 
 class HrLeaveRequestCreateRequest(TypedDict, total=False):
     employee_id: Required['str']
@@ -118,6 +119,7 @@ class HrLeaveRequestProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[HrLeaveRequestStatus]']
+    decision_reason: 'str | None'
 
 class HrLeaveRequestListProjection(TypedDict, total=False):
     items: Required['list[HrLeaveRequestProjection]']
@@ -134,11 +136,17 @@ class HrRecruitmentCreateRequest(TypedDict, total=False):
     department_code: 'str | None'
     employment_type: 'str | None'
     opened_at: Required['str']
+    requesting_workspace_id: 'str | None'
+    reason: 'str | None'
+    headcount: 'int | None'
 
 class HrRecruitmentUpdateRequest(TypedDict, total=False):
     position_title: 'str'
     department_code: 'str | None'
     employment_type: 'str | None'
+    requesting_workspace_id: 'str | None'
+    reason: 'str | None'
+    headcount: 'int | None'
 
 class HrRecruitmentProjection(TypedDict, total=False):
     tenant_id: Required['str']
@@ -154,13 +162,16 @@ class HrRecruitmentProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[HrRecruitmentStatus]']
+    requesting_workspace_id: 'str | None'
+    reason: 'str | None'
+    headcount: 'int | None'
 
 class HrRecruitmentListProjection(TypedDict, total=False):
     items: Required['list[HrRecruitmentProjection]']
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
 
-HrCandidateStatus = Literal['APPLIED', 'SCREENING', 'INTERVIEW']
+HrCandidateStatus = Literal['APPLIED', 'SCREENING', 'INTERVIEW', 'OFFERED', 'HIRED', 'REJECTED', 'WITHDRAWN']
 
 class HrCandidateTransitionRequest(TypedDict, total=False):
     status: Required['HrCandidateStatus']
@@ -192,6 +203,7 @@ class HrCandidateProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[HrCandidateStatus]']
+    employee_id: 'str | None'
 
 class HrCandidateListProjection(TypedDict, total=False):
     items: Required['list[HrCandidateProjection]']
@@ -240,10 +252,12 @@ class HrOnboardingCreateRequest(TypedDict, total=False):
     employee_id: Required['str']
     start_date: Required['str']
     target_completion_date: 'str | None'
+    facility_request_id: 'str | None'
 
 class HrOnboardingUpdateRequest(TypedDict, total=False):
     start_date: 'str'
     target_completion_date: 'str | None'
+    facility_request_id: 'str | None'
 
 class HrOnboardingProjection(TypedDict, total=False):
     tenant_id: Required['str']
@@ -258,6 +272,7 @@ class HrOnboardingProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[HrOnboardingStatus]']
+    facility_request_id: 'str | None'
 
 class HrOnboardingListProjection(TypedDict, total=False):
     items: Required['list[HrOnboardingProjection]']
@@ -454,7 +469,7 @@ class HrGrievanceListProjection(TypedDict, total=False):
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
 
-HrEmploymentContractStatus = Literal['DRAFT', 'IN_REVIEW']
+HrEmploymentContractStatus = Literal['DRAFT', 'IN_REVIEW', 'APPROVED', 'ACTIVE', 'EXPIRED', 'CANCELLED']
 
 class HrEmploymentContractTransitionRequest(TypedDict, total=False):
     status: Required['HrEmploymentContractStatus']
@@ -466,12 +481,15 @@ class HrEmploymentContractCreateRequest(TypedDict, total=False):
     start_date: Required['str']
     end_date: 'str | None'
     document_id: 'str | None'
+    legal_review_required: 'bool'
 
 class HrEmploymentContractUpdateRequest(TypedDict, total=False):
     contract_number: 'str'
     contract_type: 'str'
     start_date: 'str'
     end_date: 'str | None'
+    legal_review_required: 'bool'
+    document_id: 'str | None'
 
 class HrEmploymentContractProjection(TypedDict, total=False):
     tenant_id: Required['str']
@@ -488,6 +506,7 @@ class HrEmploymentContractProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[HrEmploymentContractStatus]']
+    legal_review_required: 'bool'
 
 class HrEmploymentContractListProjection(TypedDict, total=False):
     items: Required['list[HrEmploymentContractProjection]']
@@ -674,6 +693,11 @@ class HrServiceAssessmentListProjection(TypedDict, total=False):
     items: Required['list[HrServiceAssessmentProjection]']
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
+
+class HrCandidateHireRequest(TypedDict, total=False):
+    employee_number: Required['str']
+    join_date: Required['str']
+    reason: Required['str']
 
 class HrOverview(TypedDict, total=False):
     source: Required['ExecutiveSourceStatus']

@@ -49,7 +49,7 @@ class LegalPermitListProjection(TypedDict, total=False):
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
 
-LegalContractStatus = Literal['DRAFT', 'IN_REVIEW']
+LegalContractStatus = Literal['DRAFT', 'IN_REVIEW', 'REVIEWED', 'ACTIVE', 'EXPIRED', 'TERMINATED', 'ARCHIVED']
 
 class LegalContractTransitionRequest(TypedDict, total=False):
     status: Required['LegalContractStatus']
@@ -488,6 +488,10 @@ class LegalContractRevisionListProjection(TypedDict, total=False):
     items: Required['list[LegalContractRevisionProjection]']
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
+
+class LegalContractBusinessOriginRequest(TypedDict, total=False):
+    process_id: Required['str']
+    reason: Required['str']
 
 class LegalOverview(TypedDict, total=False):
     source: Required['ExecutiveSourceStatus']

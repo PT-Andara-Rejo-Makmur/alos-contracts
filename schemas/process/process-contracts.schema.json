@@ -1,0 +1,909 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/process/process-contracts.schema.json",
+  "title": "BusinessProcessOverview",
+  "$defs": {
+    "BusinessProcessType": {
+      "type": "string",
+      "enum": [
+        "CHANGE_ORDER",
+        "PAYMENT_CERTIFICATE",
+        "BOOKING",
+        "ONBOARDING",
+        "OFFBOARDING",
+        "CAPABILITY_REQUEST",
+        "EMPLOYMENT_CONTRACT"
+      ]
+    },
+    "BusinessProcessStatus": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "READY",
+        "IN_PROGRESS",
+        "COMPLETED",
+        "RETURNED",
+        "CANCELLED"
+      ]
+    },
+    "BusinessProcessStepStatus": {
+      "type": "string",
+      "enum": [
+        "PENDING",
+        "READY",
+        "IN_PROGRESS",
+        "COMPLETED",
+        "RETURNED",
+        "SKIPPED",
+        "CANCELLED"
+      ]
+    },
+    "BusinessProcessStartRequest": {
+      "type": "object",
+      "properties": {
+        "business_type": {
+          "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessType"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "business_type",
+        "subject_id",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProcessActionRequest": {
+      "type": "object",
+      "properties": {
+        "action": {
+          "type": "string",
+          "enum": [
+            "START",
+            "COMPLETE",
+            "ACKNOWLEDGE",
+            "RETURN"
+          ]
+        },
+        "subject_snapshot": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "evidence_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "uniqueItems": true,
+          "maxItems": 50
+        }
+      },
+      "required": [
+        "action",
+        "subject_snapshot",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProcessRevisionRequest": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProcessPolicyRequest": {
+      "type": "object",
+      "properties": {
+        "owning_workspace_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "business_type": {
+          "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessType"
+        },
+        "routes": {
+          "type": "object",
+          "properties": {
+            "property": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sales": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "finance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "legal": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "hr": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "it": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "owner": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "executive": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "rules": {
+          "type": "object",
+          "properties": {
+            "executive_required": {
+              "type": "boolean"
+            },
+            "executive_amount_limit": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,2})?$",
+              "maxLength": 24
+            },
+            "finance_settlement_required": {
+              "type": "boolean"
+            },
+            "legal_review_required": {
+              "type": "boolean"
+            },
+            "independent_steps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true
+            },
+            "due_hours": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 87600
+              }
+            },
+            "reminder_hours": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 87600
+              }
+            },
+            "escalation_hours": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 87600
+              }
+            },
+            "escalation_routes": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "workspace_id": {
+                    "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "DIVISION_LEAD",
+                      "EXECUTIVE"
+                    ]
+                  }
+                },
+                "required": [
+                  "workspace_id",
+                  "role"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "executive_acknowledgement": {
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "owning_workspace_id",
+        "business_type",
+        "routes",
+        "rules",
+        "reason"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProcessPolicyProjection": {
+      "type": "object",
+      "properties": {
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "business_type": {
+          "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessType"
+        },
+        "version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "routes": {
+          "type": "object",
+          "properties": {
+            "property": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "sales": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "finance": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "legal": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "hr": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "it": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "owner": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            "executive": {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "rules": {
+          "type": "object",
+          "properties": {
+            "executive_required": {
+              "type": "boolean"
+            },
+            "executive_amount_limit": {
+              "type": "string",
+              "pattern": "^(0|[1-9][0-9]*)(\\.[0-9]{1,2})?$",
+              "maxLength": 24
+            },
+            "finance_settlement_required": {
+              "type": "boolean"
+            },
+            "legal_review_required": {
+              "type": "boolean"
+            },
+            "independent_steps": {
+              "type": "array",
+              "items": {
+                "type": "string",
+                "minLength": 1,
+                "maxLength": 128
+              },
+              "uniqueItems": true
+            },
+            "due_hours": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 87600
+              }
+            },
+            "reminder_hours": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 87600
+              }
+            },
+            "escalation_hours": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "integer",
+                "minimum": 1,
+                "maximum": 87600
+              }
+            },
+            "escalation_routes": {
+              "type": "object",
+              "additionalProperties": {
+                "type": "object",
+                "properties": {
+                  "workspace_id": {
+                    "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+                  },
+                  "role": {
+                    "type": "string",
+                    "enum": [
+                      "DIVISION_LEAD",
+                      "EXECUTIVE"
+                    ]
+                  }
+                },
+                "required": [
+                  "workspace_id",
+                  "role"
+                ],
+                "additionalProperties": false
+              }
+            },
+            "executive_acknowledgement": {
+              "type": "boolean"
+            }
+          },
+          "required": [],
+          "additionalProperties": false
+        },
+        "active": {
+          "type": "boolean"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        }
+      },
+      "required": [
+        "policy_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "business_type",
+        "version",
+        "routes",
+        "rules",
+        "active",
+        "updated_at"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProcessStepProjection": {
+      "type": "object",
+      "properties": {
+        "step_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "process_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "position": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "code": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "kind": {
+          "type": "string",
+          "enum": [
+            "REVIEW",
+            "DECISION",
+            "EXECUTION",
+            "ACKNOWLEDGEMENT"
+          ]
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "role": {
+          "type": "string",
+          "enum": [
+            "DIVISION_LEAD",
+            "DIVISION_MEMBER",
+            "IT_ADMIN",
+            "EXECUTIVE"
+          ]
+        },
+        "permission": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "instruction": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "independent": {
+          "type": "boolean"
+        },
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessStepStatus"
+        },
+        "due_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actor_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "completed_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "task_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "can_act": {
+          "type": "boolean"
+        },
+        "can_create_task": {
+          "type": "boolean"
+        },
+        "workspace_name": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actor_name": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "step_id",
+        "process_id",
+        "revision",
+        "position",
+        "code",
+        "kind",
+        "workspace_id",
+        "role",
+        "permission",
+        "instruction",
+        "reason",
+        "independent",
+        "status",
+        "due_at",
+        "actor_id",
+        "completed_at",
+        "task_id",
+        "can_act",
+        "can_create_task",
+        "workspace_name",
+        "actor_name"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProcessHistoryProjection": {
+      "type": "object",
+      "properties": {
+        "history_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "step_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actor_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/actor_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "role_refs": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          }
+        },
+        "action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "occurred_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "workspace_name": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "actor_name": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        }
+      },
+      "required": [
+        "history_id",
+        "step_id",
+        "actor_id",
+        "workspace_id",
+        "role_refs",
+        "action",
+        "reason",
+        "occurred_at"
+      ],
+      "additionalProperties": false
+    },
+    "BusinessProcessProjection": {
+      "type": "object",
+      "properties": {
+        "process_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "business_type": {
+          "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessType"
+        },
+        "subject_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "requested_by": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "policy_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "policy_version": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "revision": {
+          "type": "integer",
+          "minimum": 1
+        },
+        "subject_snapshot": {
+          "type": "string",
+          "pattern": "^[a-f0-9]{64}$"
+        },
+        "packet": {
+          "type": "object"
+        },
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessStatus"
+        },
+        "correlation_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/correlation_id"
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "steps": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessStepProjection"
+          }
+        },
+        "next_action": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "responsible_workspace_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "responsible_role": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "due_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "history": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessHistoryProjection"
+          }
+        },
+        "can_resubmit": {
+          "type": "boolean"
+        },
+        "responsible_workspace_name": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "can_attach_contract": {
+          "type": "boolean"
+        },
+        "can_create_payable": {
+          "type": "boolean"
+        },
+        "direction_reason": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "maxLength": 4000
+        },
+        "can_request_direction": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "process_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "business_type",
+        "subject_id",
+        "requested_by",
+        "policy_id",
+        "policy_version",
+        "revision",
+        "subject_snapshot",
+        "packet",
+        "status",
+        "correlation_id",
+        "created_at",
+        "updated_at",
+        "steps",
+        "next_action",
+        "responsible_workspace_id",
+        "responsible_role",
+        "due_at",
+        "history",
+        "can_resubmit",
+        "responsible_workspace_name",
+        "can_attach_contract",
+        "can_create_payable"
+      ],
+      "additionalProperties": false
+    }
+  },
+  "type": "object",
+  "properties": {
+    "items": {
+      "type": "array",
+      "items": {
+        "$ref": "https://schemas.alos.dev/v1/process/process-contracts.schema.json#/$defs/BusinessProcessProjection"
+      }
+    }
+  },
+  "required": [
+    "items"
+  ],
+  "additionalProperties": false
+}

@@ -1019,6 +1019,18 @@
               "type": "null"
             }
           ]
+        },
+        "opportunity_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1107,6 +1119,18 @@
           "items": {
             "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
+        },
+        "opportunity_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -2378,6 +2402,385 @@
         "source"
       ],
       "additionalProperties": false
+    },
+    "SalesFinancingStatus": {
+      "type": "string",
+      "enum": [
+        "COLLECTING",
+        "BANK_REVIEW",
+        "READY",
+        "SP3K_ISSUED",
+        "AKAD_COMPLETED",
+        "CANCELLED"
+      ]
+    },
+    "SalesFinancingCreateRequest": {
+      "type": "object",
+      "properties": {
+        "booking_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payment_method": {
+          "type": "string",
+          "enum": [
+            "CASH",
+            "CASH_INSTALLMENT",
+            "KPR"
+          ]
+        },
+        "bank_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "required_document_notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 30,
+          "uniqueItems": true
+        },
+        "sp3k_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sp3k_on": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "akad_on": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next_action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "booking_id",
+        "payment_method",
+        "next_action"
+      ],
+      "additionalProperties": false
+    },
+    "SalesFinancingUpdateRequest": {
+      "type": "object",
+      "properties": {
+        "bank_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "required_document_notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 30,
+          "uniqueItems": true
+        },
+        "sp3k_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sp3k_on": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "akad_on": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next_action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [],
+      "additionalProperties": false,
+      "minProperties": 1
+    },
+    "SalesFinancingTransitionRequest": {
+      "type": "object",
+      "properties": {
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesFinancingStatus"
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "additionalProperties": false
+    },
+    "SalesFinancingProjection": {
+      "type": "object",
+      "properties": {
+        "booking_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "payment_method": {
+          "type": "string",
+          "enum": [
+            "CASH",
+            "CASH_INSTALLMENT",
+            "KPR"
+          ]
+        },
+        "bank_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "required_document_notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_ids": {
+          "type": "array",
+          "items": {
+            "type": "string",
+            "minLength": 1,
+            "maxLength": 128
+          },
+          "maxItems": 30,
+          "uniqueItems": true
+        },
+        "sp3k_reference": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 300
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "sp3k_on": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "akad_on": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "next_action": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        },
+        "financing_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "tenant_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/tenant_id"
+        },
+        "organization_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/organization_id"
+        },
+        "workspace_id": {
+          "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/workspace_id"
+        },
+        "status": {
+          "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesFinancingStatus"
+        },
+        "responsible_actor_id": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "created_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "updated_at": {
+          "type": "string",
+          "format": "date-time"
+        },
+        "allowed_transitions": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesFinancingStatus"
+          }
+        }
+      },
+      "required": [
+        "booking_id",
+        "payment_method",
+        "bank_reference",
+        "required_document_notes",
+        "document_ids",
+        "sp3k_reference",
+        "sp3k_on",
+        "akad_on",
+        "next_action",
+        "financing_id",
+        "tenant_id",
+        "organization_id",
+        "workspace_id",
+        "status",
+        "responsible_actor_id",
+        "created_at",
+        "updated_at",
+        "allowed_transitions"
+      ],
+      "additionalProperties": false
+    },
+    "SalesFinancingListProjection": {
+      "type": "object",
+      "properties": {
+        "items": {
+          "type": "array",
+          "items": {
+            "$ref": "https://schemas.alos.dev/v1/sales/sales-contracts.schema.json#/$defs/SalesFinancingProjection"
+          }
+        },
+        "total": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "source": {
+          "$ref": "https://schemas.alos.dev/v1/executive/executive-source-status.schema.json"
+        }
+      },
+      "required": [
+        "items",
+        "total",
+        "source"
+      ],
+      "additionalProperties": false
     }
   },
   "type": "object",
@@ -2429,6 +2832,10 @@
           "minimum": 0
         },
         "collaterals": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "financing_contexts": {
           "type": "integer",
           "minimum": 0
         }

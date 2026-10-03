@@ -23,7 +23,7 @@ export type SharedWorkTaskStatus = "OPEN" | "IN_PROGRESS" | "BLOCKED" | "UNDER_R
 export type SharedWorkTaskPriority = "LOW" | "NORMAL" | "HIGH" | "CRITICAL";
 export type SharedWorkApprovalStatus = "PENDING" | "APPROVED" | "RETURNED" | "REJECTED" | "HELD";
 export type SharedWorkApprovalDecision = "APPROVED" | "RETURNED" | "REJECTED" | "HOLD";
-export type SharedWorkApprovalSubjectType = "PROJECT" | "TASK" | "SALES_OPPORTUNITY" | "SALES_BOOKING" | "SALES_CLOSING" | "SALES_PRICING" | "PROPERTY_UNIT" | "PROPERTY_CHANGE_ORDER" | "PROPERTY_PAYMENT_CERTIFICATE" | "FINANCE_BUDGET";
+export type SharedWorkApprovalSubjectType = "PROJECT" | "TASK" | "SALES_OPPORTUNITY" | "SALES_BOOKING" | "SALES_CLOSING" | "SALES_PRICING" | "PROPERTY_UNIT" | "PROPERTY_CHANGE_ORDER" | "PROPERTY_PAYMENT_CERTIFICATE" | "FINANCE_BUDGET" | "FINANCE_PAYABLE";
 export type SharedWorkDocumentStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "REJECTED" | "RETIRED";
 export type SharedWorkReportStatus = "DRAFT" | "IN_REVIEW" | "APPROVED" | "PUBLISHED" | "ARCHIVED";
 export type SharedWorkFindingStatus = "OPEN" | "ASSIGNED" | "IN_PROGRESS" | "PENDING_VERIFICATION" | "VERIFIED" | "CLOSED";
@@ -54,6 +54,9 @@ export interface SharedWorkProjectProjection {
   readonly evidence_count?: number;
   readonly created_at: string;
   readonly updated_at: string;
+  readonly objective?: string | null;
+  readonly priority?: SharedWorkTaskPriority;
+  readonly owning_workspace_id?: string | null;
 }
 
 export interface SharedWorkProjectCreateRequest {
@@ -62,6 +65,9 @@ export interface SharedWorkProjectCreateRequest {
   readonly description?: string | null;
   readonly start_date?: string | null;
   readonly target_end_date?: string | null;
+  readonly objective?: string | null;
+  readonly priority?: SharedWorkTaskPriority;
+  readonly owner_actor_id?: string | null;
 }
 
 export interface SharedWorkProjectUpdateRequest {
@@ -69,6 +75,9 @@ export interface SharedWorkProjectUpdateRequest {
   readonly description?: string | null;
   readonly start_date?: string | null;
   readonly target_end_date?: string | null;
+  readonly objective?: string | null;
+  readonly priority?: SharedWorkTaskPriority;
+  readonly owner_actor_id?: string | null;
 }
 
 export interface SharedWorkTaskProjection {
@@ -460,7 +469,7 @@ export interface SharedWorkCommentProjection {
 export interface SharedWorkFindingAssignmentRequest {
   readonly owner_actor_id: string;
 }
-export type SharedWorkMaterialAction = "WIN_OPPORTUNITY" | "CONFIRM_BOOKING" | "COMPLETE_CLOSING" | "ACTIVATE_PRICING" | "RESERVE_UNIT" | "SELL_UNIT" | "APPROVE_CHANGE_ORDER" | "APPROVE_PAYMENT_CERTIFICATE" | "APPROVE_BUDGET" | "ACTIVATE_BUDGET" | "CLOSE_BUDGET";
+export type SharedWorkMaterialAction = "WIN_OPPORTUNITY" | "CONFIRM_BOOKING" | "COMPLETE_CLOSING" | "ACTIVATE_PRICING" | "RESERVE_UNIT" | "SELL_UNIT" | "APPROVE_CHANGE_ORDER" | "APPROVE_PAYMENT_CERTIFICATE" | "APPROVE_BUDGET" | "ACTIVATE_BUDGET" | "CLOSE_BUDGET" | "AUTHORIZE_PAYABLE";
 
 export interface SharedWorkMaterialActionProjection {
   readonly subject_type: SharedWorkApprovalSubjectType;

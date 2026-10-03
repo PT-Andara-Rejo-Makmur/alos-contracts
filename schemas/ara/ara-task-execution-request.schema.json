@@ -1,0 +1,22 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-task-execution-request.schema.json",
+  "title": "AraTaskExecutionRequest",
+  "type": "object",
+  "properties": {
+    "review_reason": {
+      "type": "string",
+      "minLength": 1,
+      "maxLength": 4000,
+      "pattern": "\\S"
+    },
+    "task": {
+      "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/TaskCreateRequest"
+    }
+  },
+  "required": [
+    "review_reason",
+    "task"
+  ],
+  "additionalProperties": false
+}

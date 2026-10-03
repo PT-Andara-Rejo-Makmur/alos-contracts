@@ -48,6 +48,7 @@ export interface PropertyUnitProjection {
   readonly updated_at: string;
   readonly allowed_transitions: readonly (PropertyUnitStatus)[];
   readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
+  readonly reservation_booking_id?: string | null;
 }
 
 export interface PropertyUnitListProjection {
@@ -298,12 +299,20 @@ export interface PropertyChangeOrderCreateRequest {
   readonly change_number: string;
   readonly description: string;
   readonly amount_delta?: string | null;
+  readonly related_contract_id?: string | null;
+  readonly schedule_impact_days?: number | null;
+  readonly contract_change_required?: boolean;
+  readonly document_id?: string | null;
 }
 
 export interface PropertyChangeOrderUpdateRequest {
   readonly change_number?: string;
   readonly description?: string;
   readonly amount_delta?: string | null;
+  readonly related_contract_id?: string | null;
+  readonly schedule_impact_days?: number | null;
+  readonly contract_change_required?: boolean;
+  readonly document_id?: string | null;
 }
 
 export interface PropertyChangeOrderProjection {
@@ -320,6 +329,12 @@ export interface PropertyChangeOrderProjection {
   readonly updated_at: string;
   readonly allowed_transitions: readonly (PropertyChangeOrderStatus)[];
   readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
+  readonly related_contract_id?: string | null;
+  readonly schedule_impact_days?: number | null;
+  readonly contract_change_required?: boolean;
+  readonly implementation_notes?: string | null;
+  readonly implemented_at?: string | null;
+  readonly document_id?: string | null;
 }
 
 export interface PropertyChangeOrderListProjection {
@@ -340,11 +355,15 @@ export interface PropertyPaymentCertificateCreateRequest {
   readonly certificate_number: string;
   readonly period?: string | null;
   readonly amount?: string | null;
+  readonly construction_update_id?: string | null;
+  readonly document_id?: string | null;
 }
 
 export interface PropertyPaymentCertificateUpdateRequest {
   readonly certificate_number?: string;
   readonly period?: string | null;
+  readonly construction_update_id?: string | null;
+  readonly document_id?: string | null;
 }
 
 export interface PropertyPaymentCertificateProjection {
@@ -361,6 +380,8 @@ export interface PropertyPaymentCertificateProjection {
   readonly updated_at: string;
   readonly allowed_transitions: readonly (PropertyPaymentCertificateStatus)[];
   readonly material_actions?: readonly (SharedWorkMaterialActionProjection)[];
+  readonly construction_update_id?: string | null;
+  readonly document_id?: string | null;
 }
 
 export interface PropertyPaymentCertificateListProjection {
@@ -449,6 +470,10 @@ export interface PropertyLandRecordListProjection {
   readonly items: readonly (PropertyLandRecordProjection)[];
   readonly total: number;
   readonly source: ExecutiveSourceStatus;
+}
+
+export interface PropertyChangeOrderImplementationRequest {
+  readonly reason: string;
 }
 
 export interface PropertyOverview {

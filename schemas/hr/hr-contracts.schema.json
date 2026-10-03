@@ -518,7 +518,9 @@
       "type": "string",
       "enum": [
         "PENDING",
-        "WITHDRAWN"
+        "WITHDRAWN",
+        "APPROVED",
+        "REJECTED"
       ]
     },
     "HrLeaveRequestTransitionRequest": {
@@ -526,6 +528,12 @@
       "properties": {
         "status": {
           "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestStatus"
+        },
+        "decision_reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
         }
       },
       "required": [
@@ -689,6 +697,19 @@
             "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrLeaveRequestStatus"
           },
           "uniqueItems": true
+        },
+        "decision_reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -789,6 +810,42 @@
         "opened_at": {
           "type": "string",
           "format": "date-time"
+        },
+        "requesting_workspace_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "headcount": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -823,6 +880,42 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 64
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "requesting_workspace_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "headcount": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
             },
             {
               "type": "null"
@@ -913,6 +1006,42 @@
             "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrRecruitmentStatus"
           },
           "uniqueItems": true
+        },
+        "requesting_workspace_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "headcount": {
+          "anyOf": [
+            {
+              "type": "integer",
+              "minimum": 1
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -961,7 +1090,11 @@
       "enum": [
         "APPLIED",
         "SCREENING",
-        "INTERVIEW"
+        "INTERVIEW",
+        "OFFERED",
+        "HIRED",
+        "REJECTED",
+        "WITHDRAWN"
       ]
     },
     "HrCandidateTransitionRequest": {
@@ -1175,6 +1308,18 @@
             "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrCandidateStatus"
           },
           "uniqueItems": true
+        },
+        "employee_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1440,6 +1585,18 @@
               "type": "null"
             }
           ]
+        },
+        "facility_request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1460,6 +1617,18 @@
             {
               "type": "string",
               "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "facility_request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
             },
             {
               "type": "null"
@@ -1536,6 +1705,18 @@
             "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrOnboardingStatus"
           },
           "uniqueItems": true
+        },
+        "facility_request_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -2646,7 +2827,11 @@
       "type": "string",
       "enum": [
         "DRAFT",
-        "IN_REVIEW"
+        "IN_REVIEW",
+        "APPROVED",
+        "ACTIVE",
+        "EXPIRED",
+        "CANCELLED"
       ]
     },
     "HrEmploymentContractTransitionRequest": {
@@ -2701,6 +2886,9 @@
               "type": "null"
             }
           ]
+        },
+        "legal_review_required": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -2733,6 +2921,19 @@
             {
               "type": "string",
               "format": "date"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "legal_review_required": {
+          "type": "boolean"
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
             },
             {
               "type": "null"
@@ -2817,6 +3018,9 @@
             "$ref": "https://schemas.alos.dev/v1/hr/hr-contracts.schema.json#/$defs/HrEmploymentContractStatus"
           },
           "uniqueItems": true
+        },
+        "legal_review_required": {
+          "type": "boolean"
         }
       },
       "required": [
@@ -3850,6 +4054,32 @@
         "items",
         "total",
         "source"
+      ],
+      "additionalProperties": false
+    },
+    "HrCandidateHireRequest": {
+      "type": "object",
+      "properties": {
+        "employee_number": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 128
+        },
+        "join_date": {
+          "type": "string",
+          "format": "date"
+        },
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "employee_number",
+        "join_date",
+        "reason"
       ],
       "additionalProperties": false
     }

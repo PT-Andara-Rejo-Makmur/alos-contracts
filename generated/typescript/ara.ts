@@ -6,6 +6,8 @@
 
 import type { DataClassification, EvidenceRef, ExecutionBudget } from "./context-research";
 
+import type { SharedWorkTaskCreateRequest } from "./shared-work";
+
 export interface AraActionProposalProjection {
   readonly proposal_id: string;
   readonly kind: "TASK" | "MATERIAL_ACTION" | "CAPABILITY_DRAFT" | "RESEARCH";
@@ -441,8 +443,24 @@ export interface AraMessageRequest {
 }
 
 export interface AraMessageRequestBusinessReference {
-  readonly domain: "SHARED_WORK" | "SALES" | "STRATEGY" | "PROPERTY" | "FINANCE" | "HR" | "LEGAL" | "IT" | "MARKETING";
+  readonly domain: "SHARED_WORK" | "SALES" | "STRATEGY" | "PROPERTY" | "FINANCE" | "HR" | "LEGAL" | "IT" | "MARKETING" | "DOCUMENTS" | "PROCESS";
   readonly resource_id: string;
+}
+
+export interface AraProgressEvent {
+  readonly event_id: number;
+  readonly kind: "UNDERSTANDING" | "RETRIEVING" | "ANALYZING" | "PREPARING" | "WAITING_FOR_REVIEW" | "COMPLETED" | "FAILED";
+  readonly occurred_at: string;
+}
+
+export interface AraProgressProjection {
+  readonly events: readonly (AraProgressEvent)[];
+}
+
+export interface AraProgressRequest {
+  readonly event_key: string;
+  readonly kind: "UNDERSTANDING" | "RETRIEVING" | "ANALYZING" | "PREPARING" | "WAITING_FOR_REVIEW" | "COMPLETED" | "FAILED";
+  readonly correlation_id: string;
 }
 
 export interface AraRunProjection {
@@ -453,6 +471,26 @@ export interface AraRunProjection {
   readonly runtime_mode: "DETERMINISTIC_TEST" | "NORMAL";
   readonly created_at: string;
   readonly response?: AraResponseProjection;
+}
+
+export interface AraTaskExecutionReceipt {
+  readonly execution_id: string;
+  readonly tenant_id: string;
+  readonly organization_id: string;
+  readonly workspace_id: string;
+  readonly actor_id: string;
+  readonly run_id: string;
+  readonly proposal_id: string;
+  readonly task_id: string;
+  readonly command_hash: string;
+  readonly review_reason: string;
+  readonly correlation_id: string;
+  readonly executed_at: string;
+}
+
+export interface AraTaskExecutionRequest {
+  readonly review_reason: string;
+  readonly task: SharedWorkTaskCreateRequest;
 }
 
 export interface AraThreadCreateRequest {

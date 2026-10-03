@@ -248,7 +248,7 @@ class ItCiRunListProjection(TypedDict, total=False):
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
 
-ItReleaseStatus = Literal['PLANNED', 'IN_REVIEW', 'CANCELLED']
+ItReleaseStatus = Literal['PLANNED', 'IN_REVIEW', 'CANCELLED', 'READY', 'DEPLOYED', 'VERIFIED', 'FAILED', 'ROLLED_BACK']
 
 class ItReleaseTransitionRequest(TypedDict, total=False):
     status: Required['ItReleaseStatus']
@@ -257,9 +257,15 @@ class ItReleaseCreateRequest(TypedDict, total=False):
     repository_id: 'str | None'
     version: Required['str']
     environment_id: 'str | None'
+    ci_run_id: 'str | None'
+    deployment_reference: 'str | None'
+    verification_notes: 'str | None'
 
 class ItReleaseUpdateRequest(TypedDict, total=False):
     version: 'str'
+    ci_run_id: 'str | None'
+    deployment_reference: 'str | None'
+    verification_notes: 'str | None'
 
 class ItReleaseProjection(TypedDict, total=False):
     tenant_id: Required['str']
@@ -274,6 +280,9 @@ class ItReleaseProjection(TypedDict, total=False):
     created_at: Required['str']
     updated_at: Required['str']
     allowed_transitions: Required['list[ItReleaseStatus]']
+    ci_run_id: 'str | None'
+    deployment_reference: 'str | None'
+    verification_notes: 'str | None'
 
 class ItReleaseListProjection(TypedDict, total=False):
     items: Required['list[ItReleaseProjection]']

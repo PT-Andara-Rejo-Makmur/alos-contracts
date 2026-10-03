@@ -1,0 +1,34 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://schemas.alos.dev/v1/ara/ara-progress-event.schema.json",
+  "title": "AraProgressEvent",
+  "type": "object",
+  "properties": {
+    "event_id": {
+      "type": "integer",
+      "minimum": 1
+    },
+    "kind": {
+      "type": "string",
+      "enum": [
+        "UNDERSTANDING",
+        "RETRIEVING",
+        "ANALYZING",
+        "PREPARING",
+        "WAITING_FOR_REVIEW",
+        "COMPLETED",
+        "FAILED"
+      ]
+    },
+    "occurred_at": {
+      "type": "string",
+      "format": "date-time"
+    }
+  },
+  "required": [
+    "event_id",
+    "kind",
+    "occurred_at"
+  ],
+  "additionalProperties": false
+}

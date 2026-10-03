@@ -151,7 +151,8 @@
         "PROPERTY_UNIT",
         "PROPERTY_CHANGE_ORDER",
         "PROPERTY_PAYMENT_CERTIFICATE",
-        "FINANCE_BUDGET"
+        "FINANCE_BUDGET",
+        "FINANCE_PAYABLE"
       ]
     },
     "DocumentStatus": {
@@ -283,9 +284,15 @@
           "$ref": "#/$defs/ProjectStatus"
         },
         "owner_actor_id": {
-          "type": [
-            "string",
-            "null"
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
           ]
         },
         "start_date": {
@@ -353,6 +360,34 @@
         "updated_at": {
           "type": "string",
           "format": "date-time"
+        },
+        "objective": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "priority": {
+          "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/TaskPriority"
+        },
+        "owning_workspace_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
@@ -391,6 +426,34 @@
             "null"
           ],
           "format": "date"
+        },
+        "objective": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "priority": {
+          "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/TaskPriority"
+        },
+        "owner_actor_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
@@ -423,6 +486,34 @@
             "null"
           ],
           "format": "date"
+        },
+        "objective": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "priority": {
+          "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/TaskPriority"
+        },
+        "owner_actor_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       }
     },
@@ -923,7 +1014,8 @@
                   "PROPERTY_UNIT",
                   "PROPERTY_CHANGE_ORDER",
                   "PROPERTY_PAYMENT_CERTIFICATE",
-                  "FINANCE_BUDGET"
+                  "FINANCE_BUDGET",
+                  "FINANCE_PAYABLE"
                 ]
               }
             }
@@ -2252,7 +2344,8 @@
         "APPROVE_PAYMENT_CERTIFICATE",
         "APPROVE_BUDGET",
         "ACTIVATE_BUDGET",
-        "CLOSE_BUDGET"
+        "CLOSE_BUDGET",
+        "AUTHORIZE_PAYABLE"
       ]
     },
     "MaterialActionProjection": {
@@ -2274,7 +2367,8 @@
             "RESERVED",
             "SOLD",
             "APPROVED",
-            "CLOSED"
+            "CLOSED",
+            "OPEN"
           ]
         },
         "approval_required": {

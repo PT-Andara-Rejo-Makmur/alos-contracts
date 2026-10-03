@@ -49,6 +49,7 @@ class PropertyUnitProjection(TypedDict, total=False):
     updated_at: Required['str']
     allowed_transitions: Required['list[PropertyUnitStatus]']
     material_actions: 'list[SharedWorkMaterialActionProjection]'
+    reservation_booking_id: 'str | None'
 
 class PropertyUnitListProjection(TypedDict, total=False):
     items: Required['list[PropertyUnitProjection]']
@@ -269,11 +270,19 @@ class PropertyChangeOrderCreateRequest(TypedDict, total=False):
     change_number: Required['str']
     description: Required['str']
     amount_delta: 'str | None'
+    related_contract_id: 'str | None'
+    schedule_impact_days: 'int | None'
+    contract_change_required: 'bool'
+    document_id: 'str | None'
 
 class PropertyChangeOrderUpdateRequest(TypedDict, total=False):
     change_number: 'str'
     description: 'str'
     amount_delta: 'str | None'
+    related_contract_id: 'str | None'
+    schedule_impact_days: 'int | None'
+    contract_change_required: 'bool'
+    document_id: 'str | None'
 
 class PropertyChangeOrderProjection(TypedDict, total=False):
     change_order_id: Required['str']
@@ -289,6 +298,12 @@ class PropertyChangeOrderProjection(TypedDict, total=False):
     updated_at: Required['str']
     allowed_transitions: Required['list[PropertyChangeOrderStatus]']
     material_actions: 'list[SharedWorkMaterialActionProjection]'
+    related_contract_id: 'str | None'
+    schedule_impact_days: 'int | None'
+    contract_change_required: 'bool'
+    implementation_notes: 'str | None'
+    implemented_at: 'str | None'
+    document_id: 'str | None'
 
 class PropertyChangeOrderListProjection(TypedDict, total=False):
     items: Required['list[PropertyChangeOrderProjection]']
@@ -306,10 +321,14 @@ class PropertyPaymentCertificateCreateRequest(TypedDict, total=False):
     certificate_number: Required['str']
     period: 'str | None'
     amount: 'str | None'
+    construction_update_id: 'str | None'
+    document_id: 'str | None'
 
 class PropertyPaymentCertificateUpdateRequest(TypedDict, total=False):
     certificate_number: 'str'
     period: 'str | None'
+    construction_update_id: 'str | None'
+    document_id: 'str | None'
 
 class PropertyPaymentCertificateProjection(TypedDict, total=False):
     payment_certificate_id: Required['str']
@@ -325,6 +344,8 @@ class PropertyPaymentCertificateProjection(TypedDict, total=False):
     updated_at: Required['str']
     allowed_transitions: Required['list[PropertyPaymentCertificateStatus]']
     material_actions: 'list[SharedWorkMaterialActionProjection]'
+    construction_update_id: 'str | None'
+    document_id: 'str | None'
 
 class PropertyPaymentCertificateListProjection(TypedDict, total=False):
     items: Required['list[PropertyPaymentCertificateProjection]']
@@ -402,6 +423,9 @@ class PropertyLandRecordListProjection(TypedDict, total=False):
     items: Required['list[PropertyLandRecordProjection]']
     total: Required['int']
     source: Required['ExecutiveSourceStatus']
+
+class PropertyChangeOrderImplementationRequest(TypedDict, total=False):
+    reason: Required['str']
 
 class PropertyOverview(TypedDict, total=False):
     source: Required['ExecutiveSourceStatus']

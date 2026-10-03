@@ -26,7 +26,9 @@
             "HR",
             "LEGAL",
             "IT",
-            "MARKETING"
+            "MARKETING",
+            "DOCUMENTS",
+            "PROCESS"
           ]
         },
         "resource_id": {

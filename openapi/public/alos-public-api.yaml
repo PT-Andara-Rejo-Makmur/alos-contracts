@@ -13245,6 +13245,1391 @@ paths:
         required: true
         schema:
           type: string
+  /api/v1/processes:
+    post:
+      operationId: startBusinessProcess
+      tags:
+      - business-operations
+      summary: startBusinessProcess
+      responses:
+        '201':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessStartRequest
+  /api/v1/processes/policies:
+    post:
+      operationId: configureBusinessRouting
+      tags:
+      - business-operations
+      summary: configureBusinessRouting
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessPolicyProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessPolicyRequest
+  /api/v1/processes/work-queue:
+    get:
+      operationId: listAssignedProcesses
+      tags:
+      - business-operations
+      summary: listAssignedProcesses
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/v1/processes/{process_id}:
+    get:
+      operationId: readBusinessProcess
+      tags:
+      - business-operations
+      summary: readBusinessProcess
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: process_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/processes/subjects/{business_type}/{subject_id}:
+    get:
+      operationId: readSubjectProcess
+      tags:
+      - business-operations
+      summary: readSubjectProcess
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: business_type
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: subject_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/processes/{process_id}/steps/{step_id}/actions:
+    post:
+      operationId: actOnBusinessProcess
+      tags:
+      - business-operations
+      summary: actOnBusinessProcess
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: process_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessActionRequest
+  /api/v1/processes/{process_id}/steps/{step_id}/task:
+    post:
+      operationId: createProcessTask
+      tags:
+      - business-operations
+      summary: createProcessTask
+      responses:
+        '201':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/shared-work/shared-work.schema.json#/$defs/TaskProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: process_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: step_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessRevisionRequest
+  /api/v1/processes/{process_id}/resubmit:
+    post:
+      operationId: resubmitBusinessProcess
+      tags:
+      - business-operations
+      summary: resubmitBusinessProcess
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: process_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessRevisionRequest
+  /api/v1/processes/{process_id}/cancel:
+    post:
+      operationId: cancelBusinessProcess
+      tags:
+      - business-operations
+      summary: cancelBusinessProcess
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: process_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessRevisionRequest
+  /api/v1/processes/{process_id}/request-direction:
+    post:
+      operationId: requestdirectionBusinessProcess
+      tags:
+      - business-operations
+      summary: requestdirectionBusinessProcess
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: process_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/process/process-contracts.schema.json#/$defs/BusinessProcessRevisionRequest
+  /api/v1/business/work-queue:
+    get:
+      operationId: readBusinessWorkQueue
+      tags:
+      - business-operations
+      summary: readBusinessWorkQueue
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessWorkQueue
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/v1/business/notifications:
+    get:
+      operationId: readBusinessNotificationOverview
+      tags:
+      - business-operations
+      summary: readBusinessNotificationOverview
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessNotificationOverview
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/v1/business/relationships/{record_type}/{identity}:
+    get:
+      operationId: readBusinessRelationshipOverview
+      tags:
+      - business-operations
+      summary: readBusinessRelationshipOverview
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessRelationshipOverview
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: record_type
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/business/projects/{project_id}/records:
+    get:
+      operationId: readBusinessProjectRecordOverview
+      tags:
+      - business-operations
+      summary: readBusinessProjectRecordOverview
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessProjectRecordOverview
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: project_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/business/{domain}/summary:
+    get:
+      operationId: readBusinessSummary
+      tags:
+      - business-operations
+      summary: readBusinessSummary
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessSummary
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: domain
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/business/executive/performance:
+    get:
+      operationId: readBusinessPerformance
+      tags:
+      - business-operations
+      summary: readBusinessPerformance
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+  /api/v1/business/targets/{target_id}/source-binding:
+    post:
+      operationId: recordMetricBindingRequest
+      tags:
+      - business-operations
+      summary: recordMetricBindingRequest
+      responses:
+        '201':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/MetricBindingProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: target_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/business/business-contracts.schema.json#/$defs/MetricBindingRequest
+  /api/v1/business/targets/{target_id}/calculate:
+    post:
+      operationId: recordMetricCalculationRequest
+      tags:
+      - business-operations
+      summary: recordMetricCalculationRequest
+      responses:
+        '201':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/strategy/metric-observation.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: target_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/business/business-contracts.schema.json#/$defs/MetricCalculationRequest
+  /api/v1/business/capability-requests:
+    get:
+      operationId: listCapabilityBusinessRequests
+      tags:
+      - business-operations
+      summary: listCapabilityBusinessRequests
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/CapabilityBusinessRequestOverview
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: createCapabilityBusinessRequest
+      tags:
+      - business-operations
+      summary: createCapabilityBusinessRequest
+      responses:
+        '201':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/CapabilityBusinessRequest
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/business/business-contracts.schema.json#/$defs/CapabilityBusinessRequestCreate
+  /api/v1/business/capability-requests/{request_id}:
+    get:
+      operationId: readCapabilityBusinessRequest
+      tags:
+      - business-operations
+      summary: readCapabilityBusinessRequest
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/CapabilityBusinessRequest
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: request_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/business/capability-requests/{request_id}/resolve:
+    post:
+      operationId: resolveCapabilityBusinessNeed
+      tags:
+      - business-operations
+      summary: resolveCapabilityBusinessNeed
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/CapabilityBusinessRequest
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: request_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/business/business-contracts.schema.json#/$defs/CapabilityBusinessResolutionRequest
+  /api/v1/business/capability-requests/{request_id}/review:
+    post:
+      operationId: reviewRequestedAgentDraft
+      tags:
+      - business-operations
+      summary: reviewRequestedAgentDraft
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/review/review-package.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: request_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/business/business-contracts.schema.json#/$defs/CapabilityBusinessResolutionRequest
+  /api/v1/ara/threads/{thread_id}/runs/{run_id}/progress:
+    get:
+      operationId: readAraProgress
+      tags:
+      - business-operations
+      summary: readAraProgress
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/ara/ara-progress-projection.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: thread_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: after
+        in: query
+        required: false
+        schema:
+          type: integer
+          minimum: 0
+  /api/v1/ara/threads/{thread_id}/runs/{run_id}/proposals/{proposal_id}/task:
+    get:
+      operationId: getAraReviewedTask
+      tags:
+      - business-operations
+      summary: getAraReviewedTask
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/ara/ara-task-execution-receipt.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: thread_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: proposal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    post:
+      operationId: postAraReviewedTask
+      tags:
+      - business-operations
+      summary: postAraReviewedTask
+      responses:
+        '201':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/ara/ara-task-execution-receipt.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: thread_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: run_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: proposal_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/ara/ara-task-execution-request.schema.json
+  /api/v1/property/change-orders/{identity}/implement:
+    post:
+      operationId: apivpropertychangeordersidentityimplementCommand
+      tags:
+      - business-operations
+      summary: apivpropertychangeordersidentityimplementCommand
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/property/property-contracts.schema.json#/$defs/PropertyChangeOrderImplementationRequest
+  /api/v1/finance/payment-certificates/{process_id}/payable:
+    post:
+      operationId: apivfinancepaymentcertificatesprocessidpayableCommand
+      tags:
+      - business-operations
+      summary: apivfinancepaymentcertificatesprocessidpayableCommand
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: process_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePayableFromCertificateRequest
+  /api/v1/finance/payable-payments/{payment_id}/bank-transaction:
+    post:
+      operationId: apivfinancepayablepaymentspaymentidbanktransactionCommand
+      tags:
+      - business-operations
+      summary: apivfinancepayablepaymentspaymentidbanktransactionCommand
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessRelationship
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: payment_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/finance/finance-contracts.schema.json#/$defs/FinancePaymentTransactionRequest
+  /api/v1/legal/contracts/{identity}/business-origin:
+    post:
+      operationId: apivlegalcontractsidentitybusinessoriginCommand
+      tags:
+      - business-operations
+      summary: apivlegalcontractsidentitybusinessoriginCommand
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/business/business-contracts.schema.json#/$defs/BusinessRelationshipOverview
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/legal/legal-contracts.schema.json#/$defs/LegalContractBusinessOriginRequest
+  /api/v1/hr/candidates/{candidate_id}/hire:
+    post:
+      operationId: apivhrcandidatescandidateidhireCommand
+      tags:
+      - business-operations
+      summary: apivhrcandidatescandidateidhireCommand
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrEmployeeProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: candidate_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/hr/hr-contracts.schema.json#/$defs/HrCandidateHireRequest
+  /api/v1/sales/financing-contexts:
+    get:
+      operationId: listSalesFinancing
+      tags:
+      - business-operations
+      summary: listSalesFinancing
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFinancingListProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+    post:
+      operationId: createSalesFinancing
+      tags:
+      - business-operations
+      summary: createSalesFinancing
+      responses:
+        '201':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFinancingProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFinancingCreateRequest
+  /api/v1/sales/financing-contexts/{identity}:
+    get:
+      operationId: readSalesFinancing
+      tags:
+      - business-operations
+      summary: readSalesFinancing
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFinancingProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+    patch:
+      operationId: updateSalesFinancing
+      tags:
+      - business-operations
+      summary: updateSalesFinancing
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFinancingProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFinancingUpdateRequest
+  /api/v1/sales/financing-contexts/{identity}/transition:
+    post:
+      operationId: transitionSalesFinancing
+      tags:
+      - business-operations
+      summary: transitionSalesFinancing
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFinancingProjection
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: identity
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: ../../schemas/sales/sales-contracts.schema.json#/$defs/SalesFinancingTransitionRequest
+  /api/v1/documents/uploads/{upload_id}:
+    get:
+      operationId: readDocumentUpload
+      tags:
+      - business-operations
+      summary: readDocumentUpload
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/document/document-upload.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: upload_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/documents/{document_id}/content:
+    get:
+      operationId: readApprovedDocumentContent
+      tags:
+      - business-operations
+      summary: readApprovedDocumentContent
+      responses:
+        '200':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/document/document-content.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: document_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+  /api/v1/documents/{document_id}/uploads:
+    post:
+      operationId: uploadSupportingDocument
+      tags:
+      - business-operations
+      summary: uploadSupportingDocument
+      responses:
+        '202':
+          description: Authoritative scoped result
+          content:
+            application/json:
+              schema:
+                $ref: ../../schemas/document/document-upload.schema.json
+        '401':
+          $ref: '#/components/responses/ErrorResponse'
+        '403':
+          $ref: '#/components/responses/ErrorResponse'
+        '404':
+          $ref: '#/components/responses/ErrorResponse'
+        '409':
+          $ref: '#/components/responses/ErrorResponse'
+        '422':
+          $ref: '#/components/responses/ErrorResponse'
+        '503':
+          $ref: '#/components/responses/ErrorResponse'
+      parameters:
+      - name: document_id
+        in: path
+        required: true
+        schema:
+          type: string
+          minLength: 1
+      - name: filename
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 180
+      - name: version
+        in: query
+        required: true
+        schema:
+          type: string
+          minLength: 1
+          maxLength: 100
+      requestBody:
+        required: true
+        content:
+          text/plain:
+            schema:
+              type: string
+              format: binary
+          application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+            schema:
+              type: string
+              format: binary
 components:
   securitySchemes:
     bearerAuth:

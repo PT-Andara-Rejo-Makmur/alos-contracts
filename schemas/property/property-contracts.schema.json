@@ -266,6 +266,18 @@
           "items": {
             "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
+        },
+        "reservation_booking_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1507,6 +1519,41 @@
               "type": "null"
             }
           ]
+        },
+        "related_contract_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schedule_impact_days": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contract_change_required": {
+          "type": "boolean"
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1535,6 +1582,41 @@
               "type": "string",
               "pattern": "^-?(0|[1-9][0-9]{0,17})(\\.[0-9]{1,2})?$",
               "description": "Exact decimal string; no binary floating-point amount."
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "related_contract_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schedule_impact_days": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contract_change_required": {
+          "type": "boolean"
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
             },
             {
               "type": "null"
@@ -1612,6 +1694,65 @@
           "items": {
             "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
+        },
+        "related_contract_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "schedule_impact_days": {
+          "anyOf": [
+            {
+              "type": "integer"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "contract_change_required": {
+          "type": "boolean"
+        },
+        "implementation_notes": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 4000,
+              "pattern": "\\S"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "implemented_at": {
+          "anyOf": [
+            {
+              "type": "string",
+              "format": "date-time"
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1715,6 +1856,28 @@
               "type": "null"
             }
           ]
+        },
+        "construction_update_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -1737,6 +1900,28 @@
               "type": "string",
               "minLength": 1,
               "maxLength": 32
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "construction_update_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
             },
             {
               "type": "null"
@@ -1821,6 +2006,28 @@
           "items": {
             "$ref": "https://schemas.alos.dev/v1/shared-work/shared-work.schema.json#/$defs/MaterialActionProjection"
           }
+        },
+        "construction_update_id": {
+          "anyOf": [
+            {
+              "type": "string",
+              "minLength": 1,
+              "maxLength": 128
+            },
+            {
+              "type": "null"
+            }
+          ]
+        },
+        "document_id": {
+          "anyOf": [
+            {
+              "$ref": "https://schemas.alos.dev/v1/common/identifiers.schema.json#/$defs/document_id"
+            },
+            {
+              "type": "null"
+            }
+          ]
         }
       },
       "required": [
@@ -2311,6 +2518,21 @@
         "items",
         "total",
         "source"
+      ],
+      "additionalProperties": false
+    },
+    "PropertyChangeOrderImplementationRequest": {
+      "type": "object",
+      "properties": {
+        "reason": {
+          "type": "string",
+          "minLength": 1,
+          "maxLength": 4000,
+          "pattern": "\\S"
+        }
+      },
+      "required": [
+        "reason"
       ],
       "additionalProperties": false
     }
