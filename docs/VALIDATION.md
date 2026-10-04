@@ -38,10 +38,11 @@ Pengujian mencakup validasi payload positif dan negatif, pemisahan otoritas Revi
 
 ```bash
 python scripts/generate_typescript.py --check
+python scripts/generate_python.py --check
 ```
 
-Pemeriksaan ini memastikan public Factory type/client sama persis dengan hasil generator.
-Jalankan `python scripts/generate_typescript.py` setelah contract Factory berubah. JSON Schema
+Pemeriksaan ini memastikan artefak TypeScript/Python yang dilacak sama persis dengan generator.
+Jalankan kedua generator setelah schema terkait berubah. JSON Schema
 dan OpenAPI tetap menjadi source of truth.
 
 ## Kompatibilitas terhadap revisi Git
@@ -51,3 +52,10 @@ python scripts/check_compatibility.py --baseline-ref <git-ref>
 ```
 
 CI menjalankan perbandingan ini terhadap commit dasar pull request.
+
+## Referensi dokumentasi lintas repository
+
+Dari checkout Infra dengan kelima sibling repository tersedia, jalankan
+`python scripts/verify-documentation.py`. Pemeriksaan memvalidasi tujuan link file
+dan ejaan huruf besar/kecil tanpa jaringan. Schema, examples dan compatibility fixtures
+tetap wajib divalidasi; file generated dan fixture tidak dihapus sebagai cache.

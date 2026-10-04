@@ -82,9 +82,15 @@ Rilis menggunakan Semantic Versioning. Menghapus field atau nilai enum, menambah
 - [Validasi](docs/VALIDATION.md)
 - [Versioning](docs/VERSIONING.md)
 - [Kompatibilitas](docs/COMPATIBILITY.md)
-- [Migrasi Knowledge dan Research MVP-1](docs/MVP1_KNOWLEDGE_RESEARCH_MIGRATION.md)
 - [Context, Evidence, and Research Contracts](docs/CONTEXT_EVIDENCE_RESEARCH_CONTRACTS.md)
+- [Runtime dan tool contracts](docs/runtime-contracts.md)
+- [Skill contracts](docs/skill-contracts.md)
 - [Struktur folder](docs/FOLDER_STRUCTURE.md)
 - [Panduan kontribusi](CONTRIBUTING.md)
 
 > `.github/CODEOWNERS` masih berisi placeholder owner dan harus diperbarui dengan tim atau pengguna GitHub yang sebenarnya sebelum branch protection mengandalkannya.
+
+[Indeks dokumentasi](docs/README.md) memisahkan spesifikasi aktif dari kompatibilitas
+payload legacy yang masih diuji. Versi rilis berasal dari `VERSION`; status production
+dan bukti acceptance berada pada
+[readiness Infra](https://github.com/PT-Andara-Rejo-Makmur/alos-infra/blob/development/docs/PRODUCTION_READINESS_2026-10-04.md).

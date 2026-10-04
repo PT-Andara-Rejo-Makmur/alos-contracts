@@ -3,7 +3,7 @@
 - `openapi/public/`: API yang diekspos ALOS Backend authoritative kepada frontend dan client produk.
 - `openapi/internal/`: antarmuka service antara ALOS Backend dan GENESIS.
 - `schemas/common/`: identifier kanonis, execution context, error, dan pagination.
-- `schemas/identity/`: boundary identity masa depan; saat ini hanya didokumentasikan dan bukan identity service.
+- `schemas/identity/`: account, session, workspace, membership dan projection akses canonical; autentikasi/persistence tetap di Backend.
 - `schemas/tenant/`: kontrak boundary tenant masa depan.
 - `schemas/capability/`: kontrak desain capability-first.
 - `schemas/factory/`: public/internal Factory request, resolution, catalog projection, response, dan Registry handoff.
@@ -23,7 +23,7 @@
 - `schemas/giivepro/`: ekstensi GIIVEPRO masa depan yang dibangun di atas kontrak ALOS.
 - `events/`: event envelope dan schema event per domain; tidak berisi implementasi broker.
 - `examples/`: contoh payload tervalidasi yang dikelompokkan berdasarkan domain.
-- `generated/typescript/`: public Factory type/client hasil generator; JSON Schema dan OpenAPI tetap source of truth.
+- `generated/typescript/` dan `generated/python/`: artefak Factory, ARA, Executive dan boundary lain yang dihasilkan generator; schema/OpenAPI tetap source of truth.
 - `compatibility/fixtures/`: schema terfokus untuk menguji aturan kompatibilitas serta payload hasil adaptasi snapshot legacy yang masih didukung.
 - `compatibility/tests/`: pengujian deteksi breaking change.
 - `scripts/`: perintah validasi schema, OpenAPI, contoh, dan kompatibilitas.

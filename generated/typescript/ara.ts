@@ -47,7 +47,7 @@ export interface AraMessageProjection {
 }
 
 export interface AraResponseProjection {
-  readonly response_type: "ANSWER" | "NEEDS_INFO" | "DENIED" | "NEEDS_REVIEW" | "FAILED";
+  readonly response_type: "ANSWER" | "CONVERSATION" | "NEEDS_INFO" | "DENIED" | "NEEDS_REVIEW" | "FAILED";
   readonly answer: string;
   readonly sources: readonly (AraSourceProjection)[];
   readonly failed_sources: readonly (string)[];

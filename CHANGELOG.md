@@ -6,6 +6,8 @@ Semua perubahan penting mengikuti [Keep a Changelog](https://keepachangelog.com/
 
 ### Ditambahkan
 
+- Respons ARA `CONVERSATION` untuk dialog tanpa klaim atau aksi bisnis. Respons ini tidak
+  boleh membawa sumber, proposal, research, atau hasil delegation.
 - StrategyOverviewProjection untuk Executive; pemilihan observasi dan performance berasal dari Backend.
 - Command canonical untuk target draft, keputusan verifikasi, dan response revision dengan lineage.
 - Cascade candidate metadata serta calculation trace bertipe; acceptance membawa hash preview.

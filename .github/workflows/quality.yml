@@ -24,7 +24,12 @@ jobs:
           cache: pip
 
       - name: Install dependencies
-        run: python -m pip install -e ".[dev]"
+        run: |
+          python -m pip install --upgrade 'pip>=26.2.1,<27' 'pip-audit>=2.9,<3'
+          python -m pip install -e ".[dev]"
+
+      - name: Audit dependency security
+        run: python -m pip_audit --skip-editable
 
       - name: Validate JSON Schemas
         run: python scripts/validate_schemas.py

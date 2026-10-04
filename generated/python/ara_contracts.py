@@ -48,7 +48,7 @@ class AraMessageProjection(TypedDict, total=False):
     response: 'AraResponseProjection'
 
 class AraResponseProjection(TypedDict, total=False):
-    response_type: Required["Literal['ANSWER', 'NEEDS_INFO', 'DENIED', 'NEEDS_REVIEW', 'FAILED']"]
+    response_type: Required["Literal['ANSWER', 'CONVERSATION', 'NEEDS_INFO', 'DENIED', 'NEEDS_REVIEW', 'FAILED']"]
     answer: Required['str']
     sources: Required['list[AraSourceProjection]']
     failed_sources: Required['list[str]']

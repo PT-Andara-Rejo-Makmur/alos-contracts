@@ -7,6 +7,7 @@
     "response_type": {
       "enum": [
         "ANSWER",
+        "CONVERSATION",
         "NEEDS_INFO",
         "DENIED",
         "NEEDS_REVIEW",
@@ -60,5 +61,18 @@
     "failed_sources",
     "limitations"
   ],
-  "additionalProperties": false
+  "additionalProperties": false,
+  "allOf": [
+    {
+      "if": {"properties": {"response_type": {"const": "CONVERSATION"}}},
+      "then": {
+        "properties": {"sources": {"maxItems": 0}, "failed_sources": {"maxItems": 0}},
+        "not": {"anyOf": [
+          {"required": ["action_proposal"]}, {"required": ["research_result"]},
+          {"required": ["factory_draft"]}, {"required": ["review_package"]},
+          {"required": ["delegation_result"]}
+        ]}
+      }
+    }
+  ]
 }
